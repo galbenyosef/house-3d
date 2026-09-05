@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>Maison · 法式三居室</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <div id="ui">
+    <header id="titlebar">
+      <div id="title-card">
+        <div>
+          <h1 id="title">Maison · 法式三居室</h1>
+          <p id="subtitle">8853 × 16375 mm · 三室两厅两卫 · 约 121 m²</p>
+        </div>
+        <div id="style-switch" role="tablist" aria-label="风格">
+          <button data-style="french" class="on">法式</button>
+          <button data-style="italian">意式轻奢</button>
+        </div>
+      </div>
+      <nav id="toolbar">
+        <button data-action="view-iso" title="环绕视角">环绕</button>
+        <button data-action="view-top" title="俯视平面">俯视</button>
+        <button data-action="walk" title="第一人称漫游 (F)">漫游</button>
+        <button data-action="orbit" class="toggle" title="自动环绕 (R)">自转</button>
+        <span class="sep"></span>
+        <button data-action="ceiling" class="toggle" title="显示/隐藏顶棚 (C)">顶棚</button>
+        <button data-action="night" class="toggle" title="日/夜 (N)">夜景</button>
+        <button data-action="labels" class="toggle on" title="房间标签 (L)">标签</button>
+        <button data-action="ao" class="toggle on" title="环境光遮蔽">AO</button>
+        <button data-action="shot" title="保存截图">截图</button>
+      </nav>
+    </header>
+    <aside id="rooms"></aside>
+    <aside id="panel" hidden></aside>
+    <div id="tooltip" hidden></div>
+    <div id="hint">拖动旋转 · 右键/双指平移 · 滚轮缩放 · 点击房间或家具查看说明</div>
+    <div id="minimap"></div>
+    <div id="loading">正在生成材质与模型…</div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

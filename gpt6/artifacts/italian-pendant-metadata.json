@@ -1,0 +1,59 @@
+{
+  "name": "Orbite — 双椭圆线性吊灯",
+  "asset": "public/models/italian-pendant.glb",
+  "source": "scripts/build_italian_pendant.py",
+  "units": "metres",
+  "origin": "Ceiling contact point; hangs along negative glTF Y",
+  "gltf_bounds": {
+    "min": [
+      -0.4613827168941498,
+      -0.9411905407905579,
+      -0.3037315607070923
+    ],
+    "max": [
+      0.48538270592689514,
+      0,
+      0.32773154973983765
+    ]
+  },
+  "dimensions_xyz": [
+    0.946765,
+    0.941191,
+    0.631463
+  ],
+  "max_radius_about_mount_axis_m": 0.4953,
+  "clearance_to_1_22m_table_edge_m": 0.1147,
+  "installed_top_m": 2.8,
+  "installed_bottom_m": 1.858809,
+  "clearance_above_tabletop_0_7725m": 1.086309,
+  "triangles": 15360,
+  "meshes": 3,
+  "materials": 3,
+  "glb_bytes": 282388,
+  "texture_images": 0,
+  "extensions": [
+    "KHR_materials_emissive_strength"
+  ],
+  "suspension_checks": {
+    "min_cable_centerline_spacing_mm": 6.89,
+    "lower_cable_to_upper_ring_centerline_mm": 40.258
+  },
+  "specification": {
+    "metal_section_mm": [
+      15,
+      19
+    ],
+    "lower_ellipse_centerline_mm": [
+      948,
+      594
+    ],
+    "upper_ellipse_centerline_mm": [
+      710,
+      454
+    ],
+    "cables": 6,
+    "champagne_metallic": 0.82,
+    "champagne_roughness": 0.27,
+    "diffuser_emissive_strength": 3.2
+  }
+}

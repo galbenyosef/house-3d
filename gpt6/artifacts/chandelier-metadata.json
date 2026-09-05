@@ -1,0 +1,29 @@
+{
+  "asset": "french-chandelier.glb",
+  "source": "scripts/build_chandelier.py",
+  "style": "French Louis XVI eight-arm brass and crystal candle chandelier",
+  "units": "metres",
+  "origin": "Ceiling attachment; hangs along negative glTF Y",
+  "blender_bounds_xyz": [
+    [
+      -0.46076,
+      0.46076
+    ],
+    [
+      -0.46018,
+      0.46018
+    ],
+    [
+      -0.9334,
+      0.0
+    ]
+  ],
+  "dimensions_xyz": [
+    0.92152,
+    0.92036,
+    0.9334
+  ],
+  "triangles": 19864,
+  "meshes": 5,
+  "materials": 5
+}

@@ -1,0 +1,31 @@
+{
+  "name": "maison-francaise",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fable 生成的双风格 Three.js 家装方案，供 house-3d 模型效果对比。",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test \"test/**/*.test.js\"",
+    "assets": "blender -b --python blender/build_assets.py -- public/models",
+    "spec": "node scripts/gen-spec.mjs",
+    "assets:sheet": "blender -b --python blender/contact_sheet.py -- public/models .scratch/contact_sheet.png"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hahaliu1029/house-3d.git",
+    "directory": "fable"
+  }
+}

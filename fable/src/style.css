@@ -1,0 +1,98 @@
+:root {
+  --ink: #2b2620;
+  --paper: rgba(250, 247, 241, 0.92);
+  --line: rgba(43, 38, 32, 0.12);
+  --gold: #b8923f;
+  --serif: "Playfair Display", "Songti SC", "Noto Serif SC", Georgia, serif;
+  --sans: -apple-system, "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #dfe6ee; font-family: var(--sans); color: var(--ink); }
+#app { position: fixed; inset: 0; }
+#app canvas { display: block; }
+#ui { position: fixed; inset: 0; pointer-events: none; }
+#ui > * { pointer-events: auto; }
+#titlebar { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+#titlebar h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 22px; letter-spacing: 0.04em; }
+#titlebar p { margin: 4px 0 0; font-size: 12px; opacity: 0.7; }
+#title-card { background: var(--paper); padding: 12px 16px; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); border: 1px solid var(--line); display: flex; align-items: center; gap: 18px; }
+#style-switch { display: flex; background: rgba(43,38,32,0.06); border-radius: 8px; padding: 3px; gap: 2px; }
+#style-switch button { border: 0; background: transparent; padding: 6px 12px; border-radius: 6px; font-size: 13px; }
+#style-switch button.on { background: var(--ink); color: #fff; }
+#style-switch button:disabled { opacity: 0.5; cursor: wait; }
+#toolbar { display: flex; gap: 6px; background: var(--paper); padding: 8px; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); border: 1px solid var(--line); align-items: center; }
+#toolbar .sep { width: 1px; height: 22px; background: var(--line); margin: 0 4px; }
+button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 7px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+button:hover { border-color: var(--gold); }
+button.toggle.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+#rooms { display: none; position: absolute; left: 16px; top: 96px; width: 170px; background: var(--paper); border-radius: 10px; padding: 8px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); border: 1px solid var(--line); }
+#rooms h2 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.6; margin: 4px 8px 6px; font-weight: 600; }
+#rooms button { display: flex; width: 100%; justify-content: space-between; border: 0; background: transparent; padding: 7px 8px; border-radius: 6px; }
+#rooms button:hover, #rooms button.active { background: rgba(184, 146, 63, 0.14); }
+#rooms button small { opacity: 0.55; }
+#panel { position: absolute; right: 16px; top: 96px; width: 340px; max-height: calc(100% - 140px); overflow: auto; background: var(--paper); border-radius: 10px; padding: 16px 18px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); border: 1px solid var(--line); }
+#panel h2 { font-family: var(--serif); font-weight: 500; margin: 0 0 2px; font-size: 20px; }
+#panel .area { font-size: 12px; opacity: 0.65; margin-bottom: 10px; }
+#panel h3 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.6; margin: 14px 0 6px; }
+#panel ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.55; }
+#panel .swatches { display: flex; gap: 6px; }
+#panel .swatches span { width: 34px; height: 34px; border-radius: 6px; border: 1px solid var(--line); display: block; }
+#panel .swatches small { display: block; font-size: 9px; text-align: center; opacity: 0.6; margin-top: 2px; }
+#panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
+#panel td { padding: 4px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+#panel td:last-child { text-align: right; white-space: nowrap; opacity: 0.7; }
+#panel .close { position: absolute; top: 10px; right: 10px; padding: 2px 8px; }
+#tooltip { position: absolute; background: rgba(43,38,32,0.9); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; pointer-events: none; white-space: nowrap; transform: translate(12px, 12px); }
+#tooltip small { opacity: 0.7; }
+#hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 6px 14px; border-radius: 20px; font-size: 12px; opacity: 0.85; border: 1px solid var(--line); }
+#minimap { position: absolute; left: 16px; top: 96px; width: 204px; background: var(--paper); border-radius: 10px; padding: 8px 10px 10px; border: 1px solid var(--line); box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+#minimap .mm-title { font-size: 11px; letter-spacing: 0.12em; opacity: 0.6; margin-bottom: 6px; }
+#minimap .mm-title span { letter-spacing: 0; opacity: 1; color: var(--gold); }
+#minimap svg { width: 100%; display: block; }
+#minimap .mm-room { fill: #ece3d4; stroke: #8c7c68; stroke-width: 0.4; cursor: pointer; transition: fill 0.2s; }
+#minimap .mm-room:hover { fill: #e2d3b8; }
+#minimap .mm-room.here { fill: #e8d9b6; }
+#minimap .mm-room.selected { stroke: var(--gold); stroke-width: 0.9; }
+#minimap .mm-door { fill: #faf7f1; }
+#minimap .mm-label { font-size: 3.6px; fill: #5b5147; text-anchor: middle; pointer-events: none; font-family: var(--sans); }
+#minimap #mm-cam { fill: var(--gold); stroke: #fff; stroke-width: 0.5; }
+#minimap #mm-cone { fill: rgba(184,146,63,0.28); }
+#minimap #mm-target circle:first-child { fill: none; stroke: var(--gold); stroke-width: 0.5; }
+#minimap #mm-target circle:last-child { fill: var(--gold); }
+#loading { position: absolute; inset: 0; display: grid; place-items: center; background: #dfe6ee; font-family: var(--serif); font-size: 18px; letter-spacing: 0.1em; }
+.room-label { background: rgba(250,247,241,0.9); border: 1px solid var(--line); padding: 3px 8px; border-radius: 12px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.room-label small { opacity: 0.6; margin-left: 4px; }
+#walk-ui { position: absolute; inset: 0; pointer-events: none; }
+#walk-ui .crosshair { position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.85); transform: translate(-50%, -50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.4); }
+#walk-ui .exit { position: absolute; top: 16px; right: 16px; pointer-events: auto; background: var(--ink); color: #fff; border-color: var(--ink); }
+#joystick { position: absolute; left: 28px; bottom: 36px; width: 128px; height: 128px; border-radius: 50%; background: rgba(250,247,241,0.35); border: 1px solid rgba(255,255,255,0.6); pointer-events: auto; touch-action: none; backdrop-filter: blur(4px); }
+#joystick .knob { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; background: var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+#look-hint { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); white-space: nowrap; }
+body.walking #titlebar, body.walking #rooms, body.walking #minimap, body.walking #hint { display: none; }
+#panel td em { font-style: normal; color: var(--gold); }
+#panel td .note { font-size: 11px; opacity: 0.65; margin-top: 2px; }
+#panel code { font-size: 11px; background: rgba(0,0,0,0.05); padding: 1px 4px; border-radius: 3px; }
+#panel a { color: var(--gold); }
+
+@media (max-width: 760px) {
+  #titlebar { top: 8px; left: 8px; right: 8px; flex-direction: column; gap: 6px; align-items: stretch; }
+  #title-card { padding: 8px 12px; gap: 10px; justify-content: space-between; }
+  #style-switch button { padding: 5px 9px; font-size: 12px; }
+  #titlebar h1 { font-size: 16px; }
+  #titlebar p { display: none; }
+  #toolbar { position: fixed; left: 8px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom)); top: auto; overflow-x: auto; justify-content: flex-start; padding: 6px; -webkit-overflow-scrolling: touch; }
+  #toolbar button { flex: 0 0 auto; padding: 8px 10px; font-size: 13px; }
+  #rooms { display: flex; top: 58px; left: 8px; right: 8px; width: auto; overflow-x: auto; gap: 2px; padding: 4px; }
+  #rooms h2 { display: none; }
+  #rooms button { width: auto; flex: 0 0 auto; white-space: nowrap; gap: 6px; padding: 6px 8px; }
+  #panel { left: 8px; right: 8px; top: auto; bottom: 64px; width: auto; max-height: 46vh; padding: 12px 14px; }
+  #panel h2 { font-size: 17px; }
+  #minimap { width: 92px; left: auto; right: 8px; top: 110px; bottom: auto; padding: 5px 6px 6px; }
+  #minimap .mm-title { display: none; }
+  #hint { display: none; }
+  #tooltip { display: none; }
+  .room-label { font-size: 11px; padding: 2px 6px; }
+  #walk-ui .exit { top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); right: 16px; }
+}
+
+[hidden] { display: none !important; }

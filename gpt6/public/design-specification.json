@@ -1,0 +1,3648 @@
+{
+  "units": "metres",
+  "style": "复古法式",
+  "source": "用户提供平面图；模型尺寸为推导值，详见 docs/architecture-assumptions.md",
+  "house": {
+    "width": 8.853,
+    "depth": 16.375,
+    "height": 2.8,
+    "wallThickness": 0.18,
+    "area": 110.71
+  },
+  "rooms": [
+    {
+      "id": "living",
+      "name": "客餐厅",
+      "en": "Living & Dining",
+      "area": 39.09,
+      "polygon": [
+        [
+          2.98,
+          3.58
+        ],
+        [
+          5.76,
+          3.58
+        ],
+        [
+          5.76,
+          5.39
+        ],
+        [
+          4.28,
+          5.39
+        ],
+        [
+          4.28,
+          14.53
+        ],
+        [
+          0.1,
+          14.53
+        ],
+        [
+          0.1,
+          5.77
+        ],
+        [
+          2.98,
+          5.77
+        ]
+      ],
+      "center": [
+        2.15,
+        10.05
+      ],
+      "dimension": "主区约 4.00 × 8.52 m，含北侧通道",
+      "description": "深胡桃木人字拼地板、奶油石膏线与酒红丝绒，客餐一体保留连续动线。",
+      "view": {
+        "position": [
+          0.82,
+          1.64,
+          9.9
+        ],
+        "target": [
+          3.45,
+          1.08,
+          12.55
+        ]
+      }
+    },
+    {
+      "id": "master",
+      "name": "主卧",
+      "en": "Primary Bedroom",
+      "area": 14.88,
+      "polygon": [
+        [
+          4.28,
+          8.72
+        ],
+        [
+          5.48,
+          8.72
+        ],
+        [
+          5.48,
+          10.68
+        ],
+        [
+          8,
+          10.68
+        ],
+        [
+          8,
+          14.53
+        ],
+        [
+          4.28,
+          14.53
+        ]
+      ],
+      "center": [
+        6.18,
+        12.56
+      ],
+      "dimension": "睡眠区约 3.54 × 3.65 m，含入室通道",
+      "description": "胡桃木床与暖白护墙，灰绿织物在柔和光线中呈现安静的旧宅气质。",
+      "view": {
+        "position": [
+          4.83,
+          1.62,
+          14.05
+        ],
+        "target": [
+          6.58,
+          1.08,
+          11.4
+        ]
+      }
+    },
+    {
+      "id": "bedroom2",
+      "name": "次卧 2",
+      "en": "Guest Bedroom",
+      "area": 13.34,
+      "polygon": [
+        [
+          4.28,
+          5.39
+        ],
+        [
+          8.753,
+          5.39
+        ],
+        [
+          8.753,
+          8.72
+        ],
+        [
+          4.28,
+          8.72
+        ]
+      ],
+      "center": [
+        6.45,
+        7.05
+      ],
+      "dimension": "约 4.29 × 3.15 m，含东侧窗边区",
+      "description": "复古胡桃木家具、暖米色床品与窗边阅读位，兼顾客房和日常休息。",
+      "view": {
+        "position": [
+          4.77,
+          1.56,
+          8.14
+        ],
+        "target": [
+          6.65,
+          1,
+          6.03
+        ]
+      }
+    },
+    {
+      "id": "bedroom1",
+      "name": "次卧 1",
+      "en": "Second Bedroom",
+      "area": 10.01,
+      "polygon": [
+        [
+          4.68,
+          0.1
+        ],
+        [
+          8,
+          0.1
+        ],
+        [
+          8,
+          3.58
+        ],
+        [
+          4.68,
+          3.58
+        ]
+      ],
+      "center": [
+        6.34,
+        1.87
+      ],
+      "dimension": "原图标注 3.068 × 3.263 m",
+      "description": "低饱和灰绿与深色木家具相配，保留窗前自然采光和床侧活动空间。",
+      "view": {
+        "position": [
+          5.3,
+          1.54,
+          3.05
+        ],
+        "target": [
+          7.23,
+          1.02,
+          1.26
+        ]
+      }
+    },
+    {
+      "id": "study",
+      "name": "榻榻米 / 书房",
+      "en": "Library & Daybed",
+      "area": 8.34,
+      "polygon": [
+        [
+          1.7,
+          0.1
+        ],
+        [
+          4.68,
+          0.1
+        ],
+        [
+          4.68,
+          3.58
+        ],
+        [
+          2.98,
+          3.58
+        ],
+        [
+          2.98,
+          2.84
+        ],
+        [
+          1.7,
+          2.84
+        ]
+      ],
+      "center": [
+        3.18,
+        1.5
+      ],
+      "dimension": "原图主区 2.810 × 2.484 m，含入口凹位",
+      "description": "以法式书房重释原榻榻米空间，深木书柜、书桌与日间休憩床组合。",
+      "view": {
+        "position": [
+          4.18,
+          1.52,
+          3.04
+        ],
+        "target": [
+          2.55,
+          1,
+          1.11
+        ]
+      }
+    },
+    {
+      "id": "kitchen",
+      "name": "厨房",
+      "en": "Kitchen",
+      "area": 7.24,
+      "polygon": [
+        [
+          0.1,
+          2.84
+        ],
+        [
+          2.98,
+          2.84
+        ],
+        [
+          2.98,
+          5.77
+        ],
+        [
+          0.1,
+          5.77
+        ]
+      ],
+      "center": [
+        1.54,
+        4.3
+      ],
+      "dimension": "约 2.62 × 2.76 m",
+      "description": "奶油色古典框门、深木操作台与黄铜五金，用石材地面衔接客餐厅。",
+      "view": {
+        "position": [
+          1.8,
+          1.56,
+          5.34
+        ],
+        "target": [
+          1.04,
+          1.04,
+          3.5
+        ]
+      }
+    },
+    {
+      "id": "bathroom",
+      "name": "公卫",
+      "en": "Guest Bathroom",
+      "area": 3.36,
+      "polygon": [
+        [
+          5.76,
+          3.58
+        ],
+        [
+          8,
+          3.58
+        ],
+        [
+          8,
+          5.39
+        ],
+        [
+          5.76,
+          5.39
+        ]
+      ],
+      "center": [
+        6.91,
+        4.5
+      ],
+      "dimension": "原图进深 1.495 m，宽度约 2.24 m",
+      "description": "暖白石材、黄铜龙头和古典镜框，小空间保持清晰的干湿分区。",
+      "view": {
+        "position": [
+          6.6,
+          1.52,
+          4.23
+        ],
+        "target": [
+          7.35,
+          1.04,
+          4.65
+        ]
+      }
+    },
+    {
+      "id": "ensuite",
+      "name": "主卫",
+      "en": "Ensuite",
+      "area": 4.05,
+      "polygon": [
+        [
+          5.48,
+          8.72
+        ],
+        [
+          8,
+          8.72
+        ],
+        [
+          8,
+          10.68
+        ],
+        [
+          5.48,
+          10.68
+        ]
+      ],
+      "center": [
+        6.77,
+        9.68
+      ],
+      "dimension": "原图进深 1.708 m，宽度约 2.52 m",
+      "description": "温润石材与胡桃木浴室柜延续主卧调性，留出淋浴和台盆操作空间。",
+      "view": {
+        "position": [
+          5.88,
+          1.52,
+          9.63
+        ],
+        "target": [
+          7.33,
+          1,
+          9.6
+        ]
+      }
+    },
+    {
+      "id": "balcony",
+      "name": "阳台",
+      "en": "Winter Garden",
+      "area": 10.4,
+      "polygon": [
+        [
+          0.1,
+          14.53
+        ],
+        [
+          7.2,
+          14.53
+        ],
+        [
+          7.2,
+          16.275
+        ],
+        [
+          0.1,
+          16.275
+        ]
+      ],
+      "center": [
+        3.67,
+        15.41
+      ],
+      "dimension": "原图标注 6.792 × 1.531 m",
+      "description": "法式铁艺栏杆与浅色石地，藤编休闲家具构成连接客厅的阳光角落。",
+      "view": {
+        "position": [
+          5.1,
+          1.55,
+          15.87
+        ],
+        "target": [
+          2.48,
+          1.02,
+          15.17
+        ]
+      }
+    }
+  ],
+  "walls": [
+    {
+      "id": "north",
+      "a": [
+        1.7,
+        0.1
+      ],
+      "b": [
+        8,
+        0.1
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "window",
+          "offset": 0.66,
+          "width": 1.5,
+          "height": 1.53,
+          "sill": 0.87
+        },
+        {
+          "type": "window",
+          "offset": 3.83,
+          "width": 1.82,
+          "height": 1.53,
+          "sill": 0.87
+        }
+      ]
+    },
+    {
+      "id": "study-west",
+      "a": [
+        1.7,
+        0.1
+      ],
+      "b": [
+        1.7,
+        2.84
+      ],
+      "exterior": true
+    },
+    {
+      "id": "kitchen-north",
+      "a": [
+        0.1,
+        2.84
+      ],
+      "b": [
+        2.98,
+        2.84
+      ],
+      "openings": [
+        {
+          "type": "window",
+          "offset": 0.33,
+          "width": 0.96,
+          "height": 1.53,
+          "sill": 0.87
+        }
+      ],
+      "exterior": true
+    },
+    {
+      "id": "west",
+      "a": [
+        0.1,
+        2.84
+      ],
+      "b": [
+        0.1,
+        14.53
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "door",
+          "offset": 3.38,
+          "width": 1.13,
+          "height": 2.24,
+          "sill": 0,
+          "entry": true
+        }
+      ]
+    },
+    {
+      "id": "east-north",
+      "a": [
+        8,
+        0.1
+      ],
+      "b": [
+        8,
+        5.39
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "window",
+          "offset": 3.97,
+          "width": 0.88,
+          "height": 1.53,
+          "sill": 0.87,
+          "frosted": true
+        }
+      ]
+    },
+    {
+      "id": "bedroom2-bay-north",
+      "a": [
+        8,
+        5.39
+      ],
+      "b": [
+        8.753,
+        5.39
+      ],
+      "exterior": true
+    },
+    {
+      "id": "bay-east",
+      "a": [
+        8.753,
+        5.39
+      ],
+      "b": [
+        8.753,
+        8.72
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "window",
+          "offset": 0.3,
+          "width": 2.55,
+          "height": 1.85,
+          "sill": 0.55
+        }
+      ]
+    },
+    {
+      "id": "bedroom2-bay-south",
+      "a": [
+        8,
+        8.72
+      ],
+      "b": [
+        8.753,
+        8.72
+      ],
+      "exterior": true
+    },
+    {
+      "id": "east-south",
+      "a": [
+        8,
+        8.72
+      ],
+      "b": [
+        8,
+        14.53
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "window",
+          "offset": 0.41,
+          "width": 0.92,
+          "height": 1.53,
+          "sill": 0.87,
+          "frosted": true
+        }
+      ]
+    },
+    {
+      "id": "south",
+      "a": [
+        0.1,
+        14.53
+      ],
+      "b": [
+        8,
+        14.53
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "slider",
+          "offset": 0.6,
+          "width": 3.32,
+          "height": 2.42,
+          "sill": 0
+        },
+        {
+          "type": "slider",
+          "offset": 4.45,
+          "width": 2.23,
+          "height": 2.42,
+          "sill": 0
+        }
+      ]
+    },
+    {
+      "id": "balcony-west",
+      "a": [
+        0.1,
+        14.53
+      ],
+      "b": [
+        0.1,
+        16.275
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "window",
+          "offset": 0.2,
+          "width": 1.3,
+          "height": 2.28,
+          "sill": 0.18,
+          "handleSide": -1
+        }
+      ]
+    },
+    {
+      "id": "balcony-east",
+      "a": [
+        7.2,
+        14.53
+      ],
+      "b": [
+        7.2,
+        16.275
+      ],
+      "exterior": true,
+      "openings": [
+        {
+          "type": "window",
+          "offset": 0.2,
+          "width": 1.3,
+          "height": 2.28,
+          "sill": 0.18
+        }
+      ]
+    },
+    {
+      "id": "study-bedroom1",
+      "a": [
+        4.68,
+        0.1
+      ],
+      "b": [
+        4.68,
+        3.58
+      ]
+    },
+    {
+      "id": "study-south",
+      "a": [
+        2.98,
+        3.58
+      ],
+      "b": [
+        4.68,
+        3.58
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 0.14,
+          "width": 0.98,
+          "height": 2.24,
+          "sill": 0,
+          "hinge": "start",
+          "swing": 1,
+          "openAngle": 78
+        }
+      ]
+    },
+    {
+      "id": "bedroom1-south",
+      "a": [
+        4.68,
+        3.58
+      ],
+      "b": [
+        8,
+        3.58
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 0.15,
+          "width": 0.84,
+          "height": 2.24,
+          "sill": 0,
+          "hinge": "start",
+          "swing": -1,
+          "openAngle": 90,
+          "designNote": "次卧1改为西铰内开，模型门宽按公卫T形墙内面收至840mm；原图门宽未标，须复尺"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-east",
+      "a": [
+        2.98,
+        2.84
+      ],
+      "b": [
+        2.98,
+        5.77
+      ]
+    },
+    {
+      "id": "kitchen-south",
+      "a": [
+        0.1,
+        5.77
+      ],
+      "b": [
+        2.98,
+        5.77
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 1.6,
+          "width": 1.12,
+          "height": 2.24,
+          "sill": 0,
+          "glazed": true
+        }
+      ]
+    },
+    {
+      "id": "bathroom-west",
+      "a": [
+        5.76,
+        3.58
+      ],
+      "b": [
+        5.76,
+        5.39
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 0.47,
+          "width": 0.82,
+          "height": 2.24,
+          "sill": 0,
+          "operation": "sliding",
+          "panels": 2,
+          "slideDirection": 1,
+          "slideSide": -1,
+          "panelOverlap": 0.006,
+          "parkGap": 0.007,
+          "trackPadding": 0,
+          "trackOverhang": 0,
+          "designNote": "公卫保留洞口，内侧双联门各416mm，南端停放余量仅7mm；需精确定制轨道门套及闭合搭接，原图1495mm净深须现场重配确认"
+        }
+      ]
+    },
+    {
+      "id": "bedroom2-north",
+      "a": [
+        4.28,
+        5.39
+      ],
+      "b": [
+        8,
+        5.39
+      ]
+    },
+    {
+      "id": "bedroom2-west",
+      "a": [
+        4.28,
+        5.39
+      ],
+      "b": [
+        4.28,
+        8.72
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 2.16,
+          "width": 0.92,
+          "height": 2.24,
+          "sill": 0,
+          "operation": "sliding",
+          "panels": 1,
+          "slideDirection": -1,
+          "slideSide": 1
+        }
+      ]
+    },
+    {
+      "id": "bedroom2-south",
+      "a": [
+        4.28,
+        8.72
+      ],
+      "b": [
+        8,
+        8.72
+      ]
+    },
+    {
+      "id": "master-west",
+      "a": [
+        4.28,
+        8.72
+      ],
+      "b": [
+        4.28,
+        14.53
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 0.4,
+          "width": 0.92,
+          "height": 2.24,
+          "sill": 0,
+          "operation": "sliding",
+          "panels": 1,
+          "slideDirection": 1,
+          "slideSide": 1
+        }
+      ]
+    },
+    {
+      "id": "ensuite-west",
+      "a": [
+        5.48,
+        8.72
+      ],
+      "b": [
+        5.48,
+        10.68
+      ],
+      "openings": [
+        {
+          "type": "door",
+          "offset": 0.43,
+          "width": 0.8,
+          "height": 2.24,
+          "sill": 0,
+          "operation": "sliding",
+          "panels": 2,
+          "slideDirection": 1,
+          "slideSide": 1,
+          "positionAssumption": "原图估算开口沿原墙段南调150mm，施工前复尺确认"
+        }
+      ]
+    },
+    {
+      "id": "ensuite-south",
+      "a": [
+        5.48,
+        10.68
+      ],
+      "b": [
+        8,
+        10.68
+      ]
+    }
+  ],
+  "footprint": [
+    [
+      1.7,
+      0.1
+    ],
+    [
+      8,
+      0.1
+    ],
+    [
+      8,
+      5.39
+    ],
+    [
+      8.753,
+      5.39
+    ],
+    [
+      8.753,
+      8.72
+    ],
+    [
+      8,
+      8.72
+    ],
+    [
+      8,
+      14.53
+    ],
+    [
+      7.2,
+      14.53
+    ],
+    [
+      7.2,
+      16.275
+    ],
+    [
+      0.1,
+      16.275
+    ],
+    [
+      0.1,
+      2.84
+    ],
+    [
+      1.7,
+      2.84
+    ]
+  ],
+  "items": [
+    {
+      "id": "living-rug",
+      "name": "勃艮第边饰羊毛地毯",
+      "room": "living",
+      "dimensions": "2.40 × 3.70 m",
+      "material": "羊毛短绒 · 暗红包边",
+      "note": "地毯边沿退让阳台门；沙发前脚压在毯上。",
+      "position": [
+        2.18,
+        0,
+        12
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "living-sofa",
+      "name": "Louis XV 曲线三人沙发",
+      "room": "living",
+      "dimensions": "2.46 × 0.89 × 0.91 m",
+      "material": "实木胡桃木框 · 酒红织物 · 铜饰",
+      "note": "定制实木承重框架，未压缩座面高480mm；茶几距座垫前沿约350mm，主要通行安排在茶几西侧。",
+      "position": [
+        3.6,
+        0,
+        12.03
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "living-coffee",
+      "name": "椭圆大理石茶几",
+      "room": "living",
+      "dimensions": "1.16 × 0.62 × 0.42 m",
+      "material": "暖白大理石 · 胡桃木 · 黄铜",
+      "note": "约30mm石材台面加底部承托；距座垫前沿约350mm，取放茶杯不再隔着整条通道。",
+      "position": [
+        2.55,
+        0,
+        12.01
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "living-chair",
+      "name": "藤编木框 Bergère 扶手椅",
+      "room": "living",
+      "dimensions": "0.78 × 0.66 × 1.11 m",
+      "material": "胡桃木 · 手工藤编 · 米色棉麻",
+      "note": "实际未压缩座面高470mm；含弧形扶手总宽约773mm，按成品外包尺寸留位。",
+      "position": [
+        1.04,
+        0,
+        13.51
+      ],
+      "rotationY": 2.607521902479528
+    },
+    {
+      "id": "living-fireplace",
+      "name": "法式装饰壁炉与静物画",
+      "room": "living",
+      "dimensions": "1.50 × 0.48 × 2.25 m",
+      "material": "石材壁炉套 · 奶油木作 · 黄铜画框",
+      "note": "设计为无明火装饰壁炉；如需电视，可在上方艺术框位置配置壁挂屏。",
+      "position": [
+        0.39,
+        0,
+        11.96
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "living-side-table",
+      "name": "车木圆边几与台灯",
+      "room": "living",
+      "dimensions": "Ø 0.44 × 0.58 m；含台灯高1.05m",
+      "material": "胡桃木 · 黄铜 · 亚麻灯罩",
+      "note": "布置于沙发北端，台灯插座在离地 300 mm 处预留。",
+      "position": [
+        3.6,
+        0,
+        10.46
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "living-plant",
+      "name": "琴叶榕与陶盆",
+      "room": "living",
+      "dimensions": "约 Ø 0.58 × 1.55 m",
+      "material": "陶盆 · 室内绿植",
+      "note": "靠阳台散射光处，盆底设置接水盘。",
+      "position": [
+        3.76,
+        0,
+        13.98
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "dining-table",
+      "name": "胡桃木六人圆餐桌",
+      "room": "living",
+      "dimensions": "Ø 1.22 × 0.77 m",
+      "material": "胡桃木拼板 · 黄铜嵌线",
+      "note": "可布置六席，日常四人更从容；六人使用时西侧椅后约440mm，拉椅后不能同时通行或开餐边柜，取餐具宜在落座前完成。主要通行走东侧约860mm步道。",
+      "position": [
+        2.25,
+        0,
+        8.65
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "dining-chair-1",
+      "name": "路易十六餐椅 1",
+      "room": "living",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+      "position": [
+        2.25,
+        0,
+        9.51
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "dining-chair-2",
+      "name": "路易十六餐椅 2",
+      "room": "living",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+      "position": [
+        2.9947818472546173,
+        0,
+        9.08
+      ],
+      "rotationY": 4.1887902047863905
+    },
+    {
+      "id": "dining-chair-3",
+      "name": "路易十六餐椅 3",
+      "room": "living",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+      "position": [
+        2.9947818472546173,
+        0,
+        8.22
+      ],
+      "rotationY": 5.235987755982988
+    },
+    {
+      "id": "dining-chair-4",
+      "name": "路易十六餐椅 4",
+      "room": "living",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+      "position": [
+        2.25,
+        0,
+        7.79
+      ],
+      "rotationY": 6.283185307179586
+    },
+    {
+      "id": "dining-chair-5",
+      "name": "路易十六餐椅 5",
+      "room": "living",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+      "position": [
+        1.505218152745383,
+        0,
+        8.22
+      ],
+      "rotationY": 7.330382858376184
+    },
+    {
+      "id": "dining-chair-6",
+      "name": "路易十六餐椅 6",
+      "room": "living",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+      "position": [
+        1.5052181527453827,
+        0,
+        9.08
+      ],
+      "rotationY": 8.377580409572783
+    },
+    {
+      "id": "dining-sideboard",
+      "name": "三门古典餐边柜",
+      "room": "living",
+      "dimensions": "1.55 × 0.51 × 0.87 m（含台面和五金）",
+      "material": "胡桃木框门 · 大理石 · 黄铜",
+      "note": "餐具与茶器收纳；固定防倾倒角码，台面下方预留小家电插座。",
+      "position": [
+        0.46,
+        0,
+        8.68
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "entry-cabinet",
+      "name": "入户薄款鞋柜",
+      "room": "living",
+      "dimensions": "1.38 × 0.39 × 0.94 m；圆镜直径0.67m",
+      "material": "奶油框门 · 胡桃木台面",
+      "note": "鞋柜紧靠厨房南墙；柜体深310mm，含台面及五金约390mm，保留入户门及厨房通道。",
+      "position": [
+        0.95,
+        0,
+        6.03
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "dining-art",
+      "name": "餐区花卉静物画",
+      "room": "living",
+      "dimensions": "0.75 × 0.95 m",
+      "material": "黄铜复古画框 · 浮雕静物",
+      "note": "画心中心离地 1650 mm，可替换为同尺寸油画。",
+      "position": [
+        0.235,
+        1.7,
+        8.7
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "master-rug",
+      "name": "主卧羊毛地毯",
+      "room": "master",
+      "dimensions": "2.45 × 2.55 m",
+      "material": "燕麦色羊毛 · 暗红包边",
+      "note": "床侧露出约 300 mm 以上，避免床边踩空落差。",
+      "position": [
+        6.44,
+        0,
+        12.2
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "master-bed",
+      "name": "主卧弧冠软包双人床",
+      "room": "master",
+      "dimensions": "1.90 × 2.21 × 1.42 m；床垫 1.80 × 2.05 m",
+      "material": "胡桃木 · 米色棉麻 · 苔绿床尾巾",
+      "note": "床头靠主卫南侧实墙，建议墙内补充隔音棉；床尾至阳台门约 1.4 m。",
+      "position": [
+        6.43,
+        0,
+        11.95
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "master-nightstand-left",
+      "name": "主卧抽屉床头柜与台灯",
+      "room": "master",
+      "dimensions": "0.50 × 0.46 × 1.02 m（含灯和五金）",
+      "material": "胡桃木 · 大理石 · 亚麻灯罩",
+      "note": "床头双控与 USB 插座宜预留于离地 650–750 mm。",
+      "position": [
+        5.22,
+        0,
+        11.15
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "master-nightstand-right",
+      "name": "主卧抽屉床头柜与台灯",
+      "room": "master",
+      "dimensions": "0.50 × 0.46 × 1.02 m（含灯和五金）",
+      "material": "胡桃木 · 大理石 · 亚麻灯罩",
+      "note": "床头双控与 USB 插座宜预留于离地 650–750 mm。",
+      "position": [
+        7.64,
+        0,
+        11.15
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "master-wardrobe",
+      "name": "主卧 0.90m 双门成品衣柜",
+      "room": "master",
+      "dimensions": "0.90 × 0.72 × 2.42 m（含顶线和五金）",
+      "material": "胡桃木饰面 · 实木线脚 · 黄铜长把手",
+      "note": "仅保留一组0.90m成品衣柜，设于南侧滑门右侧实墙段；柜前至床尾约704mm，集中挂衣收纳放在次卧1。柜体基准深580mm。",
+      "position": [
+        7.37,
+        0,
+        14.1
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "master-art",
+      "name": "主卧床头静物画",
+      "room": "master",
+      "dimensions": "0.64 × 0.73 m",
+      "material": "古铜画框 · 织物底色",
+      "note": "画框中心离地约 1.93 m，床头柜灯具分区控制。",
+      "position": [
+        6.43,
+        1.96,
+        10.8
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "guest-rug",
+      "name": "次卧 2 复古地毯",
+      "room": "bedroom2",
+      "dimensions": "2.05 × 2.15 m",
+      "material": "羊毛混纺 · 勃艮第边饰",
+      "note": "低绒面方便吸尘和床下清洁。",
+      "position": [
+        6.24,
+        0,
+        6.84
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "guest-bed",
+      "name": "次卧 2 胡桃木双人床",
+      "room": "bedroom2",
+      "dimensions": "1.60 × 2.16 × 1.42 m；床垫 1.50 × 2.00 m",
+      "material": "胡桃木 · 亚麻 · 灰绿床品",
+      "note": "床头靠北墙；东侧保留通往窗边书桌的步行带。",
+      "position": [
+        6.24,
+        0,
+        6.67
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "guest-nightstand",
+      "name": "次卧 2 床头柜",
+      "room": "bedroom2",
+      "dimensions": "0.50 × 0.46 × 1.02 m（含灯和五金）",
+      "material": "胡桃木 · 石材",
+      "note": "柜顶高度 585 mm，与床垫面接近。",
+      "position": [
+        7.33,
+        0,
+        5.85
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "guest-wardrobe",
+      "name": "次卧 2 折叠衣物浅柜",
+      "room": "bedroom2",
+      "dimensions": "1.49 × 0.40 × 2.42 m（含顶线；柜体宽1.38m）",
+      "material": "胡桃木 · 黄铜",
+      "note": "成品总深400mm，内部有效深约300mm，仅作折叠衣物和小件储物，不作挂衣柜。西侧顶线贴合墙内面，床侧净距约670mm；集中挂衣放次卧1。",
+      "position": [
+        4.558626907073509,
+        0,
+        6.24
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "guest-desk",
+      "name": "次卧 2 窗边书桌",
+      "room": "bedroom2",
+      "dimensions": "1.29 × 0.54 × 0.77 m（含台面和五金）",
+      "material": "胡桃木 · 黄铜 · 书写灯",
+      "note": "朝窗使用；中央腿位净高约684mm，右侧单抽屉，座面与桌裙净距约224mm。桌后与窗框仅约51mm，窗扇开启须现场复核。",
+      "position": [
+        8.38,
+        0,
+        7.03
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "guest-chair",
+      "name": "次卧 2 窗边书椅",
+      "room": "bedroom2",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿软包",
+      "note": "坐姿朝东，座面高460mm；椅背至床侧约543mm，拉椅后步道会收窄，按单人书写使用。",
+      "position": [
+        7.82,
+        0,
+        7.02
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "guest-plant",
+      "name": "次卧 2 窗边绿植",
+      "room": "bedroom2",
+      "dimensions": "约 Ø 0.35 × 0.75 m",
+      "material": "陶盆 · 绿植",
+      "note": "避开窗扇和帘布。",
+      "position": [
+        8.37,
+        0,
+        8.25
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "second-rug",
+      "name": "次卧 1 羊毛地毯",
+      "room": "bedroom1",
+      "dimensions": "1.80 × 2.20 m",
+      "material": "羊毛短绒",
+      "note": "床侧地毯。",
+      "position": [
+        6.73,
+        0,
+        1.53
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "second-bed",
+      "name": "次卧 1 法式小双人床",
+      "room": "bedroom1",
+      "dimensions": "1.45 × 2.16 × 1.42 m；床垫 1.35 × 2.00 m",
+      "material": "胡桃木 · 灰绿棉麻",
+      "note": "床头靠东侧实墙；南侧衣柜前净距约600mm，床头柜移至北侧避免挡住柜门。",
+      "position": [
+        6.7,
+        0,
+        1.42
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "second-nightstand",
+      "name": "次卧 1 窄款床头柜",
+      "room": "bedroom1",
+      "dimensions": "0.42 × 0.46 × 1.02 m（含灯和五金）",
+      "material": "胡桃木 · 石材",
+      "note": "采用420mm窄款置于床北侧，避免南侧柜门开启受阻；灯具不遮挡北窗主要采光面。",
+      "position": [
+        7.51,
+        0,
+        0.47
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "second-wardrobe",
+      "name": "次卧 1 双轨推拉衣柜",
+      "room": "bedroom1",
+      "dimensions": "1.94 × 0.73 × 2.42 m（柜体宽1.83m、深0.58m）",
+      "material": "胡桃木 · 双轨框门 · 内嵌拉手",
+      "note": "两片约918mm宽门片分轨平移，每片行程878mm、单侧有效开口约850mm；启闭均不侵入约614mm床前步道。内部双挂衣区加顶层板；集中收纳容量仍须按衣物量核算。",
+      "position": [
+        6.86,
+        0,
+        3.14
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "study-daybed",
+      "name": "法式日间床 / 收纳榻榻米",
+      "room": "study",
+      "dimensions": "1.28 × 2.19 × 0.82 m（含五金，不含活动靠垫）",
+      "material": "胡桃木抽屉地台 · 亚麻床垫",
+      "note": "睡眠净面约1.19×2.05m，分体床垫；北段移开枕垫后上翻取物，另两格向东抽屉行程不超过500mm，避免碰桌腿。",
+      "position": [
+        2.43,
+        0,
+        1.47
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "study-desk",
+      "name": "书房窗下复古书桌",
+      "room": "study",
+      "dimensions": "1.16 × 0.57 × 0.77 m（含台面和五金）",
+      "material": "胡桃木 · 黄铜",
+      "note": "北窗下布置，桌面高774mm，右侧单抽屉；中央腿位净高684mm，配460mm座面形成约224mm膝上净空。",
+      "position": [
+        3.85,
+        0,
+        0.51
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "study-chair",
+      "name": "书房软包阅读椅",
+      "room": "study",
+      "dimensions": "0.50 × 0.48 × 1.08 m",
+      "material": "胡桃木 · 苔绿织物",
+      "note": "使用位置朝窗，座面高460mm；椅位略向桌下收进，给日间床抽屉留出操作位置。",
+      "position": [
+        3.85,
+        0,
+        1.06
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "study-bookcase",
+      "name": "书房古典书柜",
+      "room": "study",
+      "dimensions": "1.19 × 0.43 × 2.38 m（柜体宽1.08m）",
+      "material": "胡桃木 · 实木层板",
+      "note": "东墙设置，层板净深约 300 mm；高柜必须用防倾倒连接件固定。",
+      "position": [
+        4.37,
+        0,
+        2.2
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "study-art",
+      "name": "书房静物画",
+      "room": "study",
+      "dimensions": "0.61 × 0.73 m",
+      "material": "古铜画框",
+      "note": "墙面装饰安装于日间床西侧。",
+      "position": [
+        1.82,
+        1.7,
+        1.34
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "kitchen-sink",
+      "name": "厨房洗切区与黄铜龙头",
+      "room": "kitchen",
+      "dimensions": "主柜 2.32 m；含封板与摆件约 2.51 × 0.70 × 1.37 m",
+      "material": "奶油框门 · 大理石台面 · 不锈钢水槽",
+      "note": "北窗下水槽与排水示意点保持原位；台高904mm，西端采用与水槽连通的盲角柜，柜门从回转台面以东开启，槽下无贯穿隔板。结构承托及水电位置须复尺。",
+      "position": [
+        1.52,
+        0,
+        3.25
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "kitchen-cooking",
+      "name": "厨房烹饪区 / 嵌入式烤箱",
+      "room": "kitchen",
+      "dimensions": "含转角与五金约 1.86 × 0.70 × 2.45 m",
+      "material": "奶油框门 · 石材 · 黄铜 · 搪瓷",
+      "note": "设置600mm独立烤箱柜位；转角台面连续衔接。西侧排烟、燃气及嵌入设备散热尺寸仅为方案假设，须按产品与现场核验。",
+      "position": [
+        0.5,
+        0,
+        4.53
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "kitchen-fridge",
+      "name": "复古双门冰箱",
+      "room": "kitchen",
+      "dimensions": "0.68 × 0.75 × 1.95 m（含把手）",
+      "material": "奶油色烤漆 · 黄铜拉手",
+      "note": "东墙中段布置，门内保留约840mm转身深度；示意为南侧铰接、向西开启，开启90度后仍有约610mm至西排把手，散热及取屉所需角度按所购型号复核。",
+      "position": [
+        2.48,
+        0,
+        4.5
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "kitchen-shelf",
+      "name": "厨房实木开放搁板",
+      "room": "kitchen",
+      "dimensions": "1.05 × 0.20 × 0.55 m",
+      "material": "胡桃木 · 黄铜托架",
+      "note": "安装于北墙右侧实墙处，杯具采用防滑垫。",
+      "position": [
+        2.25,
+        1.59,
+        3.04
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "bathroom-shower",
+      "name": "黄铜花洒与玻璃淋浴隔断",
+      "room": "bathroom",
+      "dimensions": "0.84 × 1.43 × 2.13 m",
+      "material": "钢化玻璃 · 拉丝黄铜 · 防滑石材",
+      "note": "东侧湿区，花洒固定于南侧实墙、避开东窗；两等宽门片双轨滑动，图示完全叠放后净入口约691mm，北侧进入。玻璃选型、轨道和地面找坡按产品及现场确定。",
+      "position": [
+        7.46,
+        0,
+        4.48
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "ensuite-shower",
+      "name": "黄铜花洒与玻璃淋浴隔断",
+      "room": "ensuite",
+      "dimensions": "0.84 × 1.59 × 2.13 m",
+      "material": "钢化玻璃 · 拉丝黄铜 · 防滑石材",
+      "note": "东侧湿区，花洒固定于南侧实墙、避开东窗；两等宽门片双轨滑动，图示完全叠放后净入口约771mm，南侧进入。玻璃选型、轨道和地面找坡按产品及现场确定。",
+      "position": [
+        7.46,
+        0,
+        9.72
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "bathroom-vanity",
+      "name": "公卫外置古典浴室柜与拱冠镜",
+      "room": "bathroom",
+      "dimensions": "0.79 × 0.53 × 2.10 m",
+      "material": "胡桃木防潮板 · 石材 · 陶瓷 · 黄铜",
+      "note": "延续原图外置干区：台盆位于公卫西侧走廊，背靠次卧2北墙，避免与坐便器对置形成狭窄过道。",
+      "position": [
+        5.08,
+        0,
+        5.01
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "bathroom-toilet",
+      "name": "公卫陶瓷坐便器",
+      "room": "bathroom",
+      "dimensions": "0.42 × 0.68 × 0.73 m",
+      "material": "釉面陶瓷 · 黄铜按钮",
+      "note": "平面位置东移80mm以留出西侧移门与入口；右侧至淋浴玻璃约320mm。排污位置与305/400mm坑距为示意，先核对原位及产品再实施。",
+      "position": [
+        6.48,
+        0,
+        4.93
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "ensuite-vanity",
+      "name": "主卫浅款浴室柜与拱冠镜",
+      "room": "ensuite",
+      "dimensions": "0.96 × 0.38 × 2.10 m",
+      "material": "胡桃木 · 石材台面 · 浅椭圆陶瓷盆",
+      "note": "采用约380mm浅台面，配短款坐便器后两者前缘净距约740mm；定制前确认盆内深及存水弯检修空间。",
+      "position": [
+        6.17,
+        0,
+        9.01
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "ensuite-toilet",
+      "name": "主卫短款陶瓷坐便器",
+      "room": "ensuite",
+      "dimensions": "0.42 × 0.61 × 0.73 m",
+      "material": "釉面陶瓷",
+      "note": "选购约610mm总深短款；平面西调40mm，使东侧至淋浴入口约620mm，前方与浅浴室柜净距约740mm；排污口与坑距必须按现场复核。",
+      "position": [
+        6.18,
+        0,
+        10.292
+      ],
+      "rotationY": 3.141592653589793
+    },
+    {
+      "id": "ensuite-towel",
+      "name": "主卫黄铜毛巾架",
+      "room": "ensuite",
+      "dimensions": "0.50 × 0.07 × 1.27 m",
+      "material": "黄铜 · 棉质毛巾",
+      "note": "移至西墙门洞南侧，避开台盆镜灯、坐便器及移门开启面；墙内做好可靠锚固，避免打穿防水层。",
+      "position": [
+        5.605,
+        0.58,
+        10.31
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "balcony-rug",
+      "name": "阳台编织地毯",
+      "room": "balcony",
+      "dimensions": "2.50 × 0.94 m",
+      "material": "户外耐候编织纤维",
+      "note": "低绒防滑材质；不跨越阳台滑门轨道。",
+      "position": [
+        2.7,
+        0,
+        15.4
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "balcony-chair-left",
+      "name": "阳台藤编休闲椅",
+      "room": "balcony",
+      "dimensions": "0.71 × 0.61 × 1.06 m",
+      "material": "耐候木作 · 藤编 · 米色软垫",
+      "note": "座面高470mm；南侧至栏杆石材基座约650mm净带，北侧仅约120mm不作通行。清洗需移开椅子并将软垫收进室内，选耐候成品。",
+      "position": [
+        1.81,
+        0,
+        15.1
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "balcony-chair-right",
+      "name": "阳台藤编休闲椅",
+      "room": "balcony",
+      "dimensions": "0.71 × 0.61 × 1.06 m",
+      "material": "耐候木作 · 藤编 · 米色软垫",
+      "note": "座面高470mm；南侧至栏杆石材基座约650mm净带，北侧仅约120mm不作通行。清洗需移开椅子并将软垫收进室内，选耐候成品。",
+      "position": [
+        3.55,
+        0,
+        15.1
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "balcony-table",
+      "name": "阳台圆石面边桌",
+      "room": "balcony",
+      "dimensions": "Ø 0.48 × 0.53 m",
+      "material": "石材 · 黄铜",
+      "note": "与藤椅成组向北退让，南侧留约650mm连续通行带；保持阳台排水点可检修。",
+      "position": [
+        2.68,
+        0,
+        15.1
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "balcony-cabinet",
+      "name": "阳台低矮收纳柜",
+      "room": "balcony",
+      "dimensions": "1.23 × 0.51 × 0.78 m（含台面和五金）",
+      "material": "耐候胡桃木色木作 · 石面",
+      "note": "设于西侧短墙，收纳园艺用品；不得封堵原排水点。",
+      "position": [
+        0.46,
+        0,
+        15.39
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "balcony-plant-a",
+      "name": "阳台盆栽",
+      "room": "balcony",
+      "dimensions": "约 Ø 0.69 × 1.43 m",
+      "material": "陶盆 · 绿植",
+      "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+      "position": [
+        6.65,
+        0,
+        15.08
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "balcony-plant-b",
+      "name": "阳台盆栽",
+      "room": "balcony",
+      "dimensions": "约 Ø 0.48 × 0.99 m",
+      "material": "陶盆 · 绿植",
+      "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+      "position": [
+        5.95,
+        0,
+        15.81
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "balcony-plant-c",
+      "name": "阳台盆栽",
+      "room": "balcony",
+      "dimensions": "约 Ø 0.30 × 0.63 m",
+      "material": "陶盆 · 绿植",
+      "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+      "position": [
+        6.69,
+        0,
+        15.82
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "sconce-living-north",
+      "name": "古铜弯臂壁灯",
+      "room": "living",
+      "dimensions": "0.22 × 0.22 × 0.35 m",
+      "material": "黄铜 · 亚麻灯罩 · 2700 K 光源",
+      "note": "壁灯安装中心距地 1800 mm；灯具需独立回路或双控。",
+      "position": [
+        4.16,
+        1.82,
+        11.25
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "sconce-living-south",
+      "name": "古铜弯臂壁灯",
+      "room": "living",
+      "dimensions": "0.22 × 0.22 × 0.35 m",
+      "material": "黄铜 · 亚麻灯罩 · 2700 K 光源",
+      "note": "壁灯安装中心距地 1800 mm；灯具需独立回路或双控。",
+      "position": [
+        4.16,
+        1.82,
+        13.46
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "sconce-master",
+      "name": "古铜弯臂壁灯",
+      "room": "master",
+      "dimensions": "0.22 × 0.22 × 0.35 m",
+      "material": "黄铜 · 亚麻灯罩 · 2700 K 光源",
+      "note": "壁灯安装中心距地 1800 mm；灯具需独立回路或双控。",
+      "position": [
+        4.4,
+        1.82,
+        10.75
+      ],
+      "rotationY": 1.5707963267948966
+    },
+    {
+      "id": "living-oil-painting",
+      "name": "客厅古典金框油画",
+      "room": "living",
+      "dimensions": "1.49 × 0.07 × 0.96 m；画心 1.35 × 0.82 m",
+      "material": "做旧黄铜色木框 · 亚麻画布",
+      "note": "画心中心距地 1.83 m；挂件锚固于实墙，画框下沿高于沙发靠背。",
+      "position": [
+        4.155,
+        1.83,
+        12.12
+      ],
+      "rotationY": -1.5707963267948966
+    },
+    {
+      "id": "living-curtains",
+      "name": "客厅奶油色法式落地帘",
+      "room": "living",
+      "dimensions": "帘杆 3.66 m；单侧帘宽约 0.36 m，高 2.53 m",
+      "material": "亚麻混纺布 · 薄纱 · 古铜帘杆",
+      "note": "双侧窄收帘保留阳台采光与视野；杆顶距地 2.62 m，帘底离地约 60 mm。",
+      "position": [
+        2.34,
+        0,
+        14.3
+      ],
+      "rotationY": 0
+    },
+    {
+      "id": "blender-chandelier",
+      "name": "八臂黄铜水晶吊灯",
+      "room": "living",
+      "dimensions": "Ø 922 × H 933 mm",
+      "material": "做旧黄铜 · 蜡烛灯 · 切面水晶",
+      "note": "Blender 原创模型。顶碗贴合2.80m假设天花，灯底约1.87m，安装于固定圆餐桌正上方；现场核对吊点和吊链。",
+      "position": [
+        2.25,
+        2.8,
+        8.65
+      ],
+      "rotationY": 0
+    }
+  ],
+  "styles": {
+    "french": {
+      "name": "复古法式",
+      "concept": "深胡桃木、古典石膏线与暖色织物，构成有时间感的法式居所。",
+      "items": [
+        {
+          "id": "living-rug",
+          "name": "勃艮第边饰羊毛地毯",
+          "room": "living",
+          "dimensions": "2.40 × 3.70 m",
+          "material": "羊毛短绒 · 暗红包边",
+          "note": "地毯边沿退让阳台门；沙发前脚压在毯上。",
+          "position": [
+            2.18,
+            0,
+            12
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "living-sofa",
+          "name": "Louis XV 曲线三人沙发",
+          "room": "living",
+          "dimensions": "2.46 × 0.89 × 0.91 m",
+          "material": "实木胡桃木框 · 酒红织物 · 铜饰",
+          "note": "定制实木承重框架，未压缩座面高480mm；茶几距座垫前沿约350mm，主要通行安排在茶几西侧。",
+          "position": [
+            3.6,
+            0,
+            12.03
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "living-coffee",
+          "name": "椭圆大理石茶几",
+          "room": "living",
+          "dimensions": "1.16 × 0.62 × 0.42 m",
+          "material": "暖白大理石 · 胡桃木 · 黄铜",
+          "note": "约30mm石材台面加底部承托；距座垫前沿约350mm，取放茶杯不再隔着整条通道。",
+          "position": [
+            2.55,
+            0,
+            12.01
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "living-chair",
+          "name": "藤编木框 Bergère 扶手椅",
+          "room": "living",
+          "dimensions": "0.78 × 0.66 × 1.11 m",
+          "material": "胡桃木 · 手工藤编 · 米色棉麻",
+          "note": "实际未压缩座面高470mm；含弧形扶手总宽约773mm，按成品外包尺寸留位。",
+          "position": [
+            1.04,
+            0,
+            13.51
+          ],
+          "rotationY": 2.607521902479528
+        },
+        {
+          "id": "living-fireplace",
+          "name": "法式装饰壁炉与静物画",
+          "room": "living",
+          "dimensions": "1.50 × 0.48 × 2.25 m",
+          "material": "石材壁炉套 · 奶油木作 · 黄铜画框",
+          "note": "设计为无明火装饰壁炉；如需电视，可在上方艺术框位置配置壁挂屏。",
+          "position": [
+            0.39,
+            0,
+            11.96
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "living-side-table",
+          "name": "车木圆边几与台灯",
+          "room": "living",
+          "dimensions": "Ø 0.44 × 0.58 m；含台灯高1.05m",
+          "material": "胡桃木 · 黄铜 · 亚麻灯罩",
+          "note": "布置于沙发北端，台灯插座在离地 300 mm 处预留。",
+          "position": [
+            3.6,
+            0,
+            10.46
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "living-plant",
+          "name": "琴叶榕与陶盆",
+          "room": "living",
+          "dimensions": "约 Ø 0.58 × 1.55 m",
+          "material": "陶盆 · 室内绿植",
+          "note": "靠阳台散射光处，盆底设置接水盘。",
+          "position": [
+            3.76,
+            0,
+            13.98
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "dining-table",
+          "name": "胡桃木六人圆餐桌",
+          "room": "living",
+          "dimensions": "Ø 1.22 × 0.77 m",
+          "material": "胡桃木拼板 · 黄铜嵌线",
+          "note": "可布置六席，日常四人更从容；六人使用时西侧椅后约440mm，拉椅后不能同时通行或开餐边柜，取餐具宜在落座前完成。主要通行走东侧约860mm步道。",
+          "position": [
+            2.25,
+            0,
+            8.65
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "dining-chair-1",
+          "name": "路易十六餐椅 1",
+          "room": "living",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+          "position": [
+            2.25,
+            0,
+            9.51
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "dining-chair-2",
+          "name": "路易十六餐椅 2",
+          "room": "living",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+          "position": [
+            2.9947818472546173,
+            0,
+            9.08
+          ],
+          "rotationY": 4.1887902047863905
+        },
+        {
+          "id": "dining-chair-3",
+          "name": "路易十六餐椅 3",
+          "room": "living",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+          "position": [
+            2.9947818472546173,
+            0,
+            8.22
+          ],
+          "rotationY": 5.235987755982988
+        },
+        {
+          "id": "dining-chair-4",
+          "name": "路易十六餐椅 4",
+          "room": "living",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+          "position": [
+            2.25,
+            0,
+            7.79
+          ],
+          "rotationY": 6.283185307179586
+        },
+        {
+          "id": "dining-chair-5",
+          "name": "路易十六餐椅 5",
+          "room": "living",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+          "position": [
+            1.505218152745383,
+            0,
+            8.22
+          ],
+          "rotationY": 7.330382858376184
+        },
+        {
+          "id": "dining-chair-6",
+          "name": "路易十六餐椅 6",
+          "room": "living",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "未压缩座面高460mm；座面至桌裙下沿净距约204mm，餐盘与各座位一一对齐。",
+          "position": [
+            1.5052181527453827,
+            0,
+            9.08
+          ],
+          "rotationY": 8.377580409572783
+        },
+        {
+          "id": "dining-sideboard",
+          "name": "三门古典餐边柜",
+          "room": "living",
+          "dimensions": "1.55 × 0.51 × 0.87 m（含台面和五金）",
+          "material": "胡桃木框门 · 大理石 · 黄铜",
+          "note": "餐具与茶器收纳；固定防倾倒角码，台面下方预留小家电插座。",
+          "position": [
+            0.46,
+            0,
+            8.68
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "entry-cabinet",
+          "name": "入户薄款鞋柜",
+          "room": "living",
+          "dimensions": "1.38 × 0.39 × 0.94 m；圆镜直径0.67m",
+          "material": "奶油框门 · 胡桃木台面",
+          "note": "鞋柜紧靠厨房南墙；柜体深310mm，含台面及五金约390mm，保留入户门及厨房通道。",
+          "position": [
+            0.95,
+            0,
+            6.03
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "dining-art",
+          "name": "餐区花卉静物画",
+          "room": "living",
+          "dimensions": "0.75 × 0.95 m",
+          "material": "黄铜复古画框 · 浮雕静物",
+          "note": "画心中心离地 1650 mm，可替换为同尺寸油画。",
+          "position": [
+            0.235,
+            1.7,
+            8.7
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "master-rug",
+          "name": "主卧羊毛地毯",
+          "room": "master",
+          "dimensions": "2.45 × 2.55 m",
+          "material": "燕麦色羊毛 · 暗红包边",
+          "note": "床侧露出约 300 mm 以上，避免床边踩空落差。",
+          "position": [
+            6.44,
+            0,
+            12.2
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-bed",
+          "name": "主卧弧冠软包双人床",
+          "room": "master",
+          "dimensions": "1.90 × 2.21 × 1.42 m；床垫 1.80 × 2.05 m",
+          "material": "胡桃木 · 米色棉麻 · 苔绿床尾巾",
+          "note": "床头靠主卫南侧实墙，建议墙内补充隔音棉；床尾至阳台门约 1.4 m。",
+          "position": [
+            6.43,
+            0,
+            11.95
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-nightstand-left",
+          "name": "主卧抽屉床头柜与台灯",
+          "room": "master",
+          "dimensions": "0.50 × 0.46 × 1.02 m（含灯和五金）",
+          "material": "胡桃木 · 大理石 · 亚麻灯罩",
+          "note": "床头双控与 USB 插座宜预留于离地 650–750 mm。",
+          "position": [
+            5.22,
+            0,
+            11.15
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-nightstand-right",
+          "name": "主卧抽屉床头柜与台灯",
+          "room": "master",
+          "dimensions": "0.50 × 0.46 × 1.02 m（含灯和五金）",
+          "material": "胡桃木 · 大理石 · 亚麻灯罩",
+          "note": "床头双控与 USB 插座宜预留于离地 650–750 mm。",
+          "position": [
+            7.64,
+            0,
+            11.15
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-wardrobe",
+          "name": "主卧 0.90m 双门成品衣柜",
+          "room": "master",
+          "dimensions": "0.90 × 0.72 × 2.42 m（含顶线和五金）",
+          "material": "胡桃木饰面 · 实木线脚 · 黄铜长把手",
+          "note": "仅保留一组0.90m成品衣柜，设于南侧滑门右侧实墙段；柜前至床尾约704mm，集中挂衣收纳放在次卧1。柜体基准深580mm。",
+          "position": [
+            7.37,
+            0,
+            14.1
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "master-art",
+          "name": "主卧床头静物画",
+          "room": "master",
+          "dimensions": "0.64 × 0.73 m",
+          "material": "古铜画框 · 织物底色",
+          "note": "画框中心离地约 1.93 m，床头柜灯具分区控制。",
+          "position": [
+            6.43,
+            1.96,
+            10.8
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-rug",
+          "name": "次卧 2 复古地毯",
+          "room": "bedroom2",
+          "dimensions": "2.05 × 2.15 m",
+          "material": "羊毛混纺 · 勃艮第边饰",
+          "note": "低绒面方便吸尘和床下清洁。",
+          "position": [
+            6.24,
+            0,
+            6.84
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-bed",
+          "name": "次卧 2 胡桃木双人床",
+          "room": "bedroom2",
+          "dimensions": "1.60 × 2.16 × 1.42 m；床垫 1.50 × 2.00 m",
+          "material": "胡桃木 · 亚麻 · 灰绿床品",
+          "note": "床头靠北墙；东侧保留通往窗边书桌的步行带。",
+          "position": [
+            6.24,
+            0,
+            6.67
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-nightstand",
+          "name": "次卧 2 床头柜",
+          "room": "bedroom2",
+          "dimensions": "0.50 × 0.46 × 1.02 m（含灯和五金）",
+          "material": "胡桃木 · 石材",
+          "note": "柜顶高度 585 mm，与床垫面接近。",
+          "position": [
+            7.33,
+            0,
+            5.85
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-wardrobe",
+          "name": "次卧 2 折叠衣物浅柜",
+          "room": "bedroom2",
+          "dimensions": "1.49 × 0.40 × 2.42 m（含顶线；柜体宽1.38m）",
+          "material": "胡桃木 · 黄铜",
+          "note": "成品总深400mm，内部有效深约300mm，仅作折叠衣物和小件储物，不作挂衣柜。西侧顶线贴合墙内面，床侧净距约670mm；集中挂衣放次卧1。",
+          "position": [
+            4.558626907073509,
+            0,
+            6.24
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "guest-desk",
+          "name": "次卧 2 窗边书桌",
+          "room": "bedroom2",
+          "dimensions": "1.29 × 0.54 × 0.77 m（含台面和五金）",
+          "material": "胡桃木 · 黄铜 · 书写灯",
+          "note": "朝窗使用；中央腿位净高约684mm，右侧单抽屉，座面与桌裙净距约224mm。桌后与窗框仅约51mm，窗扇开启须现场复核。",
+          "position": [
+            8.38,
+            0,
+            7.03
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "guest-chair",
+          "name": "次卧 2 窗边书椅",
+          "room": "bedroom2",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿软包",
+          "note": "坐姿朝东，座面高460mm；椅背至床侧约543mm，拉椅后步道会收窄，按单人书写使用。",
+          "position": [
+            7.82,
+            0,
+            7.02
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "guest-plant",
+          "name": "次卧 2 窗边绿植",
+          "room": "bedroom2",
+          "dimensions": "约 Ø 0.35 × 0.75 m",
+          "material": "陶盆 · 绿植",
+          "note": "避开窗扇和帘布。",
+          "position": [
+            8.37,
+            0,
+            8.25
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "second-rug",
+          "name": "次卧 1 羊毛地毯",
+          "room": "bedroom1",
+          "dimensions": "1.80 × 2.20 m",
+          "material": "羊毛短绒",
+          "note": "床侧地毯。",
+          "position": [
+            6.73,
+            0,
+            1.53
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "second-bed",
+          "name": "次卧 1 法式小双人床",
+          "room": "bedroom1",
+          "dimensions": "1.45 × 2.16 × 1.42 m；床垫 1.35 × 2.00 m",
+          "material": "胡桃木 · 灰绿棉麻",
+          "note": "床头靠东侧实墙；南侧衣柜前净距约600mm，床头柜移至北侧避免挡住柜门。",
+          "position": [
+            6.7,
+            0,
+            1.42
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "second-nightstand",
+          "name": "次卧 1 窄款床头柜",
+          "room": "bedroom1",
+          "dimensions": "0.42 × 0.46 × 1.02 m（含灯和五金）",
+          "material": "胡桃木 · 石材",
+          "note": "采用420mm窄款置于床北侧，避免南侧柜门开启受阻；灯具不遮挡北窗主要采光面。",
+          "position": [
+            7.51,
+            0,
+            0.47
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "second-wardrobe",
+          "name": "次卧 1 双轨推拉衣柜",
+          "room": "bedroom1",
+          "dimensions": "1.94 × 0.73 × 2.42 m（柜体宽1.83m、深0.58m）",
+          "material": "胡桃木 · 双轨框门 · 内嵌拉手",
+          "note": "两片约918mm宽门片分轨平移，每片行程878mm、单侧有效开口约850mm；启闭均不侵入约614mm床前步道。内部双挂衣区加顶层板；集中收纳容量仍须按衣物量核算。",
+          "position": [
+            6.86,
+            0,
+            3.14
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "study-daybed",
+          "name": "法式日间床 / 收纳榻榻米",
+          "room": "study",
+          "dimensions": "1.28 × 2.19 × 0.82 m（含五金，不含活动靠垫）",
+          "material": "胡桃木抽屉地台 · 亚麻床垫",
+          "note": "睡眠净面约1.19×2.05m，分体床垫；北段移开枕垫后上翻取物，另两格向东抽屉行程不超过500mm，避免碰桌腿。",
+          "position": [
+            2.43,
+            0,
+            1.47
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "study-desk",
+          "name": "书房窗下复古书桌",
+          "room": "study",
+          "dimensions": "1.16 × 0.57 × 0.77 m（含台面和五金）",
+          "material": "胡桃木 · 黄铜",
+          "note": "北窗下布置，桌面高774mm，右侧单抽屉；中央腿位净高684mm，配460mm座面形成约224mm膝上净空。",
+          "position": [
+            3.85,
+            0,
+            0.51
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "study-chair",
+          "name": "书房软包阅读椅",
+          "room": "study",
+          "dimensions": "0.50 × 0.48 × 1.08 m",
+          "material": "胡桃木 · 苔绿织物",
+          "note": "使用位置朝窗，座面高460mm；椅位略向桌下收进，给日间床抽屉留出操作位置。",
+          "position": [
+            3.85,
+            0,
+            1.06
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "study-bookcase",
+          "name": "书房古典书柜",
+          "room": "study",
+          "dimensions": "1.19 × 0.43 × 2.38 m（柜体宽1.08m）",
+          "material": "胡桃木 · 实木层板",
+          "note": "东墙设置，层板净深约 300 mm；高柜必须用防倾倒连接件固定。",
+          "position": [
+            4.37,
+            0,
+            2.2
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "study-art",
+          "name": "书房静物画",
+          "room": "study",
+          "dimensions": "0.61 × 0.73 m",
+          "material": "古铜画框",
+          "note": "墙面装饰安装于日间床西侧。",
+          "position": [
+            1.82,
+            1.7,
+            1.34
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "kitchen-sink",
+          "name": "厨房洗切区与黄铜龙头",
+          "room": "kitchen",
+          "dimensions": "主柜 2.32 m；含封板与摆件约 2.51 × 0.70 × 1.37 m",
+          "material": "奶油框门 · 大理石台面 · 不锈钢水槽",
+          "note": "北窗下水槽与排水示意点保持原位；台高904mm，西端采用与水槽连通的盲角柜，柜门从回转台面以东开启，槽下无贯穿隔板。结构承托及水电位置须复尺。",
+          "position": [
+            1.52,
+            0,
+            3.25
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "kitchen-cooking",
+          "name": "厨房烹饪区 / 嵌入式烤箱",
+          "room": "kitchen",
+          "dimensions": "含转角与五金约 1.86 × 0.70 × 2.45 m",
+          "material": "奶油框门 · 石材 · 黄铜 · 搪瓷",
+          "note": "设置600mm独立烤箱柜位；转角台面连续衔接。西侧排烟、燃气及嵌入设备散热尺寸仅为方案假设，须按产品与现场核验。",
+          "position": [
+            0.5,
+            0,
+            4.53
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "kitchen-fridge",
+          "name": "复古双门冰箱",
+          "room": "kitchen",
+          "dimensions": "0.68 × 0.75 × 1.95 m（含把手）",
+          "material": "奶油色烤漆 · 黄铜拉手",
+          "note": "东墙中段布置，门内保留约840mm转身深度；示意为南侧铰接、向西开启，开启90度后仍有约610mm至西排把手，散热及取屉所需角度按所购型号复核。",
+          "position": [
+            2.48,
+            0,
+            4.5
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "kitchen-shelf",
+          "name": "厨房实木开放搁板",
+          "room": "kitchen",
+          "dimensions": "1.05 × 0.20 × 0.55 m",
+          "material": "胡桃木 · 黄铜托架",
+          "note": "安装于北墙右侧实墙处，杯具采用防滑垫。",
+          "position": [
+            2.25,
+            1.59,
+            3.04
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "bathroom-shower",
+          "name": "黄铜花洒与玻璃淋浴隔断",
+          "room": "bathroom",
+          "dimensions": "0.84 × 1.43 × 2.13 m",
+          "material": "钢化玻璃 · 拉丝黄铜 · 防滑石材",
+          "note": "东侧湿区，花洒固定于南侧实墙、避开东窗；两等宽门片双轨滑动，图示完全叠放后净入口约691mm，北侧进入。玻璃选型、轨道和地面找坡按产品及现场确定。",
+          "position": [
+            7.46,
+            0,
+            4.48
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "ensuite-shower",
+          "name": "黄铜花洒与玻璃淋浴隔断",
+          "room": "ensuite",
+          "dimensions": "0.84 × 1.59 × 2.13 m",
+          "material": "钢化玻璃 · 拉丝黄铜 · 防滑石材",
+          "note": "东侧湿区，花洒固定于南侧实墙、避开东窗；两等宽门片双轨滑动，图示完全叠放后净入口约771mm，南侧进入。玻璃选型、轨道和地面找坡按产品及现场确定。",
+          "position": [
+            7.46,
+            0,
+            9.72
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "bathroom-vanity",
+          "name": "公卫外置古典浴室柜与拱冠镜",
+          "room": "bathroom",
+          "dimensions": "0.79 × 0.53 × 2.10 m",
+          "material": "胡桃木防潮板 · 石材 · 陶瓷 · 黄铜",
+          "note": "延续原图外置干区：台盆位于公卫西侧走廊，背靠次卧2北墙，避免与坐便器对置形成狭窄过道。",
+          "position": [
+            5.08,
+            0,
+            5.01
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "bathroom-toilet",
+          "name": "公卫陶瓷坐便器",
+          "room": "bathroom",
+          "dimensions": "0.42 × 0.68 × 0.73 m",
+          "material": "釉面陶瓷 · 黄铜按钮",
+          "note": "平面位置东移80mm以留出西侧移门与入口；右侧至淋浴玻璃约320mm。排污位置与305/400mm坑距为示意，先核对原位及产品再实施。",
+          "position": [
+            6.48,
+            0,
+            4.93
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "ensuite-vanity",
+          "name": "主卫浅款浴室柜与拱冠镜",
+          "room": "ensuite",
+          "dimensions": "0.96 × 0.38 × 2.10 m",
+          "material": "胡桃木 · 石材台面 · 浅椭圆陶瓷盆",
+          "note": "采用约380mm浅台面，配短款坐便器后两者前缘净距约740mm；定制前确认盆内深及存水弯检修空间。",
+          "position": [
+            6.17,
+            0,
+            9.01
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "ensuite-toilet",
+          "name": "主卫短款陶瓷坐便器",
+          "room": "ensuite",
+          "dimensions": "0.42 × 0.61 × 0.73 m",
+          "material": "釉面陶瓷",
+          "note": "选购约610mm总深短款；平面西调40mm，使东侧至淋浴入口约620mm，前方与浅浴室柜净距约740mm；排污口与坑距必须按现场复核。",
+          "position": [
+            6.18,
+            0,
+            10.292
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "ensuite-towel",
+          "name": "主卫黄铜毛巾架",
+          "room": "ensuite",
+          "dimensions": "0.50 × 0.07 × 1.27 m",
+          "material": "黄铜 · 棉质毛巾",
+          "note": "移至西墙门洞南侧，避开台盆镜灯、坐便器及移门开启面；墙内做好可靠锚固，避免打穿防水层。",
+          "position": [
+            5.605,
+            0.58,
+            10.31
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "balcony-rug",
+          "name": "阳台编织地毯",
+          "room": "balcony",
+          "dimensions": "2.50 × 0.94 m",
+          "material": "户外耐候编织纤维",
+          "note": "低绒防滑材质；不跨越阳台滑门轨道。",
+          "position": [
+            2.7,
+            0,
+            15.4
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-chair-left",
+          "name": "阳台藤编休闲椅",
+          "room": "balcony",
+          "dimensions": "0.71 × 0.61 × 1.06 m",
+          "material": "耐候木作 · 藤编 · 米色软垫",
+          "note": "座面高470mm；南侧至栏杆石材基座约650mm净带，北侧仅约120mm不作通行。清洗需移开椅子并将软垫收进室内，选耐候成品。",
+          "position": [
+            1.81,
+            0,
+            15.1
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "balcony-chair-right",
+          "name": "阳台藤编休闲椅",
+          "room": "balcony",
+          "dimensions": "0.71 × 0.61 × 1.06 m",
+          "material": "耐候木作 · 藤编 · 米色软垫",
+          "note": "座面高470mm；南侧至栏杆石材基座约650mm净带，北侧仅约120mm不作通行。清洗需移开椅子并将软垫收进室内，选耐候成品。",
+          "position": [
+            3.55,
+            0,
+            15.1
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "balcony-table",
+          "name": "阳台圆石面边桌",
+          "room": "balcony",
+          "dimensions": "Ø 0.48 × 0.53 m",
+          "material": "石材 · 黄铜",
+          "note": "与藤椅成组向北退让，南侧留约650mm连续通行带；保持阳台排水点可检修。",
+          "position": [
+            2.68,
+            0,
+            15.1
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-cabinet",
+          "name": "阳台低矮收纳柜",
+          "room": "balcony",
+          "dimensions": "1.23 × 0.51 × 0.78 m（含台面和五金）",
+          "material": "耐候胡桃木色木作 · 石面",
+          "note": "设于西侧短墙，收纳园艺用品；不得封堵原排水点。",
+          "position": [
+            0.46,
+            0,
+            15.39
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "balcony-plant-a",
+          "name": "阳台盆栽",
+          "room": "balcony",
+          "dimensions": "约 Ø 0.69 × 1.43 m",
+          "material": "陶盆 · 绿植",
+          "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+          "position": [
+            6.65,
+            0,
+            15.08
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-plant-b",
+          "name": "阳台盆栽",
+          "room": "balcony",
+          "dimensions": "约 Ø 0.48 × 0.99 m",
+          "material": "陶盆 · 绿植",
+          "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+          "position": [
+            5.95,
+            0,
+            15.81
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-plant-c",
+          "name": "阳台盆栽",
+          "room": "balcony",
+          "dimensions": "约 Ø 0.30 × 0.63 m",
+          "material": "陶盆 · 绿植",
+          "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+          "position": [
+            6.69,
+            0,
+            15.82
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "sconce-living-north",
+          "name": "古铜弯臂壁灯",
+          "room": "living",
+          "dimensions": "0.22 × 0.22 × 0.35 m",
+          "material": "黄铜 · 亚麻灯罩 · 2700 K 光源",
+          "note": "壁灯安装中心距地 1800 mm；灯具需独立回路或双控。",
+          "position": [
+            4.16,
+            1.82,
+            11.25
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "sconce-living-south",
+          "name": "古铜弯臂壁灯",
+          "room": "living",
+          "dimensions": "0.22 × 0.22 × 0.35 m",
+          "material": "黄铜 · 亚麻灯罩 · 2700 K 光源",
+          "note": "壁灯安装中心距地 1800 mm；灯具需独立回路或双控。",
+          "position": [
+            4.16,
+            1.82,
+            13.46
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "sconce-master",
+          "name": "古铜弯臂壁灯",
+          "room": "master",
+          "dimensions": "0.22 × 0.22 × 0.35 m",
+          "material": "黄铜 · 亚麻灯罩 · 2700 K 光源",
+          "note": "壁灯安装中心距地 1800 mm；灯具需独立回路或双控。",
+          "position": [
+            4.4,
+            1.82,
+            10.75
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "living-oil-painting",
+          "name": "客厅古典金框油画",
+          "room": "living",
+          "dimensions": "1.49 × 0.07 × 0.96 m；画心 1.35 × 0.82 m",
+          "material": "做旧黄铜色木框 · 亚麻画布",
+          "note": "画心中心距地 1.83 m；挂件锚固于实墙，画框下沿高于沙发靠背。",
+          "position": [
+            4.155,
+            1.83,
+            12.12
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "living-curtains",
+          "name": "客厅奶油色法式落地帘",
+          "room": "living",
+          "dimensions": "帘杆 3.66 m；单侧帘宽约 0.36 m，高 2.53 m",
+          "material": "亚麻混纺布 · 薄纱 · 古铜帘杆",
+          "note": "双侧窄收帘保留阳台采光与视野；杆顶距地 2.62 m，帘底离地约 60 mm。",
+          "position": [
+            2.34,
+            0,
+            14.3
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "blender-chandelier",
+          "name": "八臂黄铜水晶吊灯",
+          "room": "living",
+          "dimensions": "Ø 922 × H 933 mm",
+          "material": "做旧黄铜 · 蜡烛灯 · 切面水晶",
+          "note": "Blender 原创模型。顶碗贴合2.80m假设天花，灯底约1.87m，安装于固定圆餐桌正上方；现场核对吊点和吊链。",
+          "position": [
+            2.25,
+            2.8,
+            8.65
+          ],
+          "rotationY": 0
+        }
+      ]
+    },
+    "italian": {
+      "name": "意式轻奢",
+      "concept": "炭灰皮革、深橄榄绿与黑棕木作，衬托灰褐纹理大理石和低光泽古铜，保留沉稳的明暗层次。",
+      "items": [
+        {
+          "id": "living-rug",
+          "name": "客厅素色羊毛地毯",
+          "room": "living",
+          "dimensions": "2.40 × 3.70 m",
+          "material": "燕麦灰羊毛短绒 · 窄锁边",
+          "note": "地毯边沿退让阳台门；沙发前脚压在毯上。",
+          "position": [
+            2.18,
+            0,
+            12
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "living-sofa",
+          "name": "意式模块炭灰皮革沙发",
+          "room": "living",
+          "dimensions": "2.44 × 0.82 × 0.84 m",
+          "material": "黑棕木内框 · 炭灰皮革软包 · 暖灰靠垫 · 深橄榄配色",
+          "note": "座面高480mm，低靠背和宽扶手；茶几至座垫前沿约380mm，主要通行保留在茶几西侧。",
+          "position": [
+            3.6,
+            0,
+            12.03
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "living-coffee",
+          "name": "灰褐纹大理石体块茶几",
+          "room": "living",
+          "dimensions": "1.16 × 0.62 × 0.38 m（含花器高0.55m）",
+          "material": "哑光灰褐纹大理石饰面 · 内部轻质承托",
+          "note": "采用中空承托结构加石材饰面，避免整块实心石材过重；圆角处理，至沙发座垫约380mm。",
+          "position": [
+            2.55,
+            0,
+            12.01
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "living-chair",
+          "name": "薄金属框软包休闲椅",
+          "room": "living",
+          "dimensions": "0.64 × 0.60 × 0.87 m",
+          "material": "古铜金属 · 深橄榄织物 · 黑棕木扶手",
+          "note": "座面高470mm；简洁金属框架，坐垫可拆洗，保持原椅位通行范围。",
+          "position": [
+            1.04,
+            0,
+            13.51
+          ],
+          "rotationY": 2.607521902479528
+        },
+        {
+          "id": "living-fireplace",
+          "name": "悬浮石材影音柜与抽象画",
+          "room": "living",
+          "dimensions": "1.48 × 0.44 × 1.94 m",
+          "material": "灰褐纹大理石饰面 · 隐藏承重连接件 · 抽象画",
+          "note": "采用墙挂悬浮柜，原壁炉位置改为影音与陈设区；下沿离地205mm。墙体承载与插座须深化，上方可按电视型号换装。",
+          "position": [
+            0.39,
+            0,
+            11.96
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "living-side-table",
+          "name": "石面圆边几与球形台灯",
+          "room": "living",
+          "dimensions": "Ø 0.44 × 1.02 m（含台灯）",
+          "material": "黑棕木 · 灰褐纹大理石 · 古铜金属 · 乳白玻璃",
+          "note": "布置于沙发北端，台灯插座在离地 300 mm 处预留。",
+          "position": [
+            3.6,
+            0,
+            10.46
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "living-plant",
+          "name": "琴叶榕与素陶盆",
+          "room": "living",
+          "dimensions": "含叶幅约0.87 × 0.88 × 1.48 m",
+          "material": "素陶盆 · 室内绿植",
+          "note": "靠阳台散射光处，盆底设置接水盘。",
+          "position": [
+            3.76,
+            0,
+            13.98
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "dining-table",
+          "name": "圆石面六人餐桌",
+          "room": "living",
+          "dimensions": "Ø 1.22 × 0.78 m；含花器高0.96m",
+          "material": "哑光灰褐纹大理石饰面 · 中央承托柱",
+          "note": "可布置六席，日常四人更从容；六人使用时西侧椅后约440mm，拉椅后不能同时通行或开餐边柜，取餐具宜在落座前完成。主要通行走东侧约860mm步道。",
+          "position": [
+            2.25,
+            0,
+            8.65
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "dining-chair-1",
+          "name": "意式薄框餐椅 1",
+          "room": "living",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            2.25,
+            0,
+            9.51
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "dining-chair-2",
+          "name": "意式薄框餐椅 2",
+          "room": "living",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            2.9947818472546173,
+            0,
+            9.08
+          ],
+          "rotationY": 4.1887902047863905
+        },
+        {
+          "id": "dining-chair-3",
+          "name": "意式薄框餐椅 3",
+          "room": "living",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            2.9947818472546173,
+            0,
+            8.22
+          ],
+          "rotationY": 5.235987755982988
+        },
+        {
+          "id": "dining-chair-4",
+          "name": "意式薄框餐椅 4",
+          "room": "living",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            2.25,
+            0,
+            7.79
+          ],
+          "rotationY": 6.283185307179586
+        },
+        {
+          "id": "dining-chair-5",
+          "name": "意式薄框餐椅 5",
+          "room": "living",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            1.505218152745383,
+            0,
+            8.22
+          ],
+          "rotationY": 7.330382858376184
+        },
+        {
+          "id": "dining-chair-6",
+          "name": "意式薄框餐椅 6",
+          "room": "living",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            1.5052181527453827,
+            0,
+            9.08
+          ],
+          "rotationY": 8.377580409572783
+        },
+        {
+          "id": "dining-sideboard",
+          "name": "黑棕木平板餐边柜",
+          "room": "living",
+          "dimensions": "1.53 × 0.46 × 0.87 m；含陈设高1.08m",
+          "material": "黑棕木平板门 · 灰褐纹大理石台面 · 隐藏拉手",
+          "note": "餐具与茶器收纳；固定防倾倒角码，台面下方预留小家电插座。",
+          "position": [
+            0.46,
+            0,
+            8.68
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "entry-cabinet",
+          "name": "黑棕木玄关薄柜与圆镜",
+          "room": "living",
+          "dimensions": "1.36 × 0.34 × 1.88 m（含镜）",
+          "material": "黑棕木平板门 · 灰褐纹大理石 · 细金属镜框",
+          "note": "保留310mm柜体深度与原入户通道；平板对开门，玄关镜与托盘用于日常整理。",
+          "position": [
+            0.95,
+            0,
+            6.03
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "dining-art",
+          "name": "餐区抽象构成浮雕画",
+          "room": "living",
+          "dimensions": "0.75 × 0.95 m",
+          "material": "细黑框 · 素色底板 · 木质与金属构成",
+          "note": "原创几何浮雕构图，安装中心高1.70m；画框固定在实墙。",
+          "position": [
+            0.235,
+            1.7,
+            8.7
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "master-rug",
+          "name": "主卧素色羊毛地毯",
+          "room": "master",
+          "dimensions": "2.45 × 2.55 m",
+          "material": "燕麦灰羊毛短绒",
+          "note": "床侧露出约 300 mm 以上，避免床边踩空落差。",
+          "position": [
+            6.44,
+            0,
+            12.2
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-bed",
+          "name": "主卧直线软包悬浮床",
+          "room": "master",
+          "dimensions": "1.88 × 2.20 × 1.21 m；床垫1.80 × 2.05 m",
+          "material": "黑棕木床架 · 暖灰软包床头 · 棉麻床品",
+          "note": "床头靠主卫南侧实墙，建议墙内补充隔音棉；床尾至阳台门约 1.4 m。",
+          "position": [
+            6.43,
+            0,
+            11.95
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-nightstand-left",
+          "name": "主卧平板床头柜与球形灯",
+          "room": "master",
+          "dimensions": "0.50 × 0.42 × 0.97 m",
+          "material": "黑棕木 · 灰褐纹大理石 · 乳白玻璃灯",
+          "note": "床头双控与 USB 插座宜预留于离地 650–750 mm。",
+          "position": [
+            5.22,
+            0,
+            11.15
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-nightstand-right",
+          "name": "主卧平板床头柜与球形灯",
+          "room": "master",
+          "dimensions": "0.50 × 0.42 × 0.97 m",
+          "material": "黑棕木 · 灰褐纹大理石 · 乳白玻璃灯",
+          "note": "床头双控与 USB 插座宜预留于离地 650–750 mm。",
+          "position": [
+            7.64,
+            0,
+            11.15
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "master-wardrobe",
+          "name": "主卧0.90m平板成品衣柜",
+          "room": "master",
+          "dimensions": "0.90 × 0.72 × 2.42 m（预留外包）",
+          "material": "黑棕木平板门 · 细金属拉手",
+          "note": "仅保留一组0.90m成品衣柜，设于南侧滑门右侧实墙段；柜前至床尾约704mm，集中挂衣收纳放在次卧1。柜体基准深580mm。",
+          "position": [
+            7.37,
+            0,
+            14.1
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "master-art",
+          "name": "主卧抽象浮雕画",
+          "room": "master",
+          "dimensions": "0.64 × 0.73 m",
+          "material": "木质构成 · 细黑框",
+          "note": "画框中心离地约 1.93 m，床头柜灯具分区控制。",
+          "position": [
+            6.43,
+            1.96,
+            10.8
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-rug",
+          "name": "次卧2素色地毯",
+          "room": "bedroom2",
+          "dimensions": "2.05 × 2.15 m",
+          "material": "燕麦灰短绒羊毛",
+          "note": "低绒面方便吸尘和床下清洁。",
+          "position": [
+            6.24,
+            0,
+            6.84
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-bed",
+          "name": "次卧2黑棕木软包床",
+          "room": "bedroom2",
+          "dimensions": "1.58 × 2.15 × 1.21 m；床垫1.50 × 2.00 m",
+          "material": "黑棕木 · 灰褐棉麻 · 平直软包",
+          "note": "床头靠北墙；东侧保留通往窗边书桌的步行带。",
+          "position": [
+            6.24,
+            0,
+            6.67
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-nightstand",
+          "name": "次卧2石面床头柜",
+          "room": "bedroom2",
+          "dimensions": "0.50 × 0.42 × 0.97 m（含灯）",
+          "material": "黑棕木 · 灰褐纹大理石 · 乳白玻璃",
+          "note": "柜顶高558mm，接近床垫面；灯与床头插座分区控制。",
+          "position": [
+            7.33,
+            0,
+            5.85
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "guest-wardrobe",
+          "name": "次卧2平板折叠衣物浅柜",
+          "room": "bedroom2",
+          "dimensions": "1.49 × 0.40 × 2.42 m（预留外包）",
+          "material": "黑棕木 · 平板柜门",
+          "note": "成品总深400mm，内部有效深约300mm，仅作折叠衣物和小件储物，不作挂衣柜。西侧顶线贴合墙内面，床侧净距约670mm；集中挂衣放次卧1。",
+          "position": [
+            4.558626907073509,
+            0,
+            6.24
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "guest-desk",
+          "name": "次卧2薄金属脚窗边书桌",
+          "room": "bedroom2",
+          "dimensions": "1.27 × 0.51 × 0.77 m；含灯高1.14m",
+          "material": "黑棕木桌面 · 古铜金属脚 · 侧抽屉",
+          "note": "桌面高769mm，中央腿位净高733mm；配460mm座面，膝上净空273mm。窗扇开启仍须现场复核。",
+          "position": [
+            8.38,
+            0,
+            7.03
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "guest-chair",
+          "name": "次卧2薄框书椅",
+          "room": "bedroom2",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            7.82,
+            0,
+            7.02
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "guest-plant",
+          "name": "次卧2窗边绿植",
+          "room": "bedroom2",
+          "dimensions": "含叶幅约0.42 × 0.43 × 0.72 m",
+          "material": "素陶盆 · 室内绿植",
+          "note": "避开窗扇和帘布。",
+          "position": [
+            8.37,
+            0,
+            8.25
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "second-rug",
+          "name": "次卧1素色羊毛地毯",
+          "room": "bedroom1",
+          "dimensions": "1.80 × 2.20 m",
+          "material": "羊毛短绒 · 窄锁边",
+          "note": "床侧地毯。",
+          "position": [
+            6.73,
+            0,
+            1.53
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "second-bed",
+          "name": "次卧1直线软包小双人床",
+          "room": "bedroom1",
+          "dimensions": "1.43 × 2.15 × 1.21 m；床垫1.35 × 2.00 m",
+          "material": "黑棕木 · 深橄榄软包 · 棉麻床品",
+          "note": "床头靠东侧实墙；南侧衣柜前净距约600mm，床头柜移至北侧避免挡住柜门。",
+          "position": [
+            6.7,
+            0,
+            1.42
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "second-nightstand",
+          "name": "次卧1窄款平板床头柜",
+          "room": "bedroom1",
+          "dimensions": "0.42 × 0.42 × 0.97 m（含灯）",
+          "material": "黑棕木 · 灰褐纹大理石 · 球形台灯",
+          "note": "采用420mm窄款置于床北侧，避免南侧柜门开启受阻；灯具不遮挡北窗主要采光面。",
+          "position": [
+            7.51,
+            0,
+            0.47
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "second-wardrobe",
+          "name": "次卧1双轨平板推拉衣柜",
+          "room": "bedroom1",
+          "dimensions": "1.94 × 0.73 × 2.42 m（预留外包）",
+          "material": "黑棕木平板门 · 双轨 · 内嵌拉手",
+          "note": "两片约918mm宽门片分轨平移，每片行程878mm、单侧有效开口约850mm；启闭均不侵入约614mm床前步道。内部双挂衣区加顶层板；集中收纳容量仍须按衣物量核算。",
+          "position": [
+            6.86,
+            0,
+            3.14
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "study-daybed",
+          "name": "黑棕木收纳日间床",
+          "room": "study",
+          "dimensions": "1.28 × 2.19 × 0.85 m",
+          "material": "黑棕木平板抽屉 · 棉麻分体床垫",
+          "note": "睡眠净面约1.19×2.05m；北段上翻取物，另外两格向东抽屉行程不超过500mm，延续避让书桌的使用方式。",
+          "position": [
+            2.43,
+            0,
+            1.47
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "study-desk",
+          "name": "书房薄金属脚书桌",
+          "room": "study",
+          "dimensions": "1.14 × 0.54 × 0.77 m；含灯高1.14m",
+          "material": "黑棕木 · 古铜金属 · 侧抽屉",
+          "note": "桌面高769mm，中央腿位净高733mm；座面高460mm，膝上净空273mm。右侧抽屉不占中央腿位。",
+          "position": [
+            3.85,
+            0,
+            0.51
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "study-chair",
+          "name": "书房薄框软包椅",
+          "room": "study",
+          "dimensions": "0.48 × 0.47 × 0.89 m",
+          "material": "古铜金属 · 深橄榄织物软包",
+          "note": "未压缩座面高460mm；金属细腿与薄软包靠背，保持原有单人就座和通行安排。",
+          "position": [
+            3.85,
+            0,
+            1.06
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "study-bookcase",
+          "name": "黑棕木开放书柜",
+          "room": "study",
+          "dimensions": "1.08 × 0.38 × 2.33 m",
+          "material": "黑棕木层板 · 细金属收边",
+          "note": "东墙设置，层板净深约 300 mm；高柜必须用防倾倒连接件固定。",
+          "position": [
+            4.37,
+            0,
+            2.2
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "study-art",
+          "name": "书房抽象构成画",
+          "room": "study",
+          "dimensions": "0.61 × 0.73 m",
+          "material": "细黑框 · 原创几何浮雕",
+          "note": "墙面装饰安装于日间床西侧。",
+          "position": [
+            1.82,
+            1.7,
+            1.34
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "kitchen-sink",
+          "name": "厨房平板洗切柜与金属龙头",
+          "room": "kitchen",
+          "dimensions": "主柜 2.32 m；含封板与摆件约 2.51 × 0.70 × 1.37 m",
+          "material": "岩灰平板门 · 石材台面 · 不锈钢水槽",
+          "note": "北窗下水槽与排水示意点保持原位；台高904mm，西端采用与水槽连通的盲角柜，柜门从回转台面以东开启，槽下无贯穿隔板。结构承托及水电位置须复尺。",
+          "position": [
+            1.52,
+            0,
+            3.25
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "kitchen-cooking",
+          "name": "厨房平板烹饪柜与嵌入式烤箱",
+          "room": "kitchen",
+          "dimensions": "含转角与五金约 1.86 × 0.70 × 2.45 m",
+          "material": "岩灰平板柜门 · 石材 · 古铜金属",
+          "note": "设置600mm独立烤箱柜位；转角台面连续衔接。西侧排烟、燃气及嵌入设备散热尺寸仅为方案假设，须按产品与现场核验。",
+          "position": [
+            0.5,
+            0,
+            4.53
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "kitchen-fridge",
+          "name": "哑光平板双门冰箱",
+          "room": "kitchen",
+          "dimensions": "0.68 × 0.75 × 1.95 m（含把手）",
+          "material": "哑光面板 · 细金属拉手",
+          "note": "东墙中段布置，门内保留约840mm转身深度；示意为南侧铰接、向西开启，开启90度后仍有约610mm至西排把手，散热及取屉所需角度按所购型号复核。",
+          "position": [
+            2.48,
+            0,
+            4.5
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "kitchen-shelf",
+          "name": "黑棕木开放搁板",
+          "room": "kitchen",
+          "dimensions": "1.02 × 0.20 × 0.67 m（含托架及杯具）",
+          "material": "黑棕木 · 古铜金属托架",
+          "note": "安装于北墙右侧实墙处，杯具采用防滑垫。",
+          "position": [
+            2.25,
+            1.59,
+            3.04
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "bathroom-shower",
+          "name": "极简金属花洒与双轨玻璃隔断",
+          "room": "bathroom",
+          "dimensions": "0.91 × 1.57 × 2.14 m（含花洒及拉手）",
+          "material": "钢化玻璃 · 古铜金属 · 防滑石材",
+          "note": "东侧湿区，花洒固定于南侧实墙、避开东窗；两等宽门片双轨滑动，图示完全叠放后净入口约691mm，北侧进入。玻璃选型、轨道和地面找坡按产品及现场确定。",
+          "position": [
+            7.46,
+            0,
+            4.48
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "ensuite-shower",
+          "name": "极简金属花洒与双轨玻璃隔断",
+          "room": "ensuite",
+          "dimensions": "0.91 × 1.70 × 2.14 m（含花洒及拉手）",
+          "material": "钢化玻璃 · 古铜金属 · 防滑石材",
+          "note": "东侧湿区，花洒固定于南侧实墙、避开东窗；两等宽门片双轨滑动，图示完全叠放后净入口约771mm，南侧进入。玻璃选型、轨道和地面找坡按产品及现场确定。",
+          "position": [
+            7.46,
+            0,
+            9.72
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "bathroom-vanity",
+          "name": "公卫平板浴室柜与直线镜",
+          "room": "bathroom",
+          "dimensions": "0.86 × 0.57 × 2.02 m（含镜灯）",
+          "material": "防潮黑棕木板 · 石材 · 陶瓷 · 线性镜灯",
+          "note": "延续原图外置干区：台盆位于公卫西侧走廊，背靠次卧2北墙，避免与坐便器对置形成狭窄过道。",
+          "position": [
+            5.08,
+            0,
+            5.01
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "bathroom-toilet",
+          "name": "公卫陶瓷坐便器",
+          "room": "bathroom",
+          "dimensions": "0.42 × 0.68 × 0.73 m",
+          "material": "釉面陶瓷 · 黄铜按钮",
+          "note": "平面位置东移80mm以留出西侧移门与入口；右侧至淋浴玻璃约320mm。排污位置与305/400mm坑距为示意，先核对原位及产品再实施。",
+          "position": [
+            6.48,
+            0,
+            4.93
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "ensuite-vanity",
+          "name": "主卫浅款平板浴室柜与直线镜",
+          "room": "ensuite",
+          "dimensions": "1.05 × 0.41 × 2.02 m（含镜灯）",
+          "material": "防潮黑棕木板 · 浅石台面 · 陶瓷盆 · 线性镜灯",
+          "note": "采用约380mm浅台面，配短款坐便器后两者前缘净距约740mm；定制前确认盆内深及存水弯检修空间。",
+          "position": [
+            6.17,
+            0,
+            9.01
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "ensuite-toilet",
+          "name": "主卫短款陶瓷坐便器",
+          "room": "ensuite",
+          "dimensions": "0.42 × 0.61 × 0.73 m",
+          "material": "釉面陶瓷",
+          "note": "选购约610mm总深短款；平面西调40mm，使东侧至淋浴入口约620mm，前方与浅浴室柜净距约740mm；排污口与坑距必须按现场复核。",
+          "position": [
+            6.18,
+            0,
+            10.292
+          ],
+          "rotationY": 3.141592653589793
+        },
+        {
+          "id": "ensuite-towel",
+          "name": "主卫细金属毛巾架",
+          "room": "ensuite",
+          "dimensions": "0.50 × 0.07 × 1.27 m",
+          "material": "古铜金属 · 棉质毛巾",
+          "note": "移至西墙门洞南侧，避开台盆镜灯、坐便器及移门开启面；墙内做好可靠锚固，避免打穿防水层。",
+          "position": [
+            5.605,
+            0.58,
+            10.31
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "balcony-rug",
+          "name": "阳台素色编织地毯",
+          "room": "balcony",
+          "dimensions": "2.50 × 0.94 m",
+          "material": "耐候编织纤维 · 素色",
+          "note": "低绒防滑材质；不跨越阳台滑门轨道。",
+          "position": [
+            2.7,
+            0,
+            15.4
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-chair-left",
+          "name": "阳台金属框休闲椅",
+          "room": "balcony",
+          "dimensions": "0.59 × 0.56 × 0.87 m",
+          "material": "耐候金属 · 户外织物 · 木扶手",
+          "note": "座面高470mm；南侧至栏杆石材基座约650mm净带，北侧仅约120mm不作通行。清洗需移开椅子并将软垫收进室内，选耐候成品。",
+          "position": [
+            1.81,
+            0,
+            15.1
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "balcony-chair-right",
+          "name": "阳台金属框休闲椅",
+          "room": "balcony",
+          "dimensions": "0.59 × 0.56 × 0.87 m",
+          "material": "耐候金属 · 户外织物 · 木扶手",
+          "note": "座面高470mm；南侧至栏杆石材基座约650mm净带，北侧仅约120mm不作通行。清洗需移开椅子并将软垫收进室内，选耐候成品。",
+          "position": [
+            3.55,
+            0,
+            15.1
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "balcony-table",
+          "name": "阳台石面金属边桌",
+          "room": "balcony",
+          "dimensions": "Ø 0.48 × 0.53 m（不含花器）",
+          "material": "石材 · 古铜金属",
+          "note": "与休闲椅成组布置，保留南侧连续通行带；花器可移除，排水点保持可检修。",
+          "position": [
+            2.68,
+            0,
+            15.1
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-cabinet",
+          "name": "阳台平板低矮收纳柜",
+          "room": "balcony",
+          "dimensions": "1.21 × 0.46 × 0.78 m；含陈设高0.99m",
+          "material": "耐候黑棕木色木作 · 石面",
+          "note": "设于西侧短墙，收纳园艺用品；不得封堵原排水点。",
+          "position": [
+            0.46,
+            0,
+            15.39
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "balcony-plant-a",
+          "name": "阳台高株盆栽",
+          "room": "balcony",
+          "dimensions": "含叶幅约0.80 × 0.81 × 1.37 m",
+          "material": "素陶盆 · 绿植",
+          "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+          "position": [
+            6.65,
+            0,
+            15.08
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-plant-b",
+          "name": "阳台中株盆栽",
+          "room": "balcony",
+          "dimensions": "含叶幅约0.56 × 0.57 × 0.95 m",
+          "material": "素陶盆 · 绿植",
+          "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+          "position": [
+            5.95,
+            0,
+            15.81
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "balcony-plant-c",
+          "name": "阳台小株盆栽",
+          "room": "balcony",
+          "dimensions": "含叶幅约0.36 × 0.36 × 0.61 m",
+          "material": "素陶盆 · 绿植",
+          "note": "种植箱下设置排水托盘，保留检修和清洁空间。",
+          "position": [
+            6.69,
+            0,
+            15.82
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "sconce-living-north",
+          "name": "双侧线性壁灯",
+          "room": "living",
+          "dimensions": "0.12 × 0.06 × 0.27 m",
+          "material": "古铜金属 · 2700K漫射灯罩",
+          "note": "安装中心距地1820mm；独立灯光回路，双侧漫射减少直视眩光。",
+          "position": [
+            4.16,
+            1.82,
+            11.25
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "sconce-living-south",
+          "name": "双侧线性壁灯",
+          "room": "living",
+          "dimensions": "0.12 × 0.06 × 0.27 m",
+          "material": "古铜金属 · 2700K漫射灯罩",
+          "note": "安装中心距地1820mm；独立灯光回路，双侧漫射减少直视眩光。",
+          "position": [
+            4.16,
+            1.82,
+            13.46
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "sconce-master",
+          "name": "双侧线性壁灯",
+          "room": "master",
+          "dimensions": "0.12 × 0.06 × 0.27 m",
+          "material": "古铜金属 · 2700K漫射灯罩",
+          "note": "安装中心距地1820mm；独立灯光回路，双侧漫射减少直视眩光。",
+          "position": [
+            4.4,
+            1.82,
+            10.75
+          ],
+          "rotationY": 1.5707963267948966
+        },
+        {
+          "id": "living-oil-painting",
+          "name": "客厅原创抽象浮雕画",
+          "room": "living",
+          "dimensions": "1.46 × 0.06 × 0.95 m",
+          "material": "细黑框 · 黑灰木质构成 · 古铜线条",
+          "note": "原创几何浮雕作品，保留沙发上方挂画位置；无外部画作图片依赖。",
+          "position": [
+            4.155,
+            1.83,
+            12.12
+          ],
+          "rotationY": -1.5707963267948966
+        },
+        {
+          "id": "living-curtains",
+          "name": "客厅极简落地帘",
+          "room": "living",
+          "dimensions": "轨道3.66m；高2.53m",
+          "material": "棉麻布 · 薄纱 · 顶装细轨道",
+          "note": "顶装细轨道与均匀褶皱，双侧窄收帘；保留阳台采光，帘底离地约60mm。",
+          "position": [
+            2.34,
+            0,
+            14.3
+          ],
+          "rotationY": 0
+        },
+        {
+          "id": "blender-chandelier",
+          "name": "双椭圆香槟线光吊灯",
+          "room": "living",
+          "dimensions": "947 × 631 × H 941 mm",
+          "material": "香槟金属 · 乳白线性扩散罩 · 细钢索",
+          "note": "Blender 原创双环灯；顶盘贴合2.80m假设天花，灯底1.859m，距桌面约1.08m；投影距Ø1.22m固定圆餐桌边至少115mm。现场复核吊点和钢索长度。",
+          "position": [
+            2.25,
+            2.8,
+            8.65
+          ],
+          "rotationY": 0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# Local settings, credentials and temporary output
+.env
+.env.*
+!.env.example
+.claude/
+.codex/
+.agents/
+.scratch/
+*.log
+*.orig
+*.rej
+*.tar.gz
+*.zip
+*.blend
+*.blend1
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated verification/render output; keep only the original lamp evidence
+gpt6/artifacts/*
+!gpt6/artifacts/chandelier-metadata.json
+!gpt6/artifacts/chandelier-preview.png
+!gpt6/artifacts/italian-pendant-metadata.json
+!gpt6/artifacts/italian-pendant-preview.png
