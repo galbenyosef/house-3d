@@ -7,14 +7,18 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-import { makeMaterials } from './materials.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { FIXTURES } from './fixtures.js';
+import { makeMaterials, skyCanvas } from './materials.js';
 import { buildHouse, disposeGroup } from './house.js';
 import { buildLights } from './lights.js';
 import { buildFurnishings } from './furnishings.js';
 import { ROOMS, planBounds, isWalkable, roomArea, rectArea } from './plan.js';
 import { initUI, isTouch } from './ui.js';
 import { STYLES, DEFAULT_STYLE } from './styles.js';
+import { openPanorama } from './pano.js';
 
 const S = 0.001;
 const container = document.getElementById('app');
@@ -24,7 +28,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'hi
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.VSMShadowMap;
 renderer.toneMapping = THREE.NeutralToneMapping;
 renderer.toneMappingExposure = 0.62;
 renderer.domElement.style.touchAction = 'none';
@@ -53,8 +57,12 @@ let BG_DAY = gradientBackground('#d9dfe6', '#f1ede6');
 let BG_NIGHT = gradientBackground('#0b1020', '#1d2238');
 scene.background = BG_DAY;
 const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.32;
+const skyTex = new THREE.CanvasTexture(skyCanvas());
+skyTex.colorSpace = THREE.SRGBColorSpace;
+skyTex.mapping = THREE.EquirectangularReflectionMapping;
+scene.environment = pmrem.fromEquirectangular(skyTex).texture;
+scene.environmentIntensity = 0.45;
+void RoomEnvironment;
 
 const b = planBounds();
 const center = new THREE.Vector3(((b.x1 + b.x2) / 2) * S, 1.2, ((b.y1 + b.y2) / 2) * S);
@@ -78,7 +86,8 @@ let style = STYLES[params.get('style')] || STYLES[DEFAULT_STYLE];
 let house = null, ceilings = new THREE.Group(), lights = null;
 
 // ------------------------------------------------------------------ post
-const composer = new EffectComposer(renderer);
+const composerTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, { samples: isMobile ? 0 : 4, type: THREE.HalfFloatType });
+const composer = new EffectComposer(renderer, composerTarget);
 composer.addPass(new RenderPass(scene, camera));
 const gtao = new GTAOPass(scene, camera, window.innerWidth, window.innerHeight);
 gtao.output = GTAOPass.OUTPUT.Default;
@@ -88,6 +97,15 @@ composer.addPass(gtao);
 const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.22, 0.45, 1.7);
 bloom.enabled = false;
 composer.addPass(bloom);
+// subtle photographic finish: vignette + a touch of saturation
+const grade = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, vignette: { value: 0.28 }, saturation: { value: 1.06 } },
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float vignette; uniform float saturation; varying vec2 vUv;
+    void main(){ vec4 c = texture2D(tDiffuse, vUv); float l = dot(c.rgb, vec3(0.2126, 0.7152, 0.0722));
+    c.rgb = mix(vec3(l), c.rgb, saturation); vec2 q = vUv - 0.5; float v = 1.0 - vignette * dot(q, q) * 2.2; gl_FragColor = vec4(c.rgb * v, c.a); }`,
+});
+composer.addPass(grade);
 composer.addPass(new OutputPass());
 let aoEnabled = !isMobile;
 gtao.enabled = aoEnabled;
@@ -151,6 +169,11 @@ let highlight = null;
 let furnishings = new THREE.Group();
 let roomItems = new Map();
 let switching = false;
+let paused = false;
+function roomAtTarget() {
+  const x = orbit.target.x * 1000, z = orbit.target.z * 1000;
+  return ROOMS.find((r) => r.rects.some((rc) => x >= rc[0] && x <= rc[2] && z >= rc[1] && z <= rc[3]))?.id;
+}
 
 async function applyStyle(id) {
   const next = STYLES[id];
@@ -225,6 +248,38 @@ const app = {
     return on;
   },
   setStyle(id) { return applyStyle(id); },
+  openPanorama(opts = {}) {
+    if (walkState.active) this.exitWalk();
+    if (this._pano) return;
+    // default to the panorama of the room under the orbit target
+    const here = roomAtTarget();
+    const room = opts.room || { living: 'living', vestibule: 'master', bed3: 'master', bath2: 'master', kitchen: 'kitchen', tatami: 'study', bed2: 'bed2', bed1: 'bed2' }[here] || 'living';
+    document.body.classList.add('pano-open');
+    this._pano = openPanorama(this, { style: style.id, room });
+    paused = true;
+  },
+  onPanoramaClosed() { this._pano = null; paused = false; document.body.classList.remove('pano-open'); },
+  // Export the current style's geometry for the offline Cycles panorama render.
+  async exportScene() {
+    const exporter = new GLTFExporter();
+    const root = new THREE.Group();
+    // ceilings must be present in the export (they are hidden in the dollhouse view)
+    const wasVisible = ceilings.visible;
+    ceilings.visible = true;
+    root.add(house, furnishings);
+    const glb = await exporter.parseAsync(root, { binary: true, onlyVisible: true, includeCustomExtensions: false });
+    scene.add(house, furnishings);
+    ceilings.visible = wasVisible;
+    const meta = {
+      style: style.id,
+      fixtures: FIXTURES.map((f) => { const ov = style.fixtureById[f.id] || {}; return { id: f.id, room: f.room, x: ov.x ?? f.x, y: ov.y ?? f.y, lumens: f.lumens, kind: f.kind }; }),
+      ceil: 2720, interiorBoost: style.interiorBoost || 1,
+    };
+    const ep = `${import.meta.env.BASE_URL}__export`;
+    const r1 = await fetch(`${ep}?name=${style.id}.glb`, { method: 'POST', body: glb });
+    const r2 = await fetch(`${ep}?name=${style.id}.json`, { method: 'POST', body: JSON.stringify(meta) });
+    return { glb: await r1.json(), meta: await r2.json(), bytes: glb.byteLength };
+  },
   currentStyle: () => style,
   toggleLabels(force) { labels.visible = force ?? !labels.visible; return labels.visible; },
   toggleAO(force) { aoEnabled = force ?? !aoEnabled; gtao.enabled = aoEnabled; return aoEnabled; },
@@ -332,13 +387,14 @@ renderer.domElement.addEventListener('pointermove', (e) => {
 const timer = new THREE.Timer();
 const tmpDir = new THREE.Vector3(), tmpSide = new THREE.Vector3(), tmpMove = new THREE.Vector3();
 function render() {
-  if (aoEnabled || bloom.enabled) composer.render();
+  if (!isMobile || aoEnabled || bloom.enabled) composer.render();
   else renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
 }
 function animate() {
   requestAnimationFrame(animate);
   timer.update();
+  if (paused) return;
   const dt = Math.min(timer.getDelta(), 0.05);
   if (tween) {
     const k = Math.min(1, (performance.now() - tween.start) / tween.dur);

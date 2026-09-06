@@ -8,6 +8,7 @@ import { getDesignStyle, STYLE_IDS } from './design-styles.js';
 mountUI();
 let house,toastTimer,currentModal=null,currentFilter='all',lastFocus=null,room='living',mode='interior',palette='burgundy';
 let style='french',switching=false;
+let visualOpen=false,visualViewer=null,visualGeneration=0;
 try {const requested=new URL(location.href).searchParams.get('style')||localStorage.getItem('maison-style');if(STYLE_IDS.includes(requested))style=requested;} catch {}
 const $=selector=>document.querySelector(selector);
 const all=selector=>document.querySelectorAll(selector);
@@ -93,13 +94,31 @@ document.addEventListener('click',async event=>{
     const name=getDesignStyle(style).palettes[palette].name;$('.palette-label').textContent=name;if(mode==='interior')syncRoom(room);toast(`已切换配色 · ${name}`);return;
   }
   switch(button.dataset.action){
+    case 'panorama':{
+      if(visualOpen)return;
+      visualOpen=true;house?.stopMovement();button.disabled=true;const focus=document.activeElement,generation=++visualGeneration;
+      const loading=document.createElement('dialog');loading.className='visual-start';loading.setAttribute('aria-label','正在准备高清全景');
+      loading.innerHTML='<p>正在准备高清全景…</p><button>取消</button>';document.body.append(loading);loading.showModal();
+      const removeLoading=()=>{if(loading.open)loading.close();loading.remove();};
+      const restore=()=>{if(generation!==visualGeneration)return;visualGeneration++;removeLoading();visualOpen=false;visualViewer=null;$('.app-shell').inert=false;button.disabled=false;focus?.focus();};
+      loading.querySelector('button').onclick=restore;loading.addEventListener('cancel',event=>{event.preventDefault();restore();});
+      $('.app-shell').inert=true;
+      try {
+        const open=(await import('./panorama-viewer.js')).openPanorama;
+        if(generation!==visualGeneration)break;removeLoading();
+        const currentRoom=mode==='interior'?(house?.getState().lightingRoom||room):room;
+        const viewer=await open({style,room:currentRoom,onClose:restore});
+        if(generation===visualGeneration)visualViewer=viewer;else viewer.close();
+      } catch(error){if(generation!==visualGeneration)break;restore();console.error('高清全景载入失败',error);toast('高清全景暂未载入，请稍后重试。');}
+      break;
+    }
     case 'home':house?.setRoom('living');break;
     case 'close-modal':closeModal();break;
     case 'close-inspector':house?.clearSelection();break;
     case 'reset':house?.reset();break;
     case 'zoom-in':house?.zoom(1);break;
     case 'zoom-out':house?.zoom(-1);break;
-    case 'fullscreen':try{if(!document.fullscreenElement)await $('.canvas-area').requestFullscreen();else await document.exitFullscreen();}catch{toast('当前浏览器未允许全屏，可使用浏览器全屏模式。');}break;
+    case 'fullscreen':try{if(!document.fullscreenElement)await $('.app-shell').requestFullscreen();else await document.exitFullscreen();}catch{toast('当前浏览器未允许全屏，可使用浏览器全屏模式。');}break;
     case 'capture':{
       if(!house)return;button.disabled=true;const name=`MAISON-${getDesignStyle(style).name}-${ROOMS.find(r=>r.id===room).name}-${mode}.png`;const blob=await house.capture();if(blob){download(blob,name);toast('当前视角已保存为 PNG');}else toast('图片暂未生成，请再试一次。');button.disabled=false;break;
     }
@@ -131,7 +150,7 @@ try {
   syncStyleUI();
   house=await createHouseScene($('#scene'),{onRoom:syncRoom,onView:syncView,onSelect:showItem,onWarning:toast,onFrame:updateLabels},style);
   syncStyleUI();
-  window.maison={getState:()=>house.getState()};
+  window.maison={getState:()=>house.getState(),getComparisonState:()=>visualViewer?.getState()||null};
   requestAnimationFrame(()=>{$('.loading').classList.add('hidden');setTimeout(()=>$('.loading')?.remove(),700);});
 } catch(error) {
   console.error('无法创建三维场景',error);

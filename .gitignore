@@ -25,6 +25,9 @@ Thumbs.db
 .idea/
 .vscode/
 
+# World Labs examples have no confirmed redistribution license.
+gpt6/public/worldlabs/
+
 # Generated verification/render output; keep only the original lamp evidence
 gpt6/artifacts/*
 !gpt6/artifacts/chandelier-metadata.json

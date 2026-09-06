@@ -21,8 +21,10 @@ export function buildLights(scene, style = { fixtureById: {} }) {
   sun.shadow.camera.bottom = -14;
   sun.shadow.camera.near = 1;
   sun.shadow.camera.far = 50;
-  sun.shadow.bias = -0.0005;
-  sun.shadow.normalBias = 0.035;
+  sun.shadow.bias = -0.0002;
+  sun.shadow.normalBias = 0.03;
+  sun.shadow.radius = 3;
+  sun.shadow.blurSamples = 10;
   group.add(sun, sun.target);
 
   const hemi = new THREE.HemisphereLight(0xe3ecf5, 0x8c7c68, 0.35);
@@ -40,7 +42,9 @@ export function buildLights(scene, style = { fixtureById: {} }) {
     if (f.id === 'lounge' || f.id === 'bed3') {
       light.castShadow = true;
       light.shadow.mapSize.set(1024, 1024);
-      light.shadow.bias = -0.002;
+      light.shadow.bias = -0.001;
+      light.shadow.radius = 4;
+      light.shadow.blurSamples = 8;
     }
     group.add(light);
     interior.push(light);

@@ -24,6 +24,7 @@
         <button data-action="view-iso" title="环绕视角">环绕</button>
         <button data-action="view-top" title="俯视平面">俯视</button>
         <button data-action="walk" title="第一人称漫游 (F)">漫游</button>
+        <button data-action="pano" title="Cycles 路径追踪高清全景">高清全景</button>
         <button data-action="orbit" class="toggle" title="自动环绕 (R)">自转</button>
         <span class="sep"></span>
         <button data-action="ceiling" class="toggle" title="显示/隐藏顶棚 (C)">顶棚</button>
@@ -37,6 +38,11 @@
     <aside id="panel" hidden></aside>
     <div id="tooltip" hidden></div>
     <div id="hint">拖动旋转 · 右键/双指平移 · 滚轮缩放 · 点击房间或家具查看说明</div>
+    <button id="pano-entry" class="pano-entry" title="Cycles 路径追踪高清全景">
+      <span class="pe-thumb"><img alt="" /><span class="pe-badge">360°</span></span>
+      <span class="pe-text"><strong>查看高清全景</strong><small>Cycles 实景渲染 · 客餐厅</small></span>
+      <span class="pe-arrow">↗</span>
+    </button>
     <div id="minimap"></div>
     <div id="loading">正在生成材质与模型…</div>
   </div>

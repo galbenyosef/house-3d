@@ -159,7 +159,7 @@ export function createItalianFurniture(THREE, mats, h) {
   const itemBuilders={
     'living-coffee':g=>{
       box(g,.88,.055,.43,ink,0,.034,0,.025);
-      box(g,1.16,.32,.62,stone,0,.221,0,.095);
+      box(g,1.16,.32,.62,stone,0,.221,0,.022);
       book(g,-.22,.406,.045,.25,.05,.19,ink,.05);
       vase(g,.27,.383,-.055,.19);cyl(g,.035,.035,.046,mats.ceramic,.06,.406,.12);
       g.userData.design={family:'italian-stone-monolith'};

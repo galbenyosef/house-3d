@@ -1,5 +1,6 @@
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { HOUSE, ROOMS, WALLS, FOOTPRINT } from './layout.js';
+import { setSurfaceUV } from './surface-uv.js';
 
 /** 米制参数化建筑；按材质合批，剖切几何独立于完整墙体，避免门楣浮空。 */
 export function buildArchitecture(THREE, mats, style='french') {
@@ -18,6 +19,7 @@ export function buildArchitecture(THREE, mats, style='french') {
   const frostedGlass = new THREE.MeshPhysicalMaterial({name:'卫生间磨砂隐私玻璃',color:'#d5ddd4',roughness:.95,metalness:0,transmission:.12,thickness:.018,transparent:false,opacity:1,side:THREE.DoubleSide});
 
   function addGeometry(parent, material, geometry) {
+    setSurfaceUV(geometry, material);
     // 标准化为非索引几何，使圆柱、盒体和线框能在同一材质批次合并。
     if (geometry.index) { const source = geometry; geometry = source.toNonIndexed(); source.dispose(); }
     let byMaterial = batches.get(parent);
@@ -48,6 +50,7 @@ export function buildArchitecture(THREE, mats, style='french') {
   for (const room of ROOMS) {
     const floorMat = ['bathroom','ensuite'].includes(room.id) ? mat('tile') : ['kitchen','balcony',...(italian?['living']:[])].includes(room.id) ? mat('stone') : mat(italian?'smokedWood':'parquet');
     const floor = shapeGeometry(room.polygon); floor.translate(0,.012,0);
+    setSurfaceUV(floor, floorMat);
     const mesh = new THREE.Mesh(floor,floorMat);
     mesh.name = `${room.name} · 地坪`; mesh.receiveShadow = true;
     mesh.userData = {roomId:room.id,architectural:true}; group.add(mesh);

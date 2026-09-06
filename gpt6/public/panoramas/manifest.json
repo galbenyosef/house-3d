@@ -1,0 +1,541 @@
+{
+  "generatedAt": "2026-09-06T07:02:18.376583+00:00",
+  "renderer": "Blender 5.2.1 LTS / Cycles / Metal",
+  "samples": 64,
+  "denoising": true,
+  "colorSpace": "sRGB",
+  "displayTransform": "AgX / sRGB; exposure per room style metadata; disable additional Three.js tone mapping",
+  "interaction": "Select a room, then rotate and zoom at its fixed viewpoint. Use the real-time model to walk or edit materials.",
+  "palette": "burgundy",
+  "light": "day",
+  "viewpoints": [
+    {
+      "id": "living",
+      "name": "客餐厅",
+      "camera": [
+        0.82,
+        1.64,
+        9.9
+      ],
+      "target": [
+        3.45,
+        1.08,
+        12.55
+      ],
+      "centerHeadingThree": [
+        2.6300000000000003,
+        0,
+        2.6500000000000004
+      ],
+      "initialPitchDegrees": -8.53,
+      "styles": {
+        "french": {
+          "url": "panoramas/french-living-8k.jpg",
+          "preview": "panoramas/french-living-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 3493735,
+          "sha256": "bc12e6a7d7c934a549cc960c323b9bf9d640da1944be09f9237fd2aa01fa2931",
+          "mobileUrl": "panoramas/french-living.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 1079217,
+          "mobileSha256": "e8713e5df5bce4980a10f06f91c91258639690e59e610b8d9f8813bfda96dd57"
+        },
+        "italian": {
+          "url": "panoramas/italian-living-8k.jpg",
+          "preview": "panoramas/italian-living-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 3606314,
+          "sha256": "fc04abe2bf5f5d330ab93589c651945bc03276cddbbb06739ab19f3bd435a1c1",
+          "mobileUrl": "panoramas/italian-living.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 1098935,
+          "mobileSha256": "de95c80a4e912bbe7c5302342d854df5cb7b0f6e868e0a318c1c4ee43509ad4e"
+        }
+      }
+    },
+    {
+      "id": "master",
+      "name": "主卧",
+      "camera": [
+        4.83,
+        1.62,
+        14.05
+      ],
+      "target": [
+        6.58,
+        1.08,
+        11.4
+      ],
+      "centerHeadingThree": [
+        1.75,
+        0,
+        -2.6500000000000004
+      ],
+      "initialPitchDegrees": -9.65,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-master-8k.jpg",
+          "preview": "panoramas/italian-master-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2187848,
+          "sha256": "408a417b5647eb7e9bfde2f4f2e3ca71d1faa63ba47a7e5470ce6b19baf59c68",
+          "mobileUrl": "panoramas/italian-master.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 493230,
+          "mobileSha256": "692f5965456ab744df809fbe7aa77557b119e1b513574ff8979fe89685094ab1",
+          "previewSha256": "73d8e3f0ce7db4ea03e2a7327a5dde2c96302a8a1b8adf7b3baf5d20c10d8064",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/master/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-master-8k.jpg",
+          "preview": "panoramas/french-master-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2920921,
+          "sha256": "b15d31aeb7fd7d7fba51895ab4cb6bc2807fa589bb3c26576714de6d1c6a3284",
+          "mobileUrl": "panoramas/french-master.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 689590,
+          "mobileSha256": "1474d253d92494908df8df9b2d193d0695eefafeb4eeac79fe74afafce0bb9a7",
+          "previewSha256": "7b3575b6325c58d5fe8b9387d3b55ab4744e0b390f8e457d6310c3c2dc2e8093",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/master/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "bedroom2",
+      "name": "次卧 2",
+      "camera": [
+        4.77,
+        1.56,
+        8.14
+      ],
+      "target": [
+        6.65,
+        1,
+        6.03
+      ],
+      "centerHeadingThree": [
+        1.8800000000000008,
+        0,
+        -2.1100000000000003
+      ],
+      "initialPitchDegrees": -11.208,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-bedroom2-8k.jpg",
+          "preview": "panoramas/italian-bedroom2-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2062042,
+          "sha256": "cf034ac1fbaf555a2d742976b17ebb0ddb668e54f8efaa0261e363a1d963d775",
+          "mobileUrl": "panoramas/italian-bedroom2.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 447687,
+          "mobileSha256": "424c5e8704d35d77908e306049e9aad9c514f3cc679fc5599f9a906a1793f473",
+          "previewSha256": "8d7def3d4d02275b5189271b9cba43deb7debdaaa23b56f758165b0f02cc2816",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/bedroom2/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-bedroom2-8k.jpg",
+          "preview": "panoramas/french-bedroom2-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2924084,
+          "sha256": "40740e6fd2d50f1233156306210ef700995059919968899cb91b8d4343ba1b0a",
+          "mobileUrl": "panoramas/french-bedroom2.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 696298,
+          "mobileSha256": "43d9d10c473a992a522fe83c2533f17eb6bb0877e0f6f68cf869ef202370649b",
+          "previewSha256": "9fd8f7e7685654653fd032c68742215c17ecbf2ce8be99ecafc6acecbd4b304b",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/bedroom2/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "bedroom1",
+      "name": "次卧 1",
+      "camera": [
+        5.3,
+        1.54,
+        3.05
+      ],
+      "target": [
+        7.23,
+        1.02,
+        1.26
+      ],
+      "centerHeadingThree": [
+        1.9300000000000006,
+        0,
+        -1.7899999999999998
+      ],
+      "initialPitchDegrees": -11.175,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-bedroom1-8k.jpg",
+          "preview": "panoramas/italian-bedroom1-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 1568860,
+          "sha256": "49af63ff86770cd5f9addce5ae04e4e9f4901db0fd805cd208f06d78dbff5388",
+          "mobileUrl": "panoramas/italian-bedroom1.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 323651,
+          "mobileSha256": "46913c3eb66efe7daf2b4b2a3c5f5f8e6b803fc4b69847c85ac02bc35b55edcc",
+          "previewSha256": "225be364d154aef4acf8d8310f57207319f2e172e33fed23540fb05377871dcf",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/bedroom1/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-bedroom1-8k.jpg",
+          "preview": "panoramas/french-bedroom1-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2733176,
+          "sha256": "74010fc03dc2e045cb1ba58674c189e72f05d10637c71a4e1ffc3666ab6afebb",
+          "mobileUrl": "panoramas/french-bedroom1.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 615034,
+          "mobileSha256": "d3ae9dbdb5a7e1ff18ed2c62fd8530c7bd452448a32f450bd12dcd87d0b950b7",
+          "previewSha256": "4f189cd63dee893b9538ec7b948fb50efff0511236b517b210a8c941c8bab7e3",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/bedroom1/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "study",
+      "name": "榻榻米 / 书房",
+      "camera": [
+        4.18,
+        1.52,
+        3.04
+      ],
+      "target": [
+        2.55,
+        1,
+        1.11
+      ],
+      "centerHeadingThree": [
+        -1.63,
+        0,
+        -1.93
+      ],
+      "initialPitchDegrees": -11.631,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-study-8k.jpg",
+          "preview": "panoramas/italian-study-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 1467052,
+          "sha256": "e08d4facd8d4fd11460f22cdc309fac72585999fbc378738f33ebca9baf7e5ed",
+          "mobileUrl": "panoramas/italian-study.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 297665,
+          "mobileSha256": "fb1ba3ffa38515b564ee24259e531015d1c4dcf470180d23e625713101bf7787",
+          "previewSha256": "e3af0997cafe097743914407e6995438cd89cb57019791004b6b4177442bfd1d",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/study/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-study-8k.jpg",
+          "preview": "panoramas/french-study-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2139797,
+          "sha256": "bae9cd635363780d9b74101ef7e07a02936051f752a1cefe09998d004417ed38",
+          "mobileUrl": "panoramas/french-study.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 485763,
+          "mobileSha256": "1dfcd479c65c6cd0e4c0600741cb020bfecc85f22988519b3daf9377ce1ebf3c",
+          "previewSha256": "01f75c4828be219fa46e81f602ed5c44d9da5b6a250774c529aef20422c85c40",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/study/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "kitchen",
+      "name": "厨房",
+      "camera": [
+        1.8,
+        1.56,
+        5.34
+      ],
+      "target": [
+        1.04,
+        1.04,
+        3.5
+      ],
+      "centerHeadingThree": [
+        -0.76,
+        0,
+        -1.8399999999999999
+      ],
+      "initialPitchDegrees": -14.639,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-kitchen-8k.jpg",
+          "preview": "panoramas/italian-kitchen-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 3002645,
+          "sha256": "9835fcfa2eba31504855aafa8c15e95fd7eb7aaa80599b434fd306df910332f8",
+          "mobileUrl": "panoramas/italian-kitchen.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 678156,
+          "mobileSha256": "2beedde603a04ab72ea8cf3475c738ff13b5972a8589e66974c1c68651127955",
+          "previewSha256": "69d5a29418912ab8b1823a2b6b781140c834d38ceab9fe4bc808a9f758aac149",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/kitchen/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-kitchen-8k.jpg",
+          "preview": "panoramas/french-kitchen-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2779861,
+          "sha256": "16f5998889a6c6d51186b13f54a022c4e6fb80732b1fdfa5e34a568132d10bf7",
+          "mobileUrl": "panoramas/french-kitchen.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 658255,
+          "mobileSha256": "cd56b96a6c5f852f212159f6f2963bf632085a2277be0a002a94c2f0c00e3876",
+          "previewSha256": "10a3310f11ca6bc7181ca78fd0a004905f8a98af9a5f78f5cc16e26e82010e45",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/kitchen/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "bathroom",
+      "name": "公卫",
+      "camera": [
+        6.6,
+        1.52,
+        4.23
+      ],
+      "target": [
+        7.35,
+        1.04,
+        4.65
+      ],
+      "centerHeadingThree": [
+        0.75,
+        0,
+        0.41999999999999993
+      ],
+      "initialPitchDegrees": -29.179,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-bathroom-8k.jpg",
+          "preview": "panoramas/italian-bathroom-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2627076,
+          "sha256": "1626bd286426b656b86c601a54b06eac52d9d55cd08a75dfbb8e890d558341fa",
+          "mobileUrl": "panoramas/italian-bathroom.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 580821,
+          "mobileSha256": "062b76df6d2a6786b4ed64934145133278c858a65e0527f436b63b6ee7098b02",
+          "previewSha256": "5b095e24b0692ab4892bab031be14885e755657b88b804dc364c055c1e851a38",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/bathroom/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-bathroom-8k.jpg",
+          "preview": "panoramas/french-bathroom-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2803410,
+          "sha256": "f74e13e1a4defb301989ad6152ab031e86a04ad041fea3fca0ef9a7f8ee7dcb8",
+          "mobileUrl": "panoramas/french-bathroom.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 677838,
+          "mobileSha256": "641271790a8c11b5c02519530dd7485024a78bfaa90bc9dcbb9cf4e109276281",
+          "previewSha256": "d8070872dd2b92d12132c66b6bb1d60d6d2bd34defb8b219873129695da701f9",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/bathroom/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "ensuite",
+      "name": "主卫",
+      "camera": [
+        5.88,
+        1.52,
+        9.63
+      ],
+      "target": [
+        7.33,
+        1,
+        9.6
+      ],
+      "centerHeadingThree": [
+        1.4500000000000002,
+        0,
+        -0.030000000000001137
+      ],
+      "initialPitchDegrees": -19.725,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-ensuite-8k.jpg",
+          "preview": "panoramas/italian-ensuite-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2654000,
+          "sha256": "10089a216575a041554d3204172cc28c36fa3066d45c87d2fdb8a178ff5485be",
+          "mobileUrl": "panoramas/italian-ensuite.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 620868,
+          "mobileSha256": "592eee15f6cf42ffe4db0d0967f3f6b0399589bb461662c0fe87dce2bbc96b5a",
+          "previewSha256": "b2f97b3497d627d5e5a84797b804ddba65b0a73052b04ba1116eca3708672eb2",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/ensuite/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-ensuite-8k.jpg",
+          "preview": "panoramas/french-ensuite-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2871589,
+          "sha256": "c3ab41460150477e91146b463b09c50c005e7f5a9b48fe4abcd94d2203318d40",
+          "mobileUrl": "panoramas/french-ensuite.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 697187,
+          "mobileSha256": "eb43ad56bf2d27243f4f803d1692c73de2910cbef67fbadb7b1f014422fb5139",
+          "previewSha256": "83e085219b2be7032153f0ccd0908bf26cb11619bc20cd0c30d0945b2cdb266e",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/ensuite/both-20260906T062327Z.json"
+        }
+      }
+    },
+    {
+      "id": "balcony",
+      "name": "阳台",
+      "camera": [
+        5.1,
+        1.55,
+        15.87
+      ],
+      "target": [
+        2.48,
+        1.02,
+        15.17
+      ],
+      "centerHeadingThree": [
+        -2.6199999999999997,
+        0,
+        -0.6999999999999993
+      ],
+      "initialPitchDegrees": -11.058,
+      "styles": {
+        "italian": {
+          "url": "panoramas/italian-balcony-8k.jpg",
+          "preview": "panoramas/italian-balcony-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2905054,
+          "sha256": "3cd62e60e55a1aa47e9206f649e9a2469e758368ec81375181a4ad506048e5cb",
+          "mobileUrl": "panoramas/italian-balcony.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 704320,
+          "mobileSha256": "74abe4df55896ffab0ea97aeda00072ef8b390209a2c094e2246176d4b7efea1",
+          "previewSha256": "f7cb2d0ca19afc532085742034bae15922f9309b36b52eb0f4b427e6a573163c",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/italian/rooms/balcony/both-20260906T060128Z.json"
+        },
+        "french": {
+          "url": "panoramas/french-balcony-8k.jpg",
+          "preview": "panoramas/french-balcony-preview.jpg",
+          "width": 8192,
+          "height": 4096,
+          "bytes": 2758981,
+          "sha256": "b16a00bda7dbef929e2954aaf284d81716a7205050644e76a83024b3fc352bd3",
+          "mobileUrl": "panoramas/french-balcony.jpg",
+          "mobileWidth": 4096,
+          "mobileHeight": 2048,
+          "mobileBytes": 674650,
+          "mobileSha256": "0e49b6e0bb45ab0ff24e5d357fecaae6751e144239c5e1378a6e87c7f4fc4141",
+          "previewSha256": "8758debbc2fd7efe56fe50db2012c05405e5dc0af026df19a325af21ef628608",
+          "samples": 64,
+          "adaptiveThreshold": 0.03,
+          "exposure": 0.30000001192092896,
+          "mobileSource": "Blender downsample of the finished 8K JPEG",
+          "record": "artifacts/cycles/french/rooms/balcony/both-20260906T062327Z.json"
+        }
+      }
+    }
+  ]
+}

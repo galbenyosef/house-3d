@@ -213,8 +213,11 @@ function buildMaterial(name, orig, M) {
     case 'leaf_green': case 'leaf_olive': return new THREE.MeshStandardMaterial({ color, roughness: 0.65, side: THREE.DoubleSide });
     default: break;
   }
-  if (/^leather/.test(name)) return new THREE.MeshStandardMaterial({ color, roughness: 0.55, bumpMap: M.linenBump, bumpScale: 0.08 });
-  if (FABRIC.test(name)) return new THREE.MeshStandardMaterial({ color, roughness: 0.96, bumpMap: M.linenBump, bumpScale: 0.22 });
+  if (/^leather/.test(name)) return new THREE.MeshPhysicalMaterial({ color, roughness: 0.5, bumpMap: M.linenBump, bumpScale: 0.06, clearcoat: 0.25, clearcoatRoughness: 0.5 });
+  if (/^velvet/.test(name)) return new THREE.MeshPhysicalMaterial({ color, roughness: 0.9, bumpMap: M.linenBump, bumpScale: 0.15, sheen: 1.0, sheenRoughness: 0.45, sheenColor: color.clone().lerp(new THREE.Color(0xffffff), 0.45) });
+  if (/^boucle/.test(name)) return new THREE.MeshPhysicalMaterial({ color, roughness: 1.0, bumpMap: M.linenBump, bumpScale: 0.4, sheen: 0.5, sheenRoughness: 0.8, sheenColor: color.clone() });
+  if (FABRIC.test(name)) return new THREE.MeshPhysicalMaterial({ color, roughness: 0.96, bumpMap: M.linenBump, bumpScale: 0.22, sheen: 0.25, sheenRoughness: 0.7, sheenColor: color.clone() });
+  if (/^lacquer/.test(name)) return new THREE.MeshPhysicalMaterial({ color, roughness: 0.28, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.12 });
   const m = new THREE.MeshStandardMaterial({ color, roughness: orig.roughness ?? 0.6, metalness: orig.metalness ?? 0 });
   if (m.metalness > 0.5) m.envMapIntensity = 1.4;
   if (/paint|oak|walnut|ebony|ivory|plaster|stone/.test(name)) { m.bumpMap = M.plasterBump; m.bumpScale = 0.04; }
@@ -251,7 +254,7 @@ export async function buildFurnishings(M, style, onProgress = () => {}) {
           if (!geomCache.has(key)) geomCache.set(key, boxUV(o.geometry, tile));
           o.geometry = geomCache.get(key);
         }
-        if (!matCache.has(mname)) matCache.set(mname, buildMaterial(mname, o.material, M));
+        if (!matCache.has(mname)) { const bm = buildMaterial(mname, o.material, M); if (!bm.name) bm.name = mname; matCache.set(mname, bm); }
         o.material = matCache.get(mname);
         o.castShadow = !(mname === 'glass' || mname === 'crystal');
         o.receiveShadow = true;

@@ -515,6 +515,39 @@ export function booksCanvas(size = 512) {
   return c;
 }
 
+// ------------------------------------------------------------- sky equirect
+export function skyCanvas({ w = 2048, h = 1024, sunAz = 0.62, sunEl = 0.55 } = {}) {
+  const c = canvas(w);
+  c.width = w; c.height = h;
+  const ctx = c.getContext('2d');
+  const img = ctx.createImageData(w, h);
+  const d = img.data;
+  const sx = Math.cos(sunEl) * Math.sin(sunAz), sy = Math.sin(sunEl), sz = Math.cos(sunEl) * Math.cos(sunAz);
+  for (let y = 0; y < h; y++) {
+    const v = y / h;              // 0 top (zenith) -> 1 bottom (nadir)
+    const el = (0.5 - v) * Math.PI;
+    for (let x = 0; x < w; x++) {
+      const az = (x / w) * Math.PI * 2;
+      const dx = Math.cos(el) * Math.sin(az), dy = Math.sin(el), dz = Math.cos(el) * Math.cos(az);
+      const cosSun = dx * sx + dy * sy + dz * sz;
+      let r, g, b;
+      if (el > 0) {
+        const t = Math.pow(Math.max(0, el / (Math.PI / 2)), 0.55);
+        r = lerp(236, 118, t); g = lerp(232, 158, t); b = lerp(226, 210, t);
+        const glow = Math.pow(Math.max(0, cosSun), 8) * 0.55 + Math.pow(Math.max(0, cosSun), 300) * 4;
+        r += glow * 255; g += glow * 235; b += glow * 200;
+      } else {
+        const t = Math.min(1, -el / (Math.PI / 2));
+        r = lerp(214, 132, t); g = lerp(206, 124, t); b = lerp(194, 112, t);
+      }
+      const i = (y * w + x) * 4;
+      d[i] = Math.min(255, r); d[i + 1] = Math.min(255, g); d[i + 2] = Math.min(255, b); d[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  return c;
+}
+
 // --------------------------------------------------------- material factory
 export function makeMaterials() {
   const herring = herringboneTexture();
@@ -536,7 +569,7 @@ export function makeMaterials() {
     map: herringTex, bumpMap: herringBump, bumpScale: 0.6, roughness: 0.55, metalness: 0,
   });
   M.herringbone.userData.metresPerTile = 3.4;
-  M.marbleCheck = new THREE.MeshStandardMaterial({ map: toTexture(marbleCheck), roughness: 0.25, metalness: 0 });
+  M.marbleCheck = new THREE.MeshPhysicalMaterial({ map: toTexture(marbleCheck), roughness: 0.3, metalness: 0, clearcoat: 0.5, clearcoatRoughness: 0.2 });
   M.marbleCheck.userData.metresPerTile = 1.2;
   M.tileBW = new THREE.MeshStandardMaterial({ map: toTexture(cabochon), roughness: 0.3, metalness: 0 });
   M.tileBW.userData.metresPerTile = 1.2;
@@ -578,7 +611,7 @@ export function makeMaterials() {
   const veneer = plankTexture({ planks: 1, joints: false, tone: [0x6a4832, 0x4a3122], seed: 9 });
   M.walnutVeneer = new THREE.MeshStandardMaterial({ map: toTexture(veneer), roughness: 0.45 });
   M.walnutVeneer.userData.metresPerTile = 1.2;
-  M.marbleGrey = new THREE.MeshStandardMaterial({ map: toTexture(stoneTileCanvas()), roughness: 0.22 });
+  M.marbleGrey = new THREE.MeshPhysicalMaterial({ map: toTexture(stoneTileCanvas()), roughness: 0.22, clearcoat: 0.6, clearcoatRoughness: 0.15 });
   M.marbleGrey.userData.metresPerTile = 1.6;
   M.marbleGreySlab = new THREE.MeshStandardMaterial({ map: toTexture(marbleCanvas({ base: 0x56565a, vein: 0xd8d8d8, vein2: 0x9a9a9c, seed: 21, scale: 2.5 })), roughness: 0.2 });
   M.marbleGreySlab.userData.metresPerTile = 2.4;
@@ -602,7 +635,7 @@ export function makeMaterials() {
   M.abstract = (seed) => new THREE.MeshStandardMaterial({ map: toTexture(abstractCanvas(seed)), roughness: 0.85 });
   M.cove = new THREE.MeshStandardMaterial({ color: 0xfff1d8, emissive: 0xffd9a8, emissiveIntensity: 2.2, roughness: 1 });
   // polished large-format marble for the Italian living areas
-  M.marbleBeige = new THREE.MeshStandardMaterial({ map: toTexture(stoneTileCanvas({ base: 0xcdc3b3, vein: 0x8a7a68, vein2: 0xb3a290, seed: 51, joint: '#b3a898' })), roughness: 0.12, envMapIntensity: 1.3 });
+  M.marbleBeige = new THREE.MeshPhysicalMaterial({ map: toTexture(stoneTileCanvas({ base: 0xcdc3b3, vein: 0x8a7a68, vein2: 0xb3a290, seed: 51, joint: '#b3a898' })), roughness: 0.18, envMapIntensity: 1.2, clearcoat: 0.9, clearcoatRoughness: 0.12 });
   M.marbleBeige.userData.metresPerTile = 1.6;
   const smoked = plankTexture({ tone: [0x4f3d2f, 0x33261c], seed: 13 });
   M.oakSmoked = new THREE.MeshStandardMaterial({ map: toTexture(smoked), bumpMap: toTexture(smoked, { color: false }), bumpScale: 0.3, roughness: 0.5 });
@@ -626,6 +659,7 @@ export function makeMaterials() {
     return new THREE.MeshStandardMaterial({ map: t, roughness: 1, bumpMap: linenBump, bumpScale: 0.3 });
   };
   M.abstractDark = (seed) => new THREE.MeshStandardMaterial({ map: toTexture(abstractDarkCanvas(seed)), roughness: 0.7 });
+  for (const [k, v] of Object.entries(M)) if (v && v.isMaterial && !v.name) v.name = k;
   M.linenBump = linenBump;
   M.plasterBump = plasterBump;
   M.rug = (variant = 0) => {

@@ -1,6 +1,7 @@
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { createItalianFurniture, ITALIAN_SPECS } from './italian-furniture.js';
+import { setSurfaceUV } from './surface-uv.js';
 
 // All dimensions are in metres. Geometry is deterministic and can be rebuilt without a DCC application.
 export function buildFurniture(THREE, mats, style = 'french') {
@@ -29,6 +30,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
   const registered = new Set();
   const italian = isItalian ? createItalianFurniture(THREE,mats,{box,cyl,sphere,bar,mesh,cushion,book,vase,ivory,linen,wine,moss,ink,mirror,pages}) : null;
   function mesh(g, geo, mat, p = [0,0,0], r = [0,0,0], s = [1,1,1]) {
+    setSurfaceUV(geo, mat, s);
     const o = new THREE.Mesh(geo, mat); o.position.set(...p); o.rotation.set(...r); o.scale.set(...s);
     o.castShadow = mat !== mats.glass && !(mat.transparent && mat.opacity < .3); o.receiveShadow = true; g.add(o); return o;
   }
@@ -95,9 +97,27 @@ export function buildFurniture(THREE, mats, style = 'french') {
   }
   function cushion(g,x,y,z,w,h,d,mat,rx=0,rz=0) {
     const c=new THREE.Group(); c.position.set(x,y,z); c.rotation.set(rx,0,rz); g.add(c);
-    box(c,w,h,d,mat,0,0,0,Math.min(.075,h*.38));
+    const geo=new RoundedBoxGeometry(w,h,d,5,Math.min(.075,h*.38));
+    const pos=geo.attributes.position;
+    // Shallow inward gathering along the seams; preserve the measured envelope.
+    for(let i=0;i<pos.count;i++) {
+      const px=pos.getX(i),py=pos.getY(i),pz=pos.getZ(i);
+      const upright=d<h,u=px/(w/2),v=upright?py/(h/2):pz/(d/2);
+      const edge=Math.max(Math.abs(u),Math.abs(v)),axis=upright?pz:py;
+      const gather=upright
+        ?.009*Math.pow(edge,3)+.003*Math.pow(edge,4)*(1+Math.sin(u*31+v*13))*.5
+        :.001*Math.pow(edge,4)*(1+Math.sin(u*31+v*13))*.5;
+      const inset=Math.sign(axis)*Math.min(Math.abs(axis)*.20,gather);
+      if(upright)pos.setZ(i,pz-inset);else pos.setY(i,py-inset);
+    }
+    // Keep the rounded box's continuous normals; non-indexed recomputation
+    // would turn each tiny upholstery triangle into a hard specular facet.
+    mesh(c,geo,mat);
     if(h<d) stitch(c,0,h/2-.004,0,w-.025,d-.025,mat);
-    else {frame(c,0,0,d/2-.001,w-.045,h-.045,mat,.007);}
+    else {
+      const a=w/2-.012,b=h/2-.012,k=.04;
+      tube(c,[[-a+k,-b,0],[a-k,-b,0],[a,-b+k,0],[a,b-k,0],[a-k,b,0],[-a+k,b,0],[-a,b-k,0],[-a,-b+k,0]],.0015,mat,true);
+    }
     return c;
   }
   function vase(g,x,y,z,s=.2,flowers=false) {
@@ -152,7 +172,22 @@ export function buildFurniture(THREE, mats, style = 'french') {
       tube(g,[[x,.63,.39],[x+side*.024,.77,.24],[x,.77,-.12],[x,.85,-.31]],.008,mats.brass);
     }
     cushion(g,-.83,.76,.0,.41,.41,.14,ivory,-.13,-.18); cushion(g,.82,.74,.0,.43,.40,.14,moss,-.10,.16);
-    box(g,.48,.012,.57,linen,.45,.584,.16,.03); box(g,.48,.31,.012,linen,.45,.44,.441,.008);
+    const profile=new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0,.593,-.125),new THREE.Vector3(0,.596,.18),
+      new THREE.Vector3(0,.588,.377),new THREE.Vector3(0,.551,.439),
+      new THREE.Vector3(0,.422,.450),new THREE.Vector3(0,.286,.449),
+    ]);
+    const vertices=[],indices=[],uvs=[],across=24,along=40;
+    for(let j=0;j<=along;j++)for(let i=0;i<=across;i++) {
+      const u=i/across,t=j/along,p=profile.getPoint(t);
+      const fold=Math.sin(u*Math.PI*10+t*.8)*.004+Math.sin(u*Math.PI*18-t)*.0015;
+      const vertical=THREE.MathUtils.smoothstep(t,.42,.75);
+      vertices.push(.45+(u-.5)*.48,p.y+fold*(1-vertical),p.z+fold*vertical);
+      uvs.push(u*.48,t*.85);
+      if(j<along&&i<across){const a=j*(across+1)+i,b=a+across+1;indices.push(a,b,a+1,b,b+1,a+1);}
+    }
+    const drape=new THREE.BufferGeometry();drape.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));drape.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));drape.setIndex(indices);drape.computeVertexNormals();
+    const cloth=linen.clone();cloth.side=THREE.DoubleSide;mesh(g,drape,cloth);
   }
   function caneChair(g,scale=1,upholstery=ivory) {
     if(isItalian) return italian.helpers.caneChair(g,scale,moss);

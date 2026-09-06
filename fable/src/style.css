@@ -44,7 +44,7 @@ button.toggle.on { background: var(--ink); color: #fff; border-color: var(--ink)
 #panel .close { position: absolute; top: 10px; right: 10px; padding: 2px 8px; }
 #tooltip { position: absolute; background: rgba(43,38,32,0.9); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; pointer-events: none; white-space: nowrap; transform: translate(12px, 12px); }
 #tooltip small { opacity: 0.7; }
-#hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 6px 14px; border-radius: 20px; font-size: 12px; opacity: 0.85; border: 1px solid var(--line); }
+#hint { position: absolute; bottom: 104px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 6px 14px; border-radius: 20px; font-size: 12px; opacity: 0.85; border: 1px solid var(--line); }
 #minimap { position: absolute; left: 16px; top: 96px; width: 204px; background: var(--paper); border-radius: 10px; padding: 8px 10px 10px; border: 1px solid var(--line); box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
 #minimap .mm-title { font-size: 11px; letter-spacing: 0.12em; opacity: 0.6; margin-bottom: 6px; }
 #minimap .mm-title span { letter-spacing: 0; opacity: 1; color: var(--gold); }
@@ -96,3 +96,52 @@ body.walking #titlebar, body.walking #rooms, body.walking #minimap, body.walking
 }
 
 [hidden] { display: none !important; }
+
+/* ---- 高清全景 ---- */
+#pano { position: absolute; inset: 0; background: #0f0e0d; color: #f3efe8; display: grid; grid-template-rows: auto auto 1fr auto; z-index: 20; }
+#pano header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px 6px; }
+#pano header small { font-size: 10px; letter-spacing: 0.22em; opacity: 0.55; }
+#pano header h2 { margin: 2px 0 0; font-family: var(--serif); font-weight: 500; font-size: 22px; }
+#pano .pano-close { background: transparent; color: #f3efe8; border-color: rgba(255,255,255,0.25); }
+#pano .pano-rooms { display: flex; gap: 6px; padding: 4px 20px 10px; overflow-x: auto; }
+#pano .pano-rooms button, #pano .pano-styles button { background: rgba(255,255,255,0.08); color: #f3efe8; border-color: rgba(255,255,255,0.14); }
+#pano .pano-rooms button.on, #pano .pano-styles button.on { background: var(--gold); border-color: var(--gold); color: #1b1815; }
+#pano .pano-canvas { position: relative; overflow: hidden; cursor: grab; touch-action: none; min-height: 0; }
+#pano .pano-canvas canvas { display: block; width: 100% !important; height: 100% !important; }
+#pano .pano-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 20px 14px; flex-wrap: wrap; }
+#pano .pano-styles { display: flex; gap: 6px; }
+#pano .pano-status { font-size: 12px; opacity: 0.7; }
+#pano .pano-toolbar > div:last-child { display: flex; gap: 6px; }
+#pano .pano-toolbar > div:last-child button { background: rgba(255,255,255,0.08); color: #f3efe8; border-color: rgba(255,255,255,0.14); }
+#toolbar button[data-action="pano"] { background: var(--gold); color: #1b1815; border-color: var(--gold); font-weight: 600; }
+@media (max-width: 760px) {
+  #pano header { padding: 10px 12px 4px; }
+  #pano .pano-rooms { padding: 4px 12px 8px; }
+  #pano .pano-toolbar { padding: 8px 12px calc(10px + env(safe-area-inset-bottom)); }
+}
+
+/* ---- prominent panorama entry ---- */
+.pano-entry { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 8px 18px 8px 8px; border-radius: 14px; background: linear-gradient(135deg, #2b2620, #4a3f31); color: #f6f0e4; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 12px 34px rgba(43,38,32,0.35); cursor: pointer; text-align: left; animation: pe-pulse 2.4s ease-out 3; }
+.pano-entry:hover { border-color: var(--gold); transform: translateX(-50%) translateY(-1px); }
+.pano-entry .pe-thumb { position: relative; width: 132px; height: 66px; border-radius: 9px; overflow: hidden; background: #1a1714; flex: 0 0 auto; }
+.pano-entry .pe-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pano-entry .pe-badge { position: absolute; left: 6px; bottom: 6px; font-size: 10px; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 999px; background: rgba(0,0,0,0.55); color: #ffe9b8; border: 1px solid rgba(255,233,184,0.5); }
+.pano-entry .pe-text { display: flex; flex-direction: column; gap: 2px; }
+.pano-entry .pe-text strong { font-family: var(--serif); font-weight: 500; font-size: 17px; letter-spacing: 0.06em; }
+.pano-entry .pe-text small { font-size: 11px; opacity: 0.72; }
+.pano-entry .pe-arrow { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: #1b1815; display: grid; place-items: center; font-weight: 700; flex: 0 0 auto; }
+@keyframes pe-pulse { 0% { box-shadow: 0 12px 34px rgba(43,38,32,0.35), 0 0 0 0 rgba(184,146,63,0.55); } 70% { box-shadow: 0 12px 34px rgba(43,38,32,0.35), 0 0 0 16px rgba(184,146,63,0); } 100% { box-shadow: 0 12px 34px rgba(43,38,32,0.35), 0 0 0 0 rgba(184,146,63,0); } }
+body.walking .pano-entry, body.pano-open .pano-entry, body.pano-open #hint { display: none; }
+#panel .panel-pano { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px; margin: 0 0 12px; border-radius: 10px; background: #2b2620; color: #f6f0e4; border: 1px solid rgba(0,0,0,0.2); text-align: left; }
+#panel .panel-pano img { width: 96px; height: 48px; object-fit: cover; border-radius: 6px; }
+#panel .panel-pano span { font-size: 13px; }
+#panel .panel-pano span small { display: block; opacity: 0.65; font-size: 11px; margin-top: 2px; }
+#panel .panel-pano:hover { border-color: var(--gold); }
+@media (max-width: 760px) {
+  .pano-entry { left: 8px; right: 8px; transform: none; bottom: calc(62px + env(safe-area-inset-bottom)); padding: 6px 12px 6px 6px; gap: 10px; border-radius: 12px; }
+  .pano-entry:hover { transform: none; }
+  .pano-entry .pe-thumb { width: 96px; height: 52px; }
+  .pano-entry .pe-text strong { font-size: 15px; }
+  .pano-entry .pe-arrow { width: 30px; height: 30px; }
+  #panel { bottom: 132px; max-height: 40vh; }
+}

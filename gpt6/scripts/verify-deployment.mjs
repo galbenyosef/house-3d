@@ -15,11 +15,19 @@ async function filesAt(directory, prefix = '') {
   }
   return files;
 }
-const checks = await Promise.allSettled((await filesAt('dist')).sort().map(async file => {
-  const local = await readFile('dist/' + file);
-  const { stdout } = await run('curl', ['--noproxy', '*', '-fsS', '--connect-timeout', '10', '--max-time', '30', base + file], { encoding: 'buffer', maxBuffer: 10 * 1024 * 1024 });
-  if (!local.equals(stdout)) throw new Error(file + ': deployed bytes differ');
-  return { file, bytes: local.length, sha256: sha256(local), match: true };
+const files = (await filesAt('dist')).sort(), checks = [];
+let nextFile = 0;
+// Keep large panorama / SPZ checks from saturating the shared server uplink.
+await Promise.all(Array.from({length: 3}, async () => {
+  while (nextFile < files.length) {
+    const index = nextFile++, file = files[index];
+    try {
+      const local = await readFile('dist/' + file);
+      const { stdout } = await run('curl', ['--noproxy', '*', '--compressed', '-fsS', '--connect-timeout', '10', '--max-time', '120', base + file], { encoding: 'buffer', maxBuffer: Math.max(10 * 1024 * 1024, local.length + 1024) });
+      if (!local.equals(stdout)) throw new Error(file + ': deployed bytes differ');
+      checks[index] = { status: 'fulfilled', value: {file, bytes: local.length, sha256: sha256(local), match: true} };
+    } catch (error) { checks[index] = {status: 'rejected', reason: error}; }
+  }
 }));
 const results = checks.map(result => result.status === 'fulfilled' ? result.value : { error: result.reason.message });
 const report = { checkedAt: new Date().toISOString(), base, results };

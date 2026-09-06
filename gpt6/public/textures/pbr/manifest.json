@@ -1,0 +1,172 @@
+{
+  "license": "CC0-1.0",
+  "licenseUrls": [
+    "https://polyhaven.com/license",
+    "https://docs.ambientcg.com/license/"
+  ],
+  "resolution": "1k",
+  "assets": {
+    "smoked_walnut_veneer": {
+      "id": "smoked_walnut_veneer",
+      "source": "https://polyhaven.com/a/smoked_walnut_veneer",
+      "authors": [
+        "Jenelle van Heerden"
+      ],
+      "scanSizeMillimeters": [
+        1000,
+        1000
+      ],
+      "textures": {
+        "color": {
+          "path": "textures/pbr/smoked_walnut_veneer_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smoked_walnut_veneer/smoked_walnut_veneer_diff_1k.jpg",
+          "bytes": 534484,
+          "sha256": "711773a3f4eb37a5abf073e150b5f570f49b46a8b6f506781b22d54cdf8793c0",
+          "colorSpace": "sRGB",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "normal": {
+          "path": "textures/pbr/smoked_walnut_veneer_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smoked_walnut_veneer/smoked_walnut_veneer_nor_gl_1k.jpg",
+          "bytes": 366348,
+          "sha256": "e1aea3ac8d2d78170025fc24e1a594115dfb184f148ea1b4edf0d05a59dc331a",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "roughness": {
+          "path": "textures/pbr/smoked_walnut_veneer_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smoked_walnut_veneer/smoked_walnut_veneer_rough_1k.jpg",
+          "bytes": 408443,
+          "sha256": "a83e636322d1e71cbe530a70b7f194533bd02d7ee357e685db99a9019bfcc6a4",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        }
+      }
+    },
+    "leather_white": {
+      "id": "leather_white",
+      "source": "https://polyhaven.com/a/leather_white",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "scanSizeMillimeters": [
+        300.00001192092896,
+        300.00001192092896
+      ],
+      "textures": {
+        "normal": {
+          "path": "textures/pbr/leather_white_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/leather_white/leather_white_nor_gl_1k.jpg",
+          "bytes": 670610,
+          "sha256": "51bdac4b76da70dc54c288cffea4ecaf837ebb6ed9264664bf5c9a1fc79aa074",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "roughness": {
+          "path": "textures/pbr/leather_white_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/leather_white/leather_white_rough_1k.jpg",
+          "bytes": 675426,
+          "sha256": "dbae1aeb5f9a2a46f7fe758f38811beb6a109021848462032d9a3cd63f187a66",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        }
+      }
+    },
+    "fabric_pattern_05": {
+      "id": "fabric_pattern_05",
+      "source": "https://polyhaven.com/a/fabric_pattern_05",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "scanSizeMillimeters": [
+        500,
+        499.9999403953552
+      ],
+      "textures": {
+        "normal": {
+          "path": "textures/pbr/fabric_pattern_05_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/fabric_pattern_05/fabric_pattern_05_nor_gl_1k.jpg",
+          "bytes": 903085,
+          "sha256": "caa5a948c768c7173b1d8647aa2618d39b4ec5ba4575820e02fb500dac54596d",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "roughness": {
+          "path": "textures/pbr/fabric_pattern_05_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/fabric_pattern_05/fabric_pattern_05_rough_1k.jpg",
+          "bytes": 438194,
+          "sha256": "e48d14e87a5493bc4ef9bea61e85b4397ec41f93d1c3fd1ac17494475781610e",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        }
+      }
+    },
+    "Marble012": {
+      "id": "Marble012",
+      "source": "https://ambientcg.com/a/Marble012",
+      "authors": [
+        "ambientCG"
+      ],
+      "creationMethod": "PBRProcedural",
+      "sizeMeters": 1.8,
+      "scaleBasis": "design scale; publisher specifies no physical capture size",
+      "archiveUrl": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "archiveBytes": 4672904,
+      "archiveSha256": "b04384c6d49ce73baeb70db7ea4abfe9948fc9b74b9fd92c3766970662bf2c43",
+      "textures": {
+        "color": {
+          "path": "textures/pbr/Marble012_1K-JPG_Color.jpg",
+          "bytes": 1220876,
+          "sha256": "a34b55c889c6b3819d2c351b6409bfd0baf0a0a55b073441850627dfebcdcd1e",
+          "colorSpace": "sRGB",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "normal": {
+          "path": "textures/pbr/Marble012_1K-JPG_NormalGL.jpg",
+          "bytes": 342955,
+          "sha256": "2e9a56525ffbb7e80854b19985a5c921f91192698ea337f4834192479ba0063b",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "roughness": {
+          "path": "textures/pbr/Marble012_1K-JPG_Roughness.jpg",
+          "bytes": 535814,
+          "sha256": "f7afd636d6cca0b470549959c514976186df58ac1013016b6c3919910a6d3a04",
+          "colorSpace": "Non-Color",
+          "resolution": [
+            1024,
+            1024
+          ]
+        }
+      }
+    }
+  },
+  "totalTextureBytes": 6096235
+}
