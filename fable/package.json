@@ -1,6 +1,6 @@
 {
   "name": "maison-francaise",
-  "version": "0.1.0",
+  "version": "0.3.3",
   "private": true,
   "type": "module",
   "description": "Fable 生成的双风格 Three.js 家装方案，供 house-3d 模型效果对比。",

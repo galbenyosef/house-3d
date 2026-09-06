@@ -1,0 +1,269 @@
+{
+  "sourceTaskTitle": "了解视频制作能力",
+  "addedDate": "2026-09-06",
+  "recordingScope": "不同迭代阶段的项目录制快照，并非当前提交的页面验收。",
+  "presentation": "左侧 Fable 5.1，右侧 GPT 6 Astra；同房间、同风格及相近视向，不宣称物理机位完全相同。",
+  "files": [
+    {
+      "path": "videos/house-comparison.mp4",
+      "description": "交互对比",
+      "sourceArtifact": "outputs/house-comparison.mp4",
+      "sizeBytes": 88936830,
+      "sha256": "20c7a6ae5473d22048d9782140be0a67e162c8b4bce88292f9c7916e7ebc03cd",
+      "video": {
+        "codec_name": "h264",
+        "width": 3200,
+        "height": 1800,
+        "r_frame_rate": "30/1",
+        "nb_frames": "5400",
+        "duration": "180.000000"
+      },
+      "audio": {
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "channels": 2,
+        "duration": "180.000000"
+      },
+      "chapters": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 4.0,
+          "title": "同一提示词 · 同视角对比"
+        },
+        {
+          "startSeconds": 4.0,
+          "endSeconds": 16.0,
+          "title": "总览 · 同向旋转"
+        },
+        {
+          "startSeconds": 16.0,
+          "endSeconds": 28.0,
+          "title": "平面 · 同向平移"
+        },
+        {
+          "startSeconds": 28.0,
+          "endSeconds": 34.0,
+          "title": "客餐厅 · 室内环顾"
+        },
+        {
+          "startSeconds": 34.0,
+          "endSeconds": 40.0,
+          "title": "主卧 · 室内环顾"
+        },
+        {
+          "startSeconds": 40.0,
+          "endSeconds": 46.0,
+          "title": "次卧 2 · 室内环顾"
+        },
+        {
+          "startSeconds": 46.0,
+          "endSeconds": 52.0,
+          "title": "次卧 1 · 室内环顾"
+        },
+        {
+          "startSeconds": 52.0,
+          "endSeconds": 58.0,
+          "title": "书房 · 室内环顾"
+        },
+        {
+          "startSeconds": 58.0,
+          "endSeconds": 64.0,
+          "title": "厨房 · 室内环顾"
+        },
+        {
+          "startSeconds": 64.0,
+          "endSeconds": 70.0,
+          "title": "公卫 · 室内环顾"
+        },
+        {
+          "startSeconds": 70.0,
+          "endSeconds": 76.0,
+          "title": "主卫 · 室内环顾"
+        },
+        {
+          "startSeconds": 76.0,
+          "endSeconds": 82.0,
+          "title": "阳台 · 室内环顾"
+        },
+        {
+          "startSeconds": 82.0,
+          "endSeconds": 92.0,
+          "title": "沙发 · 同位点击"
+        },
+        {
+          "startSeconds": 92.0,
+          "endSeconds": 102.0,
+          "title": "主卧床 · 同位点击"
+        },
+        {
+          "startSeconds": 102.0,
+          "endSeconds": 117.0,
+          "title": "同位 WASD 漫游"
+        },
+        {
+          "startSeconds": 117.0,
+          "endSeconds": 129.0,
+          "title": "同位日夜切换"
+        },
+        {
+          "startSeconds": 129.0,
+          "endSeconds": 139.0,
+          "title": "同位滚轮缩放"
+        },
+        {
+          "startSeconds": 139.0,
+          "endSeconds": 153.0,
+          "title": "手机 · 同位漫游"
+        },
+        {
+          "startSeconds": 153.0,
+          "endSeconds": 165.0,
+          "title": "触屏总览 · 旋转与缩放"
+        },
+        {
+          "startSeconds": 165.0,
+          "endSeconds": 175.0,
+          "title": "同机位 PNG 保存"
+        },
+        {
+          "startSeconds": 175.0,
+          "endSeconds": 180.0,
+          "title": "同一提示词 · 两种呈现"
+        }
+      ]
+    },
+    {
+      "path": "videos/house-realistic-comparison-plan-music.mp4",
+      "description": "实景对比，平面图开场与新配乐",
+      "sourceArtifact": "outputs/house-realistic-comparison-plan-music.mp4",
+      "sizeBytes": 80423147,
+      "sha256": "a3bc0e9fc64a8c8af04f5b8f796939c5227ee041dba11aa8a60bdeb4360f396f",
+      "video": {
+        "codec_name": "h264",
+        "width": 3200,
+        "height": 1800,
+        "r_frame_rate": "30/1",
+        "nb_frames": "5400",
+        "duration": "180.000000"
+      },
+      "audio": {
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "channels": 2,
+        "duration": "180.000000"
+      },
+      "chapters": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 11.0,
+          "title": "从平面图进入各个房间"
+        },
+        {
+          "startSeconds": 11.0,
+          "endSeconds": 24.0,
+          "title": "客餐厅 · 法式"
+        },
+        {
+          "startSeconds": 24.0,
+          "endSeconds": 37.0,
+          "title": "客餐厅 · 意式轻奢"
+        },
+        {
+          "startSeconds": 37.0,
+          "endSeconds": 50.0,
+          "title": "主卧 · 法式"
+        },
+        {
+          "startSeconds": 50.0,
+          "endSeconds": 63.0,
+          "title": "主卧 · 意式轻奢"
+        },
+        {
+          "startSeconds": 63.0,
+          "endSeconds": 76.0,
+          "title": "次卧 2 · 法式"
+        },
+        {
+          "startSeconds": 76.0,
+          "endSeconds": 89.0,
+          "title": "次卧 2 · 意式轻奢"
+        },
+        {
+          "startSeconds": 89.0,
+          "endSeconds": 102.0,
+          "title": "书房 · 法式"
+        },
+        {
+          "startSeconds": 102.0,
+          "endSeconds": 115.0,
+          "title": "书房 · 意式轻奢"
+        },
+        {
+          "startSeconds": 115.0,
+          "endSeconds": 128.0,
+          "title": "厨房 · 法式"
+        },
+        {
+          "startSeconds": 128.0,
+          "endSeconds": 141.0,
+          "title": "厨房 · 意式轻奢"
+        },
+        {
+          "startSeconds": 141.0,
+          "endSeconds": 153.0,
+          "title": "同房间 · 切换两种风格"
+        },
+        {
+          "startSeconds": 153.0,
+          "endSeconds": 165.0,
+          "title": "局部细节 · 同步缩放"
+        },
+        {
+          "startSeconds": 165.0,
+          "endSeconds": 177.0,
+          "title": "保存当前实景视角"
+        },
+        {
+          "startSeconds": 177.0,
+          "endSeconds": 180.0,
+          "title": "两个项目 · 两种实景呈现"
+        }
+      ]
+    },
+    {
+      "path": "images/interaction-comparison.jpg",
+      "description": "实时三维客厅配对预览",
+      "sourceArtifact": "outputs/matched-view-preview.jpg",
+      "sizeBytes": 269179,
+      "sha256": "56f4bef72f876d7fa3c89b9ef126129900a9870d3493ca2eab5f9a49cd8f4570"
+    },
+    {
+      "path": "images/floor-plan-comparison.jpg",
+      "description": "最新实景版平面图开场预览",
+      "sourceArtifact": "work/realistic-v2/plan-refresh/composed-plan-preview.jpg",
+      "sizeBytes": 69228,
+      "sha256": "f1c958941cf14191a7f0677d156ea1061023a89568c499122fc52cf695831c55"
+    },
+    {
+      "path": "images/french-living-comparison.png",
+      "description": "法式客餐厅实景配对预览",
+      "sourceArtifact": "work/realistic-v2/design/002-preview.png",
+      "sizeBytes": 283313,
+      "sha256": "d78e8f030c6c93eebaaf4c40de66c9ed69d7f3e6c0ee6b2c430a780d0c01a4d9"
+    },
+    {
+      "path": "images/italian-living-comparison.png",
+      "description": "意式客餐厅实景配对预览",
+      "sourceArtifact": "work/realistic-v2/design/003-preview.png",
+      "sizeBytes": 246608,
+      "sha256": "3df232a399ec66980bc6103d4f41aac78748a149c563a4c147b7ce2171f4e978"
+    }
+  ],
+  "verification": {
+    "date": "2026-09-06",
+    "sourceCopySha256Match": true,
+    "videoMetadataChecked": true,
+    "fullVideoAndAudioDecode": "passed for both MP4 files with ffmpeg -xerror",
+    "previewImagesVisuallyInspected": true
+  }
+}

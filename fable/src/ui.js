@@ -1,10 +1,9 @@
 import { ROOMS, roomArea, rectArea, planBounds, OPENINGS, roomAt } from './plan.js';
 import { SPECS_BY_STYLE } from './specs.js';
+import { PANO_OF_ROOM, panoName } from './pano.js';
 
-const PANO_OF_ROOM = { living: 'living', vestibule: 'master', bed3: 'master', bath2: 'master', bed2: 'bed2', tatami: 'study', kitchen: 'kitchen', bed1: 'bed2', bath1: 'living', balcony: 'living' };
-const PANO_NAME = { living: '客餐厅', lounge: '客厅', master: '主卧', bed2: '次卧 2', study: '书房', kitchen: '厨房' };
 const BASE_URL = (import.meta.env && import.meta.env.BASE_URL) || '/';
-const ROOM_SHORT = { tatami: '书房', bed1: '次卧1', kitchen: '厨房', bath1: '公卫', living: '客餐厅', bed2: '次卧2', vestibule: '', bath2: '主卫', bed3: '主卧', balcony: '阳台' };
+const ROOM_SHORT = { tatami: '榻榻米', bed1: '次卧1', kitchen: '厨房', bath1: '公卫', living: '客餐厅', bed2: '次卧2', vestibule: '', bath2: '主卫', bed3: '主卧', balcony: '阳台' };
 
 export const isTouch = new URLSearchParams(location.search).has('touch') || matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
 
@@ -23,7 +22,7 @@ export function initUI(app) {
   entry.addEventListener('click', () => app.openPanorama({ room: entryRoom }));
   const updateEntry = () => {
     entry.querySelector('img').src = `${BASE_URL}pano/${styleId}-${entryRoom}-preview.jpg`;
-    entry.querySelector('small').textContent = `Cycles 实景渲染 · ${PANO_NAME[entryRoom] || ''} · ${styleId === 'french' ? '法式' : '意式轻奢'}`;
+    entry.querySelector('small').textContent = `Cycles 实景渲染 · ${panoName(entryRoom) || ''} · ${styleId === 'french' ? '法式' : '意式轻奢'}`;
   };
   updateEntry();
   const switchEl = $('#style-switch');
@@ -104,7 +103,7 @@ export function initUI(app) {
     const dims = room.rects[0];
     const items = app.roomItems(room.id);
     const pano = PANO_OF_ROOM[room.id];
-    const banner = pano ? `<button class="panel-pano" data-pano-room="${pano}"><img src="${BASE_URL}pano/${styleId}-${pano}-preview.jpg" alt=""><span>查看${PANO_NAME[pano]}高清全景 ↗<small>Cycles 路径追踪 · 可转头缩放</small></span></button>` : '';
+    const banner = pano ? `<button class="panel-pano" data-pano-room="${pano}"><img src="${BASE_URL}pano/${styleId}-${pano}-preview.jpg" alt=""><span>查看${panoName(pano)}高清全景 ↗<small>Cycles 路径追踪 · 可转头缩放</small></span></button>` : '';
     return `
       <button class="close" data-close>×</button>
       <h2>${spec.title}</h2>
@@ -175,9 +174,9 @@ export function initUI(app) {
       styleId = style.id;
       updateEntry();
       switchEl.querySelectorAll('button').forEach((b) => { b.classList.toggle('on', b.dataset.style === style.id); b.disabled = busy; });
-      $('#title').textContent = `Maison · ${style.name}三居室`;
+      $('#title').textContent = `Maison · ${style.name}四居室`;
       $('#subtitle').textContent = `${style.subtitle} · 8853 × 16375 mm · 约 121 m²`;
-      document.title = `Maison · ${style.name}三居室`;
+      document.title = `Maison · ${style.name}四居室`;
       if (selectedRoom && !panel.hidden) this.showRoom(ROOMS.find((r) => r.id === selectedRoom));
     },
     showRoom(room) {

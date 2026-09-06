@@ -9,10 +9,21 @@ export const PANO_ROOMS = [
   { id: 'living', name: '客餐厅', pitch: -6 },
   { id: 'lounge', name: '客厅', pitch: -6 },
   { id: 'master', name: '主卧', pitch: -8 },
+  { id: 'bed1', name: '次卧 1', pitch: -8 },
   { id: 'bed2', name: '次卧 2', pitch: -8 },
-  { id: 'study', name: '书房', pitch: -8 },
+  { id: 'study', name: '榻榻米房', pitch: -8 },
   { id: 'kitchen', name: '厨房', pitch: -8 },
 ];
+
+// Which panorama each plan room opens. Every bedroom (四室) has its own
+// render; bathrooms, the vestibule and the balcony fall back to the nearest one.
+export const PANO_OF_ROOM = {
+  living: 'living', balcony: 'living', bath1: 'living',
+  bed3: 'master', vestibule: 'master', bath2: 'master',
+  bed1: 'bed1', bed2: 'bed2', tatami: 'study', kitchen: 'kitchen',
+};
+
+export const panoName = (id) => PANO_ROOMS.find((r) => r.id === id)?.name || '';
 
 export function openPanorama(app, { style, room = 'living' } = {}) {
   const overlay = document.createElement('div');

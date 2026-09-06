@@ -18,7 +18,7 @@ import { buildFurnishings } from './furnishings.js';
 import { ROOMS, planBounds, isWalkable, roomArea, rectArea } from './plan.js';
 import { initUI, isTouch } from './ui.js';
 import { STYLES, DEFAULT_STYLE } from './styles.js';
-import { openPanorama } from './pano.js';
+import { openPanorama, PANO_OF_ROOM } from './pano.js';
 
 const S = 0.001;
 const container = document.getElementById('app');
@@ -253,7 +253,7 @@ const app = {
     if (this._pano) return;
     // default to the panorama of the room under the orbit target
     const here = roomAtTarget();
-    const room = opts.room || { living: 'living', vestibule: 'master', bed3: 'master', bath2: 'master', kitchen: 'kitchen', tatami: 'study', bed2: 'bed2', bed1: 'bed2' }[here] || 'living';
+    const room = opts.room || PANO_OF_ROOM[here] || 'living';
     document.body.classList.add('pano-open');
     this._pano = openPanorama(this, { style: style.id, room });
     paused = true;

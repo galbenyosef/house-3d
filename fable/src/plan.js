@@ -34,6 +34,7 @@ export const ROOMS = [
   {
     id: 'tatami',
     name: '榻榻米书房',
+    bedroom: true,
     label: 8.34,
     rects: [
       [1690, 300, 4500, 2784],
@@ -41,7 +42,7 @@ export const ROOMS = [
     ],
     floor: 'wood',
   },
-  { id: 'bed1', name: '次卧1', label: 10.01, rects: [[4700, 300, 7768, 3563]], floor: 'wood' },
+  { id: 'bed1', name: '次卧1', bedroom: true, label: 10.01, rects: [[4700, 300, 7768, 3563]], floor: 'wood' },
   { id: 'kitchen', name: '厨房', label: 7.24, rects: [[240, 2967, 2863, 5727]], floor: 'stone' },
   { id: 'bath1', name: '公卫', label: 3.36, rects: [[5521, 3763, 7768, 5258]], floor: 'wet' },
   {
@@ -58,6 +59,7 @@ export const ROOMS = [
   {
     id: 'bed2',
     name: '次卧2',
+    bedroom: true,
     label: 13.34,
     rects: [[4320, 5458, 7768, 8613]],
     // raised window seat (飘窗), 450 mm high, glazed on the east face
@@ -67,7 +69,7 @@ export const ROOMS = [
   // The 14.88 m² printed for the master bedroom includes this entry lobby.
   { id: 'vestibule', name: '主卧玄关', partOf: 'bed3', rects: [[4320, 8813, 5277, 10521]], floor: 'wood' },
   { id: 'bath2', name: '主卫', label: 4.05, rects: [[5397, 8813, 7768, 10521]], floor: 'wet' },
-  { id: 'bed3', name: '主卧', label: 14.88, rects: [[4320, 10721, 7768, 14367]], floor: 'wood' },
+  { id: 'bed3', name: '主卧', bedroom: true, label: 14.88, rects: [[4320, 10721, 7768, 14367]], floor: 'wood' },
   { id: 'balcony', name: '阳台', label: 10.4, rects: [[240, 14607, 7032, 16135]], floor: 'outdoor' },
 ];
 

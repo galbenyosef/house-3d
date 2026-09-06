@@ -19,8 +19,14 @@
 - `gpt6/public/models/french-chandelier.glb` 和 `italian-pendant.glb` 分别由 `gpt6/scripts/build_chandelier.py`、`build_italian_pendant.py` 生成；相关元数据与预览保存在 `gpt6/artifacts/`。
 - `fable/public/models/` 中的 121 个 GLB 由 `fable/blender/` 下的程序化建模脚本生成，`manifest.json` 记录模型尺寸；这些 GLB 不引用外部图片或外部文件。
 - 两个版本的建筑、其他程序化几何及 Canvas 材质纹理见各自 `src/`。上述项目自有脚本和生成资产随本仓库按 MIT 发布。
-- `gpt6/public/panoramas/` 的 54 张 JPG 和 `fable/public/pano/` 的 24 张 JPG 是各自场景的 Blender Cycles 渲染结果。生成脚本随仓库提供；图中第三方素材保留以下独立权利状态。
+- `gpt6/public/panoramas/` 的 54 张 JPG 和 `fable/public/pano/` 的 28 张 JPG 是各自场景的 Blender Cycles 渲染结果。生成脚本随仓库提供；图中第三方素材保留以下独立权利状态。
 - 模型中的家具样式或名称用于描述外观，不代表品牌原版模型、官方合作、商标许可或产品认证。
+
+## 对比视频与预览图片
+
+`media/` 收录两套项目的录屏剪辑和配对预览图。自有录制、剪辑、版式及原创配乐随本仓库按 MIT 发布；画面中出现的第三方素材仍遵循本文件对应说明，输入户型参考图的权利范围不因被录入视频或截图而改变。
+
+制作记录表明：交互版使用为该视频创作的 80 BPM 钢琴配乐；最新实景版使用另行创作的 96 BPM lounge 配乐 *Rooms in the Afternoon*。乐器音频通过 macOS 系统乐器离线合成，实景版另含程序合成打击声；仓库不分发系统音色库。录制来源、音乐制作方式和文件哈希见 [媒体说明](media/README.md) 与 [媒体清单](media/manifest.json)。
 
 ## 公共领域油画
 

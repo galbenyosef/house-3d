@@ -15,6 +15,25 @@
 
 在线演示由维护者独立部署，后续可能更新；要复现本仓库的特定版本，请检出对应 Git 提交后在本地运行。
 
+## 对比视频与图片
+
+两段视频均为 **3 分钟、3200 × 1800、30 fps**，左侧为 **Fable 5.1**，右侧为 **GPT 6 Astra**。点击封面打开 MP4 文件；也可以下载后播放。
+
+| 实景对比：平面图开场、双风格全景与新配乐 | 交互对比：全屋、漫游、家具与触屏 |
+| --- | --- |
+| [![实景对比视频封面](media/images/floor-plan-comparison.jpg)](media/videos/house-realistic-comparison-plan-music.mp4) | [![交互对比视频封面](media/images/interaction-comparison.jpg)](media/videos/house-comparison.mp4) |
+| [播放 / 下载实景版 MP4（76.7 MiB）](media/videos/house-realistic-comparison-plan-music.mp4) | [播放 / 下载交互版 MP4（84.8 MiB）](media/videos/house-comparison.mp4) |
+
+**法式客餐厅**
+
+![Fable 与 GPT6 的法式客餐厅实景对比](media/images/french-living-comparison.png)
+
+**意式轻奢客餐厅**
+
+![Fable 与 GPT6 的意式轻奢客餐厅实景对比](media/images/italian-living-comparison.png)
+
+这些成片与预览图来自「了解视频制作能力」任务，展示不同迭代阶段的录制结果。实景版按同房间、同风格和相近视向配对，两个项目的固定全景机位并不完全相同。录制早于本次 Fable 0.3.3 同步，画面中的「三居室」「书房」等旧文案保留；视频不代表当前提交的页面验收。文件清单、章节、配乐来源与校验值见 [媒体说明](media/README.md)。
+
 ## 本地运行
 
 需要 **Node.js 20.19+（20.x）或 22.12+**，建议使用 Node.js 24；使用 npm 和支持 WebGL 2 的现代浏览器。两个项目均为纯前端，运行时不调用模型 API，不需要 API Key、后端服务或数据库。预生成的 GLB 与全景 JPG 已包含在仓库内，运行页面无需安装 Blender。
@@ -58,7 +77,7 @@ npm run dev -- --host 127.0.0.1
 | 原项目目录名 | `housegpt` | `house` |
 | 主要实现 | Three.js 程序化建筑与家具、CC0 PBR 材质，独立 Blender 吊灯 | Three.js 建筑与程序化纹理，Blender 家具资产 |
 | 随仓库提供的 GLB | 2 个吊灯模型 | 121 个家具、灯具及设施模型 |
-| Cycles 全景 | 9 个房间 × 2 种风格；8K 桌面、4K 手机及预览，共 54 张 JPG | 6 个视点 × 2 种风格；3072 × 1536 全景及预览，共 24 张 JPG |
+| Cycles 全景 | 9 个房间 × 2 种风格；8K 桌面、4K 手机及预览，共 54 张 JPG | 7 个视点 × 2 种风格；3072 × 1536 全景及预览，共 28 张 JPG |
 | Three.js / Vite（锁文件） | 0.180.0 / 7.3.6 | 0.185.1 / 8.2.2 |
 | 交互 | 房间跳转、室内移动、风格/昼夜/配色切换、家具查看、PNG/CSV/手册导出 | 轨道/俯视/漫游、风格/昼夜切换、天花板/标签开关、家具查看、截图 |
 | 设计资料 | [建筑假设](gpt6/docs/architecture-assumptions.md)、[法式手册](gpt6/docs/复古法式-落地手册.md)、[意式手册](gpt6/docs/意式轻奢-落地手册.md) | [设计与复刻手册](fable/docs/design-spec.md) |
@@ -82,6 +101,7 @@ npm run preview
 ```text
 gpt6/                  GPT6 版本：源码、模型、测试与设计文档
 fable/                 Fable 版本：源码、模型、测试与 Blender 脚本
+media/                 对比成片、预览图片、来源与校验清单
 docs/publication.md    开源整理范围与验证记录
 LICENSE                MIT 许可证
 THIRD_PARTY_NOTICES.md  依赖、素材来源与授权范围
@@ -91,7 +111,7 @@ SECURITY.md             安全问题反馈方式
 
 两套实现独立保留，不共享依赖或场景代码。首次开源整理未改动场景源码、模型和几何测试；整理范围见 [发布记录](docs/publication.md)。
 
-2026-09-06 已同步两版全景、渲染脚本与交互更新，并补充 GPT6 的 PBR 资产来源和 World Labs 历史研究素材边界，详见发布记录的增量同步部分。
+2026-09-06 已同步两版全景、渲染脚本与交互更新，随后同步 Fable 0.3.3 的四卧室全景映射和次卧 1 资产，并收录对比视频与图片；详见 [发布记录](docs/publication.md)。
 
 ## 授权与使用范围
 

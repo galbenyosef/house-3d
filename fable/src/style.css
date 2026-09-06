@@ -103,7 +103,9 @@ body.walking #titlebar, body.walking #rooms, body.walking #minimap, body.walking
 #pano header small { font-size: 10px; letter-spacing: 0.22em; opacity: 0.55; }
 #pano header h2 { margin: 2px 0 0; font-family: var(--serif); font-weight: 500; font-size: 22px; }
 #pano .pano-close { background: transparent; color: #f3efe8; border-color: rgba(255,255,255,0.25); }
-#pano .pano-rooms { display: flex; gap: 6px; padding: 4px 20px 10px; overflow-x: auto; }
+#pano .pano-rooms { display: flex; gap: 6px; padding: 4px 20px 10px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+#pano .pano-rooms::-webkit-scrollbar { display: none; }
+#pano .pano-rooms button { flex: 0 0 auto; white-space: nowrap; } /* 7 room tabs: scroll sideways on phones instead of wrapping the labels */
 #pano .pano-rooms button, #pano .pano-styles button { background: rgba(255,255,255,0.08); color: #f3efe8; border-color: rgba(255,255,255,0.14); }
 #pano .pano-rooms button.on, #pano .pano-styles button.on { background: var(--gold); border-color: var(--gold); color: #1b1815; }
 #pano .pano-canvas { position: relative; overflow: hidden; cursor: grab; touch-action: none; min-height: 0; }
