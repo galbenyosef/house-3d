@@ -103,7 +103,8 @@ gpt6/                  GPT6 版本：源码、模型、测试与设计文档
 fable/                 Fable 版本：源码、模型、测试与 Blender 脚本
 media/                 对比成片、预览图片、来源与校验清单
 docs/publication.md    开源整理范围与验证记录
-LICENSE                MIT 许可证
+LICENSE                Apache License 2.0 许可证
+NOTICE                 项目版权与第三方声明索引
 THIRD_PARTY_NOTICES.md  依赖、素材来源与授权范围
 CONTRIBUTING.md         贡献与对比结果反馈方式
 SECURITY.md             安全问题反馈方式
@@ -115,7 +116,7 @@ SECURITY.md             安全问题反馈方式
 
 ## 授权与使用范围
 
-本仓库自有代码、文档和程序化生成资产采用 [MIT License](LICENSE)。第三方依赖、公共领域油画及输入户型图分别按 [素材与授权说明](THIRD_PARTY_NOTICES.md) 处理；输入参考图不包含在 MIT 授权范围内。
+本仓库自有代码、文档和程序化生成资产采用 [Apache License 2.0](LICENSE)。第三方依赖、公共领域油画及输入户型图分别按 [素材与授权说明](THIRD_PARTY_NOTICES.md) 处理；输入参考图不包含在 Apache-2.0 授权范围内。
 
 项目用于模型效果比较、学习与家装方案展示。房屋尺寸、结构和家具净距含推导与假设，不能直接作为施工、采购或结构安全依据。模型标签与项目中的产品名称不表示官方合作或品牌授权。
 

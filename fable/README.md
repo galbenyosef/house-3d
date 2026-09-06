@@ -107,4 +107,4 @@ BLENDER_BIN=/Applications/Blender.app/Contents/MacOS/Blender bash blender/render
 
 ## 许可证与来源
 
-自有代码、文档和程序化资产适用根目录 [MIT License](../LICENSE)。121 个 GLB（法式 60、意式 61）均有仓库内生成脚本，不引用外部图片或外部 URI；画作、木纹、石纹等由 Canvas 生成。28 张全景及预览 JPG 来自本项目场景的 Blender Cycles 渲染，没有引入外部摄影图片。依赖和素材范围见 [素材与授权说明](../THIRD_PARTY_NOTICES.md)。
+自有代码、文档和程序化资产适用根目录 [Apache License 2.0](../LICENSE)。121 个 GLB（法式 60、意式 61）均有仓库内生成脚本，不引用外部图片或外部 URI；画作、木纹、石纹等由 Canvas 生成。28 张全景及预览 JPG 来自本项目场景的 Blender Cycles 渲染，没有引入外部摄影图片。依赖和素材范围见 [素材与授权说明](../THIRD_PARTY_NOTICES.md)。

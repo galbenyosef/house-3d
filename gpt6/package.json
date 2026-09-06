@@ -18,7 +18,7 @@
     "vite": "^7.1.5"
   },
   "description": "GPT6 生成的双风格 Three.js 家装方案，供 house-3d 模型效果对比。",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },

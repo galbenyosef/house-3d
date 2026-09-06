@@ -2,7 +2,7 @@
 
 本文保留 2026-09-06 原项目的来源研究；价格、接口与账号权限应以官方当前资料为准。原文中的浏览器操作和 `artifacts/` 截图属于开发阶段记录，未随仓库提供，本次同步未重新执行这些步骤。
 
-**开源副本的处理：**未找到官方图书馆测试样例的明确再分发许可，因此不收录原项目本地 `public/worldlabs/` 的 SPZ/GLB。最新主页面已移除 World Labs 入口且不打包 Spark；保留的研究用查看器如自行接入，会从官方 CDN 加载 SPZ，需要联网。该样例不属于 MIT 素材，独立使用请遵循 [World Labs 条款](https://www.worldlabs.ai/terms-of-service)。完整素材范围见[根目录说明](../../THIRD_PARTY_NOTICES.md)。
+**开源副本的处理：**未找到官方图书馆测试样例的明确再分发许可，因此不收录原项目本地 `public/worldlabs/` 的 SPZ/GLB。最新主页面已移除 World Labs 入口且不打包 Spark；保留的研究用查看器如自行接入，会从官方 CDN 加载 SPZ，需要联网。该样例不属于 Apache-2.0 素材，独立使用请遵循 [World Labs 条款](https://www.worldlabs.ai/terms-of-service)。完整素材范围见[根目录说明](../../THIRD_PARTY_NOTICES.md)。
 
 核查日期：2026-09-06。仅使用 World Labs 官方文档、官方 GitHub 示例及其链接的公开测试资产。本次没有登录、读取密钥、上传本户型或调用收费生成；已完成公开 SPZ/GLB 文件的网络与格式核验，未在本研究子任务中进行浏览器渲染。
 

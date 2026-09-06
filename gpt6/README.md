@@ -61,4 +61,4 @@ blender --background --python scripts/build_italian_pendant.py
 
 ## 许可证
 
-自有代码、文档和程序化资产适用仓库根目录 [MIT License](../LICENSE)。第三方油画和输入户型图的范围见 [素材与授权说明](../THIRD_PARTY_NOTICES.md)。
+自有代码、文档和程序化资产适用仓库根目录 [Apache License 2.0](../LICENSE)。第三方油画和输入户型图的范围见 [素材与授权说明](../THIRD_PARTY_NOTICES.md)。
