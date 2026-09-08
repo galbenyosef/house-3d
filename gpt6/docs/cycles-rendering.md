@@ -6,7 +6,7 @@
 
 保留完整墙体与天花、原家具尺度、门洞及摆放。离线渲染使用真正参与遮挡的窗外面光源、太阳、局部灯具和间接光反弹，使墙角、家具接触、玻璃和石材反射在同一场景中计算。日光的方向和强度是效果方案，并非现场日照测量。窗外未模拟真实小区景观。
 
-高清内容按原户型的 9 个房间提供固定机位：客餐厅、主卧、两间次卧、书房、厨房、公卫、主卫、阳台；每个房间有两种风格，默认配色、日间光照。桌面使用原生渲染的 8192 × 4096，手机使用 4096 × 2048。新增房间的手机图由同一 8K 成品在 Blender 内降采样生成，位置、灯光和画面一致，没有把小图放大成 8K。可以切换房间、旋转和缩放；任意行走、配色和灯光编辑继续使用 Three.js 实时模式。
+高清内容按原户型的 9 个房间提供固定机位：客餐厅、主卧、两间次卧、书房、厨房、公卫、主卫、阳台；每个房间有复古法式、意式轻奢、现代简约、宋韵雅居四种风格，默认配色、日间光照。桌面使用原生渲染的 8192 × 4096，手机使用 4096 × 2048。新增房间的手机图由同一 8K 成品在 Blender 内降采样生成，位置、灯光和画面一致，没有把小图放大成 8K。可以切换房间、旋转和缩放；任意行走、配色和灯光编辑继续使用 Three.js 实时模式。
 
 ## 重建
 
@@ -15,11 +15,12 @@
 ```sh
 node scripts/export-render-scene.mjs italian
 node scripts/export-render-scene.mjs french
+node scripts/export-render-scene.mjs modern
 /Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python scripts/render-interior.py -- --style italian --mode preview --rooms remaining --width 1280 --samples 32 --adaptive-threshold 0.03 --exposure 0.3
 /Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python scripts/render-interior.py -- --style italian --mode both --rooms remaining --width 8192 --mobile-panorama --samples 64 --adaptive-threshold 0.03 --exposure 0.3
 ```
 
-将 `--style` 换为 `french` 可重建法式。当前脚本使用 macOS Metal GPU，非 macOS 需要改为对应 Cycles 设备后运行。首轮实测机器为 Apple M4 Max，Blender 5.2.1 LTS。
+将 `--style` 换为 `french` 可重建法式，换为 `modern` 可重建现代简约，换为 `song` 可重建宋韵雅居。当前脚本使用 macOS Metal GPU，非 macOS 需要改为对应 Cycles 设备后运行。首轮实测机器为 Apple M4 Max，Blender 5.2.1 LTS。
 
 `--rooms remaining` 仅渲染客餐厅以外的 8 房，保留既有客餐厅图片及其清单字段。`--room master` 可单独渲染主卧，`--rooms kitchen,bathroom,ensuite` 可运行指定批次，`--rooms all` 明确选择重建全部 9 房。每个风格只导入一次场景，房间间复用 GPU/BVH。脚本仅在本次记录包含实际新生成的 8K、4K，且 JPEG 可解码、尺寸正确后更新清单；取消、失败和单独预览不会将旧全景登记成新结果，单独预览也不会覆盖已发布房间的缩略图。
 
@@ -48,3 +49,29 @@ node scripts/export-render-scene.mjs french
 ## 图片验收
 
 原开发环境曾使用 `artifacts/cycles/verify-all-rooms.mjs`，解码 54 张图片并核对尺寸、SHA256、清单字节数、每房相机、源文件哈希、手机图来源及客餐厅旧图保持不变。该脚本依赖原始渲染记录和旧基线，未作为本仓库可直接运行的命令提供。当前可从 `public/panoramas/manifest.json` 核对每房风格、图像路径、分辨率和已有哈希字段；本次同步另外验证源文件与发布副本一致，结果见发布记录。
+
+## 现代简约全景（2026-09-08）
+
+九个空间新增 27 张图片：9 张原生 8192 × 4096 全景、9 张由同一 8K 成品降采样的 4096 × 2048 手机全景、9 张 1280 × 720 透视预览。使用 Blender 5.2.1 LTS / Cycles / Metal、64 samples、阈值 0.03、AgX 曝光 +0.3，默认燕麦与鼠尾草配色。机位与原有两种风格保持一致；圆盘吊灯从 `src/modern-pendant.js` 导出同源几何。
+
+```sh
+node scripts/export-render-scene.mjs modern
+/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python scripts/render-interior.py -- --style modern --mode preview --rooms all --width 1280 --samples 32 --adaptive-threshold 0.03 --exposure 0.3
+/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python scripts/render-interior.py -- --style modern --mode both --rooms all --width 8192 --mobile-panorama --samples 64 --adaptive-threshold 0.03 --exposure 0.3
+node --test tests/panorama-assets.test.mjs
+```
+
+Blender 可执行文件路径按本机安装位置替换。本次使用 Apple M4；每房渲染记录保存在 `artifacts/cycles/modern/rooms/`，正式图片校验值写入公开清单。资产测试核对四种风格的九房覆盖，并分别解码现代简约与宋韵雅居各 27 张图片检查尺寸、字节数与 SHA256。
+
+## 宋韵雅居全景（2026-09-08）
+
+同一九机位，默认米绢与青瓷配色；茶褐木框、细腿几案、青瓷和原创水墨由实时场景直接导出，六方木骨绢光灯共用 `src/song-pendant.js`。厨卫使用现有真实灯具位置，功能光相对基础方案提高至 1.5 倍并调整为中性暖光，其余风格参数保持不变。
+
+```sh
+node scripts/export-render-scene.mjs song
+/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python scripts/render-interior.py -- --style song --mode both --rooms all --width 8192 --mobile-panorama --samples 64 --adaptive-threshold 0.03 --exposure 0.3
+```
+
+本次运行机器为 Apple M4。先检查全部 1280×720 预览，再生成原生 8192×4096 全景与同图降采样的 4096×2048 手机版。原始模型哈希、相机、采样数、输出哈希及耗时写入 `artifacts/cycles/song/rooms/`；发布清单只在该房间三种资产完整后更新。
+
+正式九房渲染用时合计 3429.68 秒（约 57.2 分钟）。27 张新图片的尺寸与 SHA256 校验通过，原有 81 张全景资产保持不变。

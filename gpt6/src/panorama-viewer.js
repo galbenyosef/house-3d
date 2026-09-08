@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { assetUrl } from './assets.js';
-import { getDesignStyle } from './design-styles.js';
+import { STYLE_IDS, getDesignStyle } from './design-styles.js';
 
 // Cycles panoramas are fixed camera photographs of the same metre-based model.
 export async function openPanorama({style='italian', room='living', onClose}={}) {
@@ -11,8 +11,8 @@ export async function openPanorama({style='italian', room='living', onClose}={})
   overlay.innerHTML=`<header><div><small>THE SAME HOME · CYCLES</small><h2>光，落在真实的尺度里。</h2></div><button data-photo="close" aria-label="返回实时漫游">关闭 ×</button></header>
     <nav class="photo-rooms" aria-label="高清全景房间"></nav>
     <div class="photo-canvas" tabindex="0" aria-label="拖动环顾高清全景，双指或滚轮缩放"></div>
-    <div class="photo-toolbar"><div role="group" aria-label="高清全景风格"><button data-photo-style="french" disabled>复古法式</button><button data-photo-style="italian" disabled>意式轻奢</button></div><span class="photo-status" role="status">正在载入高清全景…</span><div><button data-photo="out" aria-label="缩小全景">−</button><button data-photo="in" aria-label="放大全景">＋</button><button data-photo="save" disabled>保存视角</button></div></div>
-    <footer><strong>同源户型渲染</strong><span>固定机位 · 日间 / 默认配色 · 拖动环顾，双指缩放</span><p>选择房间进入对应全景，同一房间可切换两种风格。自由行走、配色与日夜切换请返回实时漫游。实际窗外环境与光照待现场确认。</p></footer>`;
+    <div class="photo-toolbar"><div role="group" aria-label="高清全景风格">${STYLE_IDS.filter(id=>getDesignStyle(id).panorama).map(id=>`<button data-photo-style="${id}" disabled>${getDesignStyle(id).name}</button>`).join('')}</div><span class="photo-status" role="status">正在载入高清全景…</span><div><button data-photo="out" aria-label="缩小全景">−</button><button data-photo="in" aria-label="放大全景">＋</button><button data-photo="save" disabled>保存视角</button></div></div>
+    <footer><strong>同源户型渲染</strong><span>固定机位 · 日间 / 默认配色 · 拖动环顾，双指缩放</span><p>选择房间进入对应全景，同一房间可切换四种风格。自由行走、配色与日夜切换请返回实时漫游。实际窗外环境与光照待现场确认。</p></footer>`;
   document.body.append(overlay);overlay.showModal();
   const container=overlay.querySelector('.photo-canvas'),status=overlay.querySelector('.photo-status');
   let renderer,texture,closed=false,loading=false,raf=0,yaw=-Math.PI/2,pitch=THREE.MathUtils.degToRad(-8.53),viewportLandscape=innerWidth>innerHeight;
@@ -62,7 +62,7 @@ export async function openPanorama({style='italian', room='living', onClose}={})
       status.textContent=`${view.name} · ${getDesignStyle(style).name} · ${map.image.width} × ${map.image.height}`;render();
     } catch(error){status.textContent=`${nextView.name}暂未载入，请再次选择重试。`;console.error('全景载入失败',error);}
     finally {
-      loading=false;container.setAttribute('aria-busy','false');buttons.forEach(b=>b.disabled=false);overlay.querySelector('[data-photo="save"]').disabled=!texture;
+      loading=false;container.setAttribute('aria-busy','false');buttons.forEach(b=>b.disabled=b.dataset.photoStyle?!((view||nextView).styles[b.dataset.photoStyle]):false);overlay.querySelector('[data-photo="save"]').disabled=!texture;
       if(!closed&&document.activeElement===document.body&&buttons.includes(focus))focus.focus();
     }
   }

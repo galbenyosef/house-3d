@@ -1,25 +1,28 @@
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { createItalianFurniture, ITALIAN_SPECS } from './italian-furniture.js';
+import { createModernFurniture, MODERN_SPECS } from './modern-furniture.js';
+import { createSongFurniture, SONG_SPECS } from './song-furniture.js';
+import { getDesignStyle } from './design-styles.js';
 import { setSurfaceUV } from './surface-uv.js';
 
 // All dimensions are in metres. Geometry is deterministic and can be rebuilt without a DCC application.
 export function buildFurniture(THREE, mats, style = 'french') {
-  const isItalian = style === 'italian';
-  const group = new THREE.Group(); group.name = isItalian ? '意式轻奢 · 家具与陈设' : '复古法式 · 家具与陈设';
+  const modern = style === 'modern', song = style === 'song', contemporary = modern || song || style === 'italian';
+  const group = new THREE.Group(); group.name = `${getDesignStyle(style).name} · 家具与陈设`;
   const items = [], lights = [];
   const tinted = (base, color, extra = {}) => { const m = base.clone(); m.color.set(color); Object.assign(m, extra); return m; };
-  const wine = tinted(mats.fabric, isItalian ? mats.fabric.color : '#693e37');
-  const ivory = tinted(isItalian ? mats.cream : mats.fabric, isItalian ? '#a9a294' : '#e0d5bb');
-  const moss = tinted(isItalian ? mats.sage : mats.fabric, isItalian ? mats.sage.color : '#66704d');
+  const wine = tinted(mats.fabric, contemporary ? mats.fabric.color : '#693e37');
+  const ivory = tinted(contemporary ? mats.cream : mats.fabric, song ? '#e0d6c0' : modern ? '#e7e2d7' : contemporary ? '#a9a294' : '#e0d5bb');
+  const moss = tinted(contemporary ? mats.sage : mats.fabric, contemporary ? mats.sage.color : '#66704d');
   wine.userData.paletteRole = 'fabric';
   moss.userData.paletteRole = 'sage';
-  if(isItalian)delete ivory.userData.paletteRole;
-  const linen = tinted(isItalian ? mats.cream : mats.fabric, isItalian ? '#827b6c' : '#c4b7a2');
-  if(isItalian)delete linen.userData.paletteRole;
-  const ink = tinted(mats.dark, isItalian ? mats.dark.color : '#252b2b');
-  const red = tinted(mats.cream, isItalian ? '#655442' : '#843d36');
-  const pages = tinted(mats.cream, isItalian ? '#afa490' : '#d8c5a5');
+  if(contemporary)delete ivory.userData.paletteRole;
+  const linen = tinted(contemporary ? mats.cream : mats.fabric, song ? '#c5b99f' : modern ? '#cfc6b5' : contemporary ? '#827b6c' : '#c4b7a2');
+  if(contemporary)delete linen.userData.paletteRole;
+  const ink = tinted(mats.dark, contemporary ? mats.dark.color : '#252b2b');
+  const red = tinted(mats.cream, song ? '#83795e' : modern ? '#a89a84' : contemporary ? '#655442' : '#843d36');
+  const pages = tinted(mats.cream, song ? '#ddd3bd' : modern ? '#ded8ca' : contemporary ? '#afa490' : '#d8c5a5');
   const mirror = new THREE.MeshStandardMaterial({color: '#a9b7b2', metalness: 1, roughness: .07});
     const plantDark = tinted(mats.leaf, '#354e31', {side: THREE.DoubleSide});
   const plantLight = tinted(mats.leaf, '#526b3e', {side: THREE.DoubleSide});
@@ -28,7 +31,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
   const rugBorder = tinted(mats.rug, '#b18b5d');
   const bronze = tinted(mats.brass, '#705335');
   const registered = new Set();
-  const italian = isItalian ? createItalianFurniture(THREE,mats,{box,cyl,sphere,bar,mesh,cushion,book,vase,ivory,linen,wine,moss,ink,mirror,pages}) : null;
+  const collection = contemporary ? (song ? createSongFurniture : modern ? createModernFurniture : createItalianFurniture)(THREE,mats,{box,cyl,sphere,bar,mesh,cushion,book,vase,ivory,linen,wine,moss,ink,mirror,pages}) : null;
   function mesh(g, geo, mat, p = [0,0,0], r = [0,0,0], s = [1,1,1]) {
     setSurfaceUV(geo, mat, s);
     const o = new THREE.Mesh(geo, mat); o.position.set(...p); o.rotation.set(...r); o.scale.set(...s);
@@ -52,7 +55,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     return mesh(g,new THREE.LatheGeometry(profile.map(p=>new THREE.Vector2(...p)),24),mat,[x,y,z],[0,0,0],[scale,scale,scale]);
   }
   function turnedLeg(g,x,z,height=.39,mat=mats.walnut) {
-    if(isItalian){box(g,.023,height,.023,mats.brass,x,height/2,z,.003);return;}
+    if(contemporary){box(g,.023,height,.023,mats.brass,x,height/2,z,.003);return;}
     lathe(g,[[.018,0],[.027,.025],[.02,.07],[.026,height*.55],[.037,height*.7],[.027,height*.77],[.035,height]],mat,x,0,z);
     cyl(g,.02,.022,.025,mats.brass,x,.014,z,12);
   }
@@ -88,10 +91,10 @@ export function buildFurniture(THREE, mats, style = 'french') {
   }
   function item(id,name,room,dimensions,material,note,position,rotation,build) {
     if(registered.has(id)) throw new Error(`Duplicate furniture ID ${id}`); registered.add(id);
-    const spec=isItalian ? ITALIAN_SPECS[id] : null;
+    const spec=song ? SONG_SPECS[id] : modern ? MODERN_SPECS[id] : contemporary ? ITALIAN_SPECS[id] : null;
     if(spec){name=spec[0]||name;dimensions=spec[1]||dimensions;material=spec[2]||material;note=spec[3]||note;}
     const o=new THREE.Group(); o.name=name; o.userData.itemId=id; o.userData.style=style;
-    (italian?.itemBuilders[id] || build)(o); mergeItem(o);
+    (collection?.itemBuilders[id] || build)(o); mergeItem(o);
     o.position.set(...position); o.rotation.y=rotation||0; group.add(o);
     items.push({id,name,room,dimensions,material,note,object:o}); return o;
   }
@@ -134,14 +137,14 @@ export function buildFurniture(THREE, mats, style = 'french') {
     box(g,w,h,d,color,x,y,z,.002,rot); box(g,w-.008,h-.006,d-.01,pages,x,y,z+.001,.001,rot);
   }
   function lamp(g,x,y,z,h=.48) {
-    if(isItalian) return italian.helpers.lamp(g,x,y,z,h);
+    if(contemporary) return collection.helpers.lamp(g,x,y,z,h);
     cyl(g,.075,.09,.025,mats.brass,x,y+.012,z); lathe(g,[[.014,0],[.028,.04],[.017,h*.24],[.028,h*.43],[.012,h*.62]],mats.brass,x,y+.02,z);
     mesh(g,new THREE.CylinderGeometry(.11,.17,h*.38,32,1,true),ivory,[x,y+h*.79,z]);
     cyl(g,.112,.112,.009,mats.brass,x,y+h*.98,z); cyl(g,.17,.17,.008,mats.brass,x,y+h*.6,z);
     sphere(g,mats.light,[x,y+h*.7,z],[.042,.055,.042]);
   }
   function rug(g,w,d) {
-    if(isItalian) return italian.helpers.rug(g,w,d);
+    if(contemporary) return collection.helpers.rug(g,w,d);
     box(g,w,.018,d,darkRug,0,.014,0,.035);
     box(g,w-.12,.005,d-.12,rugBorder,0,.026,0,.028);
     box(g,w-.2,.006,d-.2,darkRug,0,.03,0,.025);
@@ -153,7 +156,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     for(const s of [-1,1]) for(let i=0;i<26;i++) bar(g,[-w/2+.07+i*(w-.14)/25,.015,s*d/2],[-w/2+.07+i*(w-.14)/25,.015,s*(d/2+.045)],.003,linen);
   }
   function sofa(g,w=2.48) {
-    if(isItalian) return italian.helpers.sofa(g,w);
+    if(contemporary) return collection.helpers.sofa(g,w);
     for(const x of [-w/2+.17,w/2-.17]) for(const z of [-.33,.31]) cabriole(g,x,z,.16,x<0?-1:1);
     const upholstered=new THREE.Group();upholstered.position.y=-.09;g.add(upholstered);g=upholstered;
     box(g,w-.12,.16,.82,mats.walnut,0,.28,0,.07); box(g,w-.25,.19,.77,wine,0,.37,-.005,.08);
@@ -190,7 +193,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     const cloth=linen.clone();cloth.side=THREE.DoubleSide;mesh(g,drape,cloth);
   }
   function caneChair(g,scale=1,upholstery=ivory) {
-    if(isItalian) return italian.helpers.caneChair(g,scale,moss);
+    if(contemporary) return collection.helpers.caneChair(g,scale,moss);
     let c=new THREE.Group();c.scale.setScalar(scale);g.add(c);
     const seatDrop=.5225-.470/scale;
     for(const x of [-.24,.24])for(const z of [-.22,.22])cabriole(c,x,z,.40-seatDrop,x<0?-1:1);
@@ -209,7 +212,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     }
   }
   function diningChair(g) {
-    if(isItalian) return italian.helpers.diningChair(g);
+    if(contemporary) return collection.helpers.diningChair(g);
     for(const x of [-.21,.21])for(const z of [-.20,.20])turnedLeg(g,x,z,.3595);
     const upper=new THREE.Group();upper.position.y=-.0505;g.add(upper);g=upper;
     box(g,.49,.055,.46,mats.walnut,0,.43,0,.035);cushion(g,0,.478,0,.46,.065,.44,moss);
@@ -220,7 +223,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     sphere(g,mats.brass,[0,.84,-.151],[.01,.01,.006]);
   }
   function roundTable(g) {
-    if(isItalian) return italian.helpers.roundTable(g);
+    if(contemporary) return collection.helpers.roundTable(g);
     lathe(g,[[.07,0],[.10,.06],[.09,.13],[.065,.20],[.15,.3],[.11,.42],[.055,.51],[.1,.64],[.22,.69]],mats.walnut);
     for(let i=0;i<4;i++){const a=i*Math.PI/2; tube(g,[[0,.15,0],[Math.cos(a)*.22,.10,Math.sin(a)*.22],[Math.cos(a)*.40,.05,Math.sin(a)*.40],[Math.cos(a)*.43,.055,Math.sin(a)*.43]],.043,mats.walnut);}
     cyl(g,.61,.61,.055,mats.walnut,0,.745,0,64);cyl(g,.57,.59,.055,mats.walnut,0,.691,0,64);
@@ -234,7 +237,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     }
   }
   function sideboard(g,w=1.50,h=.85,d=.42) {
-    if(isItalian) return italian.helpers.sideboard(g,w,h,d);
+    if(contemporary) return collection.helpers.sideboard(g,w,h,d);
     for(const x of [-w/2+.08,w/2-.08])for(const z of [-d/2+.05,d/2-.05])turnedLeg(g,x,z,.15);
     box(g,w,h-.18,d,mats.walnut,0,.15+(h-.18)/2,0,.02);
     box(g,w+.045,.037,d+.03,mats.marble,0,h,0,.018);
@@ -243,14 +246,14 @@ export function buildFurniture(THREE, mats, style = 'french') {
     vase(g,-w*.27,h+.021,0,.27,true);book(g,w*.22,h+.052,.0,.23,.033,.18);book(g,w*.22,h+.083,.01,.2,.03,.16,ink,-.09);
   }
   function bedside(g) {
-    if(isItalian) return italian.helpers.bedside(g);
+    if(contemporary) return collection.helpers.bedside(g);
     for(const x of [-.20,.20])for(const z of [-.16,.16])turnedLeg(g,x,z,.20);
     box(g,.47,.36,.39,mats.walnut,0,.37,0,.02);box(g,.5,.035,.42,mats.marble,0,.568,0,.015);
     for(const y of [.29,.45]){box(g,.425,.135,.017,mats.walnut,0,y,.204,.006);frame(g,0,y,.218,.35,.09,mats.oak,.008);pull(g,0,y,.235,.08);}
     lamp(g,0,.586,-.01,.43);book(g,.1,.596,.1,.12,.018,.15,ink);
   }
   function bed(g,w=1.8,d=2.05,color=ivory) {
-    if(isItalian) return italian.helpers.bed(g,w,d,color);
+    if(contemporary) return collection.helpers.bed(g,w,d,color);
     for(const x of [-w/2+.12,w/2-.12])for(const z of [-d/2+.1,d/2-.1])turnedLeg(g,x,z,.22);
     box(g,w+.04,.20,d+.08,mats.walnut,0,.28,0,.065);
     box(g,w,.21,d,ivory,0,.45,0,.075);box(g,w-.02,.055,d-.02,color,0,.565,.02,.04);
@@ -281,7 +284,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
       box(g,w-.036,.018,d-.07,mats.walnut,0,1.97,-.020,.003);
       for(const side of [-1,1])bar(g,[side*.055,1.80,0],[side*(w/2-.055),1.80,0],.012,mats.brass);
     } else box(g,w,h-.11,d,mats.walnut,0,h/2+.055,0,.012);
-    box(g,w+.08,.09,d+.07,mats.walnut,0,h,0,.012);box(g,w+.11,.035,d+.10,isItalian?mats.walnut:mats.oak,0,h+.046,0,.006);
+    box(g,w+.08,.09,d+.07,mats.walnut,0,h,0,.012);box(g,w+.11,.035,d+.10,contemporary?mats.walnut:mats.oak,0,h+.046,0,.006);
     box(g,w+.04,.14,d+.01,mats.walnut,0,.07,0,.006);
     if(doorType==='sliding') {
       const opening=w-.034,overlap=.040,leafWidth=(opening+overlap)/2,offset=(opening-leafWidth)/2;
@@ -296,7 +299,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
         leaf.userData.itemId=g.userData.itemId;
         leaf.userData.slideRange=[-offset,offset];leaf.userData.closedX=leaf.position.x;g.add(leaf);
         box(leaf,leafWidth,2.10,.020,mats.walnut,0,1.225,0,.005);
-        if(!isItalian){frame(leaf,0,1.58,.013,leafWidth-.10,1.15,mats.oak,.006);
+        if(!contemporary){frame(leaf,0,1.58,.013,leafWidth-.10,1.15,mats.oak,.006);
         frame(leaf,0,.50,.013,leafWidth-.10,.45,mats.oak,.006);}
         const handleX=(i===0?1:-1)*(leafWidth/2-.060);
         box(leaf,.028,.17,.004,mats.brass,handleX,1.02,.012,.004);
@@ -309,13 +312,13 @@ export function buildFurniture(THREE, mats, style = 'french') {
     } else { const n=w>1.7?3:2;for(let i=0;i<n;i++) {
       const x=-w/2+w/n*(i+.5),dw=w/n-.018;
       box(g,dw,h-.22,.025,mats.walnut,x,h/2+.025,d/2+.018,.005);
-      if(!isItalian){frame(g,x,h*.65,d/2+.043,dw-.10,h*.56,mats.oak,.018); frame(g,x,h*.205,d/2+.043,dw-.10,h*.19,mats.oak,.018);}
+      if(!contemporary){frame(g,x,h*.65,d/2+.043,dw-.10,h*.56,mats.oak,.018); frame(g,x,h*.205,d/2+.043,dw-.10,h*.19,mats.oak,.018);}
       const hx=x+dw*.32;bar(g,[hx,.91,d/2+.071],[hx,1.07,d/2+.071],.008,mats.brass);knob(g,hx,.99,d/2+.074);
     }}
-    for(const x of [-w/2-.013,w/2+.013]){box(g,.06,h-.10,d+.05,mats.walnut,x,h/2+.02,0,.008);if(!isItalian)for(let k=-1;k<=1;k++)box(g,.006,h-.25,.008,mats.oak,x+k*.014,h/2+.02,d/2+.039,.002);}
+    for(const x of [-w/2-.013,w/2+.013]){box(g,.06,h-.10,d+.05,mats.walnut,x,h/2+.02,0,.008);if(!contemporary)for(let k=-1;k<=1;k++)box(g,.006,h-.25,.008,mats.oak,x+k*.014,h/2+.02,d/2+.039,.002);}
   }
   function desk(g,w=1.12,d=.52) {
-    if(isItalian) return italian.helpers.desk(g,w,d);
+    if(contemporary) return collection.helpers.desk(g,w,d);
     for(const x of [-w/2+.07,w/2-.07])for(const z of [-d/2+.055,d/2-.055])turnedLeg(g,x,z,.70);
     box(g,w+.035,.045,d+.025,mats.walnut,0,.751,0,.02);
     // A single side drawer leaves a 684 mm high central knee opening.
@@ -328,7 +331,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     box(g,.22,.008,.15,pages,.02,.78,.07,.001,-.05);bar(g,[.06,.79,.02],[.13,.79,.13],.003,mats.brass);
   }
   function art(g,w=.75,h=.95) {
-    if(isItalian) return italian.helpers.art(g,w,h);
+    if(contemporary) return collection.helpers.art(g,w,h);
     box(g,w,.0+ h,.023,mats.dark,0,0,0,.001);box(g,w-.07,h-.07,.009,linen,0,0,.018,.001);
     frame(g,0,0,.03,w-.025,h-.025,mats.brass,.03);frame(g,0,0,.039,w-.09,h-.09,mats.walnut,.012);
     // A small still life, built as relief so it remains sharp at every zoom level.
@@ -361,7 +364,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     else for(const z of [-d/2+.035,d/2-.035])box(g,w-.044,.026,.07,mats.cream,x,y+h/2-.013,z,.003);
     if(front){
       box(g,w-.035,h-.05,.024,mats.cream,x,y,d/2+.016,.005);
-      if(!isItalian)frame(g,x,y,d/2+.035,w-.12,h-.14,mats.trim,.020);
+      if(!contemporary)frame(g,x,y,d/2+.035,w-.12,h-.14,mats.trim,.020);
       if(upper)knob(g,x+w*.32,y-h*.30,d/2+.073);else pull(g,x,y+h*.32,d/2+.073,.11);
     }
     if(!upper)box(g,w-.02,.095,.48,mats.walnut,x,.047,0,.006);
@@ -376,7 +379,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
       for(let i=0;i<3;i++){
         const x=-w/2+blind+faceW*(i+.5);
         box(g,faceW-.025,.74,.024,mats.cream,x,.46,.301,.005);
-        if(!isItalian)frame(g,x,.46,.32,faceW-.10,.65,mats.trim,.020);pull(g,x,.713,.358,.11);
+        if(!contemporary)frame(g,x,.46,.32,faceW-.10,.65,mats.trim,.020);pull(g,x,.713,.358,.11);
         if(i>0)box(g,.018,.754,.54,mats.cream,x-faceW/2,.46,-.008,.002);
       }
       const sinkX=-w*.22,sw=.57;
@@ -414,7 +417,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
       }
       box(g,.53,.44,.026,ink,0,.48,.319,.015);box(g,.42,.31,.015,mirror,0,.47,.337,.012);pull(g,0,.65,.358,.36);
       for(const x of [-.16,-.05,.06,.17])knob(g,x,.753,.338,mats.metal);
-      if(isItalian){box(g,.68,.09,.43,mats.metal,0,1.68,-.065,.006);box(g,.28,.725,.26,mats.metal,0,2.088,-.14,.006);}
+      if(contemporary){box(g,.68,.09,.43,mats.metal,0,1.68,-.065,.006);box(g,.28,.725,.26,mats.metal,0,2.088,-.14,.006);}
       else {box(g,.68,.12,.46,mats.cream,0,1.67,-.065,.02);box(g,.51,.35,.30,mats.cream,0,1.895,-.12,.03);box(g,.28,.42,.26,mats.cream,0,2.24,-.14,.025);}
       box(g,.68,.025,.46,mats.brass,0,1.61,-.065,.006);
       cyl(g,.12,.09,.16,mats.metal,.15,1.046,.10,28);cyl(g,.127,.13,.02,mats.brass,.15,1.135,.10,28);knob(g,.15,1.16,.10);
@@ -428,14 +431,14 @@ export function buildFurniture(THREE, mats, style = 'french') {
   function fridge(g) {
     for(const x of [-.25,.25])for(const z of [-.24,.24])cyl(g,.025,.028,.06,mats.dark,x,.03,z,12);
     box(g,.68,1.91,.66,mats.cream,0,.99,0,.06);
-    for(const v of [[.39,.58],[1.27,1.10]]){box(g,.65,v[1],.043,mats.cream,0,v[0],.351,.024);if(!isItalian)frame(g,0,v[0],.378,.55,v[1]-.10,mats.trim,.017);}
+    for(const v of [[.39,.58],[1.27,1.10]]){box(g,.65,v[1],.043,mats.cream,0,v[0],.351,.024);if(!contemporary)frame(g,0,v[0],.378,.55,v[1]-.10,mats.trim,.017);}
     for(const y of [.40,1.08])bar(g,[-.24,y-.11,.409],[-.24,y+.11,.409],.012,mats.brass);
     box(g,.63,.10,.02,mats.dark,0,.10,.334,.01);
   }
   function bathroomVanity(g,w=.84) {
     for(const x of [-w/2+.08,w/2-.08])for(const z of [-.19,.19])turnedLeg(g,x,z,.22);
     box(g,w,.57,.48,mats.walnut,0,.48,0,.02);
-    for(const x of [-w*.24,w*.24]){if(!isItalian)frame(g,x,.49,.255,w*.42,.44,mats.oak,.02);else box(g,w*.48-.01,.52,.016,mats.walnut,x,.48,.249,.003);knob(g,x,.66,.283);}
+    for(const x of [-w*.24,w*.24]){if(!contemporary)frame(g,x,.49,.255,w*.42,.44,mats.oak,.02);else box(g,w*.48-.01,.52,.016,mats.walnut,x,.48,.249,.003);knob(g,x,.66,.283);}
     box(g,w+.055,.04,.53,mats.marble,0,.79,0,.016);
     // Washbasin is a lathed, open ceramic bowl with an actual visible interior.
     lathe(g,[[.14,0],[.20,.02],[.23,.09],[.235,.115],[.224,.117],[.21,.085],[.185,.025],[.04,.013],[.035,.006]],mats.ceramic,0,.81,.05);
@@ -445,8 +448,8 @@ export function buildFurniture(THREE, mats, style = 'french') {
     const width=w*.80,height=.77;
     box(g,width,height,.02,mirror,0,1.62,-.248,.06);
     frame(g,0,1.60,-.224,width+.025,height+.028,mats.brass,.035);
-    if(!isItalian)tube(g,[[-width/2,1.89,-.219],[-width*.37,2.035,-.219],[0,2.10,-.219],[width*.37,2.035,-.219],[width/2,1.89,-.219]],.02,mats.brass);
-    for(const x of [-w*.56,w*.56]){if(isItalian){box(g,.025,.35,.025,mats.brass,x,1.76,-.21,.004);box(g,.022,.30,.018,mats.light,x,1.76,-.185,.004);}else{bar(g,[x,1.72,-.21],[x,1.72,-.08],.012,mats.brass);sphere(g,mats.light,[x,1.80,-.08],[.055,.09,.055]);cyl(g,.05,.035,.023,mats.brass,x,1.72,-.08);}}
+    if(!contemporary)tube(g,[[-width/2,1.89,-.219],[-width*.37,2.035,-.219],[0,2.10,-.219],[width*.37,2.035,-.219],[width/2,1.89,-.219]],.02,mats.brass);
+    for(const x of [-w*.56,w*.56]){if(contemporary){box(g,.025,.35,.025,mats.brass,x,1.76,-.21,.004);box(g,.022,.30,.018,mats.light,x,1.76,-.185,.004);}else{bar(g,[x,1.72,-.21],[x,1.72,-.08],.012,mats.brass);sphere(g,mats.light,[x,1.80,-.08],[.055,.09,.055]);cyl(g,.05,.035,.023,mats.brass,x,1.72,-.08);}}
     vase(g,-w*.35,.813,.14,.11,true);
     box(g,.12,.025,.19,ivory,w*.34,.83,.05,.015);box(g,.12,.022,.19,linen,w*.34,.853,.05,.013);
     // Separate the projecting basin/cabinet from the wider mirror lights.
@@ -504,7 +507,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     box(g,.32,.40,.018,ivory,-.045,.66,.025,.012);box(g,.32,.018,.065,ivory,-.045,.86,.012,.005);
   }
   function daybed(g) {
-    if(isItalian) return italian.helpers.daybed(g);
+    if(contemporary) return collection.helpers.daybed(g);
     box(g,1.22,.31,2.12,mats.walnut,0,.17,0,.025);
     // The northern storage bay lifts from above; an east-opening drawer would hit the desk leg.
     box(g,1.13,.012,.57,mats.walnut,0,.329,-.69,.005);
@@ -519,7 +522,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     }
   }
   function bookshelf(g,w=1.1,h=2.33) {
-    if(isItalian) return italian.helpers.bookshelf(g,w,h);
+    if(contemporary) return collection.helpers.bookshelf(g,w,h);
     box(g,w,h,.31,mats.walnut,0,h/2,0,.009);
     box(g,w-.10,h-.12,.025,ink,0,h/2,.167,.002);
     for(const y of [.10,.47,.91,1.35,1.79,2.23])box(g,w,.04,.38,mats.walnut,0,y,.025,.005);
@@ -533,7 +536,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     }
   }
   function fireplace(g) {
-    if(isItalian) return italian.helpers.fireplace(g);
+    if(contemporary) return collection.helpers.fireplace(g);
     box(g,1.5,.075,.48,mats.stone,0,.04,0,.015);
     box(g,1.35,1.10,.23,mats.cream,0,.63,-.08,.015);
     box(g,.88,.74,.035,ink,0,.475,.051,.025);
@@ -549,7 +552,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
     const a=new THREE.Group();a.position.set(0,1.79,-.065);g.add(a);art(a,.82,.90);
   }
   function wallSconce(g) {
-    if(isItalian) return italian.helpers.wallSconce(g);
+    if(contemporary) return collection.helpers.wallSconce(g);
     box(g,.10,.26,.025,mats.brass,0,0,0,.028);tube(g,[[0,-.07,.03],[0,-.1,.13],[0,.06,.17]],.012,mats.brass);
     cyl(g,.066,.046,.038,mats.brass,0,.08,.17,24);mesh(g,new THREE.CylinderGeometry(.07,.11,.16,24,1,true),ivory,[0,.18,.17]);sphere(g,mats.light,[0,.16,.17],[.033,.04,.033]);
   }
@@ -650,9 +653,9 @@ export function buildFurniture(THREE, mats, style = 'french') {
     }
   });
   painting.traverse(o=>{if(o.isMesh&&o.material===paintingMaterial)o.name='artworkCanvas';});
-  const curtainMaterial=tinted(isItalian?mats.cream:mats.fabric,isItalian?'#9c9688':'#d9cdb8',{side:THREE.DoubleSide});
-  if(isItalian)delete curtainMaterial.userData.paletteRole;
-  const sheerMaterial=new THREE.MeshStandardMaterial({color:isItalian?'#c5c0b3':'#eee8d8',roughness:.93,transparent:true,opacity:.13,depthWrite:false,side:THREE.DoubleSide});
+  const curtainMaterial=tinted(contemporary?mats.cream:mats.fabric,song?'#d7cdb7':modern?'#e2dfd5':contemporary?'#9c9688':'#d9cdb8',{side:THREE.DoubleSide});
+  if(contemporary)delete curtainMaterial.userData.paletteRole;
+  const sheerMaterial=new THREE.MeshStandardMaterial({color:song?'#e9e2d2':modern?'#f2efe8':contemporary?'#c5c0b3':'#eee8d8',roughness:.93,transparent:true,opacity:.13,depthWrite:false,side:THREE.DoubleSide});
   function foldedCloth(g,w,h,mat,x,y,z,folds,depth,gather=.15) {
     const nx=80,ny=22,pos=[],uv=[],indices=[];
     for(let j=0;j<=ny;j++)for(let i=0;i<=nx;i++) {
@@ -667,13 +670,13 @@ export function buildFurniture(THREE, mats, style = 'french') {
   add('living-curtains','客厅奶油色法式落地帘','living','帘杆 3.66 m；单侧帘宽约 0.36 m，高 2.53 m','亚麻混纺布 · 薄纱 · 古铜帘杆','双侧窄收帘保留阳台采光与视野；杆顶距地 2.62 m，帘底离地约 60 mm。',[2.34,0,14.30],0,g=>{
     const drape=new THREE.Group();g.add(drape);drape.position.set(-2.34,0,-14.30);g=drape;
     const rodY=2.599,rodZ=14.24;
-    if(isItalian)box(g,3.66,.022,.037,mats.trim,2.34,rodY,rodZ,.004);
+    if(contemporary)box(g,3.66,.022,.037,mats.trim,2.34,rodY,rodZ,.004);
     else bar(g,[.51,rodY,rodZ],[4.17,rodY,rodZ],.014,mats.brass);
-    if(!isItalian)for(const x of [.49,4.19])sphere(g,mats.brass,[x,rodY,rodZ],[.03,.021,.021]);
-    if(!isItalian)for(const x of [.64,4.05]){bar(g,[x,rodY,14.41],[x,rodY,rodZ],.014,mats.brass);sphere(g,mats.brass,[x,rodY,14.405],[.033,.033,.007]);}
+    if(!contemporary)for(const x of [.49,4.19])sphere(g,mats.brass,[x,rodY,rodZ],[.03,.021,.021]);
+    if(!contemporary)for(const x of [.64,4.05]){bar(g,[x,rodY,14.41],[x,rodY,rodZ],.014,mats.brass);sphere(g,mats.brass,[x,rodY,14.405],[.033,.033,.007]);}
     for(const x of [.705,4.035]){
       foldedCloth(g,.365,2.495,curtainMaterial,x,.06,14.265,5,.035,.12);
-      if(!isItalian)for(let i=0;i<7;i++)mesh(g,new THREE.TorusGeometry(.021,.004,6,14),mats.brass,[x-.145+i*.0483,2.579,rodZ],[0,Math.PI/2,0]);
+      if(!contemporary)for(let i=0;i<7;i++)mesh(g,new THREE.TorusGeometry(.021,.004,6,14),mats.brass,[x-.145+i*.0483,2.579,rodZ],[0,Math.PI/2,0]);
     }
     foldedCloth(g,3.00,2.46,sheerMaterial,2.36,.065,14.375,21,.008,.02);
   });

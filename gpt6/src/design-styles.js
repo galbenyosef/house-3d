@@ -1,6 +1,7 @@
-export const STYLE_IDS = ['french', 'italian'];
+export const STYLE_IDS = ['french', 'italian', 'modern', 'song'];
 export const DESIGN_STYLES = {
   french: {
+    panorama:true,
     name:'复古法式', english:'THE FRENCH RESIDENCE',
     heading:'把日子，<br>过成旧时光。', subtitle:'A little Paris, a place of your own.',
     concept:'深胡桃木、古典石膏线与暖色织物，构成有时间感的法式居所。',
@@ -21,6 +22,7 @@ export const DESIGN_STYLES = {
     pendant:{file:'models/french-chandelier.glb',id:'blender-chandelier',name:'八臂黄铜水晶吊灯',room:'living',dimensions:'Ø 922 × H 933 mm',material:'做旧黄铜 · 蜡烛灯 · 切面水晶',note:'Blender 原创模型。顶碗贴合2.80m假设天花，灯底约1.87m，安装于固定圆餐桌正上方；现场核对吊点和吊链。'},
   },
   italian: {
+    panorama:true,
     name:'意式轻奢', english:'THE ITALIAN RESIDENCE',
     heading:'让质感，<br>回归生活。', subtitle:'Materia, luce, una casa da vivere.',
     concept:'炭灰皮革、深橄榄绿与黑棕木作，衬托灰褐纹理大理石和低光泽古铜，保留沉稳的明暗层次。',
@@ -39,6 +41,46 @@ export const DESIGN_STYLES = {
       ['italian-textile','深橄榄与暖灰织物','OLIVE & WARM GREY','深橄榄软包与暖灰细纹窗帘、地毯柔化石材和皮革。炭灰、苔灰、暖灰三组配色均保持克制，可在同一视角比较。'],
     ],
     pendant:{file:'models/italian-pendant.glb',id:'blender-chandelier',name:'双椭圆香槟线光吊灯',room:'living',dimensions:'947 × 631 × H 941 mm',material:'香槟金属 · 乳白线性扩散罩 · 细钢索',note:'Blender 原创双环灯；顶盘贴合2.80m假设天花，灯底1.859m，距桌面约1.08m；投影距Ø1.22m固定圆餐桌边至少115mm。现场复核吊点和钢索长度。'},
+  },
+  modern: {
+    name:'现代简约', english:'THE MODERN RESIDENCE', panorama:true,
+    heading:'少一点，<br>自在多一点。', subtitle:'Less, but a little closer to home.',
+    concept:'暖白墙面、浅橡木与燕麦织物，让自然光成为空间的主角；以平整木作、柔和圆角和少量石墨色细节，留下从容生活的余地。',
+    livingTitle:'客餐厅 · 留白与日常',
+    palettes:{
+      burgundy:{name:'燕麦与鼠尾草',short:'燕麦',fabric:'#c5bca9',sage:'#929b83',surface:'燕麦织物',accent:'鼠尾草'},
+      olive:{name:'雾绿与暖砂',short:'雾绿',fabric:'#8f9b8d',sage:'#beab90',surface:'雾绿织物',accent:'暖砂'},
+      ivory:{name:'云白与岩灰',short:'云白',fabric:'#ddd8ce',sage:'#92958e',surface:'云白织物',accent:'岩灰'},
+    },
+    materials:[
+      ['modern-wood','浅橡木','NATURAL OAK','低饱和浅橡木直拼地板与木皮柜体，哑光开放漆；1200 × 200 mm 错缝铺贴，保留自然木纹。'],
+      ['modern-wall','暖白矿物墙面','WARM WHITE','参考 #F0EDE5。细腻哑光墙面与平板门，60 mm 同色踢脚及细阴影缝，墙面保留连续留白。'],
+      ['modern-fabric','燕麦织物','OATMEAL LINEN','参考 #C5BCA9。低靠背圆角沙发搭配可拆洗棉麻坐垫，细织纹理与柔软触感减少大面积反光。'],
+      ['modern-stone','浅砂哑光石材','SAND STONE','细颗粒浅色石面用于台面与湿区；控制纹理对比，湿区采用适用的防滑与耐水材料。'],
+      ['modern-metal','石墨色五金','GRAPHITE DETAILS','少量哑光石墨色金属用于灯杆、把手与窗框；主吊灯使用暖白金属和乳白扩散罩。'],
+      ['modern-sage','鼠尾草与棉麻','SAGE & COTTON','灰绿辅色搭配云白窗帘与素色地毯；燕麦、雾绿、云白三组配色可在同一视角比较。'],
+    ],
+    pendant:{id:'blender-chandelier',name:'暖白圆盘吊灯',room:'living',dimensions:'Ø 620 × H 780 mm',material:'哑光暖白金属 · 乳白扩散罩 · 石墨色吊线',note:'Three.js 参数化圆盘灯，顶盘贴合2.80m假设天花，灯底约2.02m；位于固定圆餐桌上方，现场复核吊点与吊线长度。'},
+  },
+  song: {
+    name:'宋韵雅居',english:'THE SONG INSPIRED RESIDENCE',panorama:true,
+    heading:'一室清欢，<br>半日闲。',subtitle:'Tea, ink, and a quieter kind of home.',
+    concept:'从宋人的花、香、画、茶汲取灵感：茶褐木的细腿几案、米绢织物与青瓷器物，围合一处疏朗的当代居所。木骨绢光、原创水墨与日常厨卫相融，保留可居住的尺度。',
+    livingTitle:'客餐厅 · 一盏茶的光阴',
+    palettes:{
+      burgundy:{name:'米绢与青瓷',short:'米绢',fabric:'#cbbfa6',sage:'#8ea49a',surface:'米绢织物',accent:'青瓷色'},
+      olive:{name:'茶褐与苔青',short:'茶褐',fabric:'#a5967c',sage:'#768674',surface:'茶褐织物',accent:'苔青'},
+      ivory:{name:'月白与墨灰',short:'月白',fabric:'#d9ded4',sage:'#757e78',surface:'月白织物',accent:'墨灰'},
+    },
+    materials:[
+      ['song-wood','茶褐木','TEA BROWN TIMBER','哑光茶褐木直拼地板、露木框坐榻与细腿几案。用现代木作实现轻巧比例；柜体保持实用收纳。'],
+      ['song-wall','米绢白墙面','SILK WHITE','参考 #E8E1D2。哑光矿物墙面配细木色门套，挂轴周围保留留白，让木构轮廓与自然光清楚呈现。'],
+      ['song-fabric','米绢棉麻','UNDYED LINEN','参考 #CBBFA6。棉麻坐垫、绢面意象床头与窄收帘，纹理低反光，软垫可拆洗。'],
+      ['song-celadon','青瓷与黑釉','CELADON & DARK GLAZE','灰青花器与黑釉茶盏为原创概括器形，参考宋瓷的色调与日常茶事；不作为文物复制品。'],
+      ['song-stone','青灰哑光石面','GREY MINERAL','青灰细颗粒石面用于厨房台面和湿区，采用耐水基层与适用防滑饰面；木色用于防潮柜门。'],
+      ['song-ink','水墨与绢光','INK & SOFT LIGHT','原创远山水墨挂轴、木骨绢面电灯与单枝瓶花，为日常生活留出安静的背景；灯罩需采用合格灯具材料。'],
+    ],
+    pendant:{id:'blender-chandelier',name:'木骨绢光六方吊灯',room:'living',dimensions:'Ø 600 × H 764 mm',material:'茶褐木骨 · 米绢扩散罩 · 电光源',note:'当代原创六方灯，Three.js 参数化几何与高清全景共享；2.80m假设层高下灯底约2.036m，固定圆餐桌上方安装，现场复核吊点。'},
   },
 };
 export const getDesignStyle = id => DESIGN_STYLES[id] || DESIGN_STYLES.french;

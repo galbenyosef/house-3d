@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { getDesignStyle } from './design-styles.js';
 
 function random(seed = 42) {
   return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
@@ -173,10 +174,22 @@ function leatherMap() {
     ctx.putImageData(pixels,0,0);
   },5);
 }
+function paleOakMap(planks=false) {
+  const map=texture(1024,(ctx,n,rand)=>{
+    const rows=planks?12:1,board=n/rows;
+    for(let row=0;row<rows;row++)for(let col=-1;col<2;col++){
+      const x=col*n/2+(row%3)*n/6,y=row*board;
+      woodBoard(ctx,x,y,n/2,board,rand,false,true);
+      ctx.fillStyle='rgba(238,230,210,.64)';ctx.fillRect(x+.5,y+.5,n/2-1,board-1);
+    }
+  });
+  map.name=planks?'浅橡木 1200×200 mm 错缝直拼':'浅橡木开放木纹';
+  map.userData.pattern=planks?'straight-plank':'oak-grain';return map;
+}
 export function createMaterials(style='french') {
-  const italian=style==='italian';
-  const parquet = italian?straightWoodMap():parquetMap(), walnut = woodMap(), oak = woodMap(true), weave = weaveMap(), marble = marbleMap();
-  if(!italian){parquet.center.set(.5,.5); parquet.rotation=Math.PI/4;}
+  const italian=style==='italian',modern=style==='modern',song=style==='song';
+  const parquet = modern?paleOakMap(true):italian||song?straightWoodMap():parquetMap(), walnut = modern?paleOakMap():woodMap(), oak = modern?walnut:woodMap(true), weave = weaveMap(), marble = marbleMap();
+  if(!italian&&!modern&&!song){parquet.center.set(.5,.5); parquet.rotation=Math.PI/4;}
   const plaster = texture(128, (ctx,n,rand)=>{
     const data=ctx.createImageData(n,n);for(let i=0;i<data.data.length;i+=4){let v=218+rand()*25;data.data[i]=data.data[i+1]=data.data[i+2]=v;data.data[i+3]=255;}ctx.putImageData(data,0,0);
   }, 4);
@@ -196,7 +209,7 @@ export function createMaterials(style='french') {
     tile: std('#ddd3be',.38,{map:marble}),
     glass: new THREE.MeshPhysicalMaterial({color:'#e9eee7',roughness:.06,metalness:0,transparent:true,opacity:.17,depthWrite:false,side:THREE.DoubleSide}),
     dark: std('#282b24',.44), white: std('#f2ecdf',.24),
-    rug: std('#ffffff',1,{map:italian?weave:rugMap(),bumpMap:weave,bumpScale:.016}),
+    rug: std('#ffffff',1,{map:italian||modern||song?weave:rugMap(),bumpMap:weave,bumpScale:.016}),
     leaf: std('#3b5033',.85,{side:THREE.DoubleSide}), ceramic: std('#b6a07e',.28),
     light: std('#fff1c9',.3,{emissive:'#ffc77a',emissiveIntensity:.7}),
     metal: std('#4d4b40',.37,{metalness:.85}),
@@ -226,8 +239,48 @@ export function createMaterials(style='french') {
     mats.fabric.userData.paletteRole='fabric';mats.sage.userData.paletteRole='sage';
     mats.leather=mats.fabric.clone();mats.leather.userData.paletteRole='fabric';
   }
+  if(modern) {
+    Object.assign(mats,{
+      wall:std('#f0ede5',.96,{bumpMap:plaster,bumpScale:.003}),trim:std('#e8e4da',.82),
+      parquet:std('#f0e6d3',.78,{map:parquet,bumpMap:parquet,bumpScale:.003}),
+      walnut:std('#f2e8d6',.72,{map:walnut,bumpMap:walnut,bumpScale:.003}),
+      oak:std('#f2e8d6',.72,{map:oak,bumpMap:oak,bumpScale:.003}),
+      fabric:std('#c5bca9',.98,{bumpMap:weave,bumpScale:.010}),
+      sage:std('#929b83',.96,{bumpMap:weave,bumpScale:.009}),
+      cream:std('#e7e2d7',.96,{bumpMap:weave,bumpScale:.008}),
+      marble:std('#ded8cb',.79,{bumpMap:plaster,bumpScale:.002}),
+      stone:std('#d6d0c4',.89,{bumpMap:plaster,bumpScale:.004}),
+      tile:std('#dfdcd4',.82,{bumpMap:plaster,bumpScale:.003}),
+      brass:std('#525653',.70,{metalness:.42}),metal:std('#505551',.70,{metalness:.42}),
+      dark:std('#414641',.78),white:std('#f2efe8',.75),ceramic:std('#c6bead',.86),
+      rug:std('#dbd4c7',1,{bumpMap:weave,bumpScale:.01}),
+    });
+    mats.fabric.userData.paletteRole='fabric';mats.sage.userData.paletteRole='sage';
+  }
+  if(song) {
+    Object.assign(mats,{
+      wall:std('#e8e1d2',.96,{bumpMap:plaster,bumpScale:.003}),trim:std('#82715a',.79),
+      parquet:std('#deceb1',.74,{map:parquet,bumpMap:parquet,bumpScale:.004}),
+      walnut:std('#d5bea0',.67,{map:walnut,bumpMap:walnut,bumpScale:.003}),
+      oak:std('#cdb895',.75,{map:oak,bumpMap:oak,bumpScale:.003}),
+      fabric:std('#cbbfa6',.97,{bumpMap:weave,bumpScale:.009}),
+      sage:std('#8ea49a',.96,{bumpMap:weave,bumpScale:.009}),
+      cream:std('#e0d6c0',.96,{bumpMap:weave,bumpScale:.007}),
+      marble:std('#a4aba0',.76,{bumpMap:plaster,bumpScale:.002}),
+      stone:std('#a4a89b',.86,{bumpMap:plaster,bumpScale:.004}),
+      tile:std('#b9c1b5',.81,{bumpMap:plaster,bumpScale:.003}),
+      brass:std('#625c49',.69,{metalness:.38}),metal:std('#56584e',.69,{metalness:.42}),
+      dark:std('#363d35',.62),white:std('#ece5d5',.70),ceramic:std('#8faa9b',.24),
+      rug:std('#cbbfa7',1,{bumpMap:weave,bumpScale:.010}),
+    });
+    mats.fabric.userData.paletteRole='fabric';mats.sage.userData.paletteRole='sage';
+  }
   const original = {fabric:'#693e37',sage:'#596149',wall:'#e5ddcd',trim:'#e8e0d0'};
   function setPalette(name) {
+    if(modern||song){
+      const colors=getDesignStyle(style).palettes[name];if(!colors)return;
+      mats.fabric.color.set(colors.fabric);mats.sage.color.set(colors.sage);return;
+    }
     if(italian) {
       const colors=name==='olive'?{fabric:'#555748',sage:'#84735d'}:name==='ivory'?{fabric:'#8e8575',sage:'#51513e'}:{fabric:'#444440',sage:'#454c38'};
       for(const [key,color] of Object.entries(colors))mats[key].color.set(color);

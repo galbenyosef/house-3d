@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from mathutils import Vector
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--style',choices=['french','italian'],default='italian')
+parser.add_argument('--style',choices=['french','italian','modern','song'],default='italian')
 parser.add_argument('--mode',choices=['preview','panorama','both'],default='preview')
 parser.add_argument('--width',type=int,default=1280)
 parser.add_argument('--preview-width',type=int,default=1280)
@@ -160,7 +160,7 @@ for room_id,specs in practical_specs.items():
         luminous=bpy.data.materials.new(diffuser.name);luminous.use_nodes=True
         shader=luminous.node_tree.nodes.get('Principled BSDF');shader.inputs['Base Color'].default_value=(1,.88,.71,1);shader.inputs['Emission Color'].default_value=(1,.88,.71,1);shader.inputs['Emission Strength'].default_value=6
         diffuser.data.materials.append(luminous)
-        light=area(f'{room_id} functional downlight {index+1}',(x,y,z),(x,.75,z),spec['power'],diameter,(1,.88,.71))
+        light=area(f'{room_id} functional downlight {index+1}',(x,y,z),(x,.75,z),spec['power']*(1.5 if args.style=='song' else 1),diameter,(1,.95,.86) if args.style=='song' else (1,.88,.71))
         objects.extend([housing,diffuser,light])
     practical_objects[room_id]=objects
 

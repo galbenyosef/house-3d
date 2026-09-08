@@ -20,15 +20,21 @@ function syncRoom(id){
   all('[data-room]').forEach(el=>{const active=el.dataset.room===id;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
   $('.scene-caption .kicker').textContent=`${String(index+1).padStart(2,'0')} / ${r.en.toUpperCase()}`;
   const design=getDesignStyle(style);
-  $('.scene-caption h2').textContent=id==='living'?design.livingTitle:titles[id];$('.scene-subtitle').textContent=id==='living'?`${style==='italian'?'灰褐石材 / 深烟熏木':'胡桃木'} / ${design.palettes[palette].surface} / ${style==='italian'?'古铜':'做旧黄铜'}`:`${r.area.toFixed(2)} m² · ${design.name} · 方案建议尺度`;
+  $('.scene-caption h2').textContent=id==='living'?design.livingTitle:titles[id];$('.scene-subtitle').textContent=id==='living'?`${style==='song'?'茶褐木 / 青灰石面':style==='modern'?'浅橡木 / 浅砂石材':style==='italian'?'灰褐石材 / 深烟熏木':'胡桃木'} / ${design.palettes[palette].surface} / ${style==='song'?'青瓷与绢光':style==='modern'?'石墨色五金':style==='italian'?'古铜':'做旧黄铜'}`:`${r.area.toFixed(2)} m² · ${design.name} · 方案建议尺度`;
 }
 function syncStyleUI(){
-  const design=getDesignStyle(style);document.body.dataset.designStyle=style;document.title=`MAISON · ${design.name}居所`;
+  const design=getDesignStyle(style);document.body.dataset.designStyle=style;document.title=`MAISON · ${design.name}${style==='song'?'':'居所'}`;
   $('.project-intro .eyebrow').textContent=design.english;$('.project-intro h1').innerHTML=design.heading;$('.intro-en').textContent=design.subtitle;
-  $('.space-header span:last-child').textContent=style==='italian'?'GLI SPAZI':'LES ESPACES';
+  $('.space-header span:last-child').textContent=['modern','song'].includes(style)?'THE SPACES':style==='italian'?'GLI SPAZI':'LES ESPACES';
   $('.palette-block .section-mini span').textContent=style==='italian'?'皮革配色':'织物配色';
   all('[data-style]').forEach(el=>{const active=el.dataset.style===style;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));el.disabled=!house||switching;});
   all('.swatch').forEach(el=>{const active=el.dataset.palette===palette,colors=design.palettes[el.dataset.palette];el.style.setProperty('--swatch',colors.fabric);el.setAttribute('aria-label',colors.name);el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
+  const panorama=$('[data-action="panorama"]');
+  panorama.disabled=!design.panorama||switching||!house;
+  panorama.setAttribute('aria-label',design.panorama?'进入高清全景':`${design.name}：高清全景尚未生成，可在下方实时漫游`);
+  panorama.title=design.panorama?'查看法式、意式、现代简约与宋韵雅居的高清全景':'该风格高清全景尚未生成';
+  panorama.querySelector('strong').textContent=design.panorama?'进入高清全景':'实时漫游已开启';
+  panorama.querySelector('small').textContent=design.panorama?'9 个空间 · 四种风格':'本风格暂无高清全景';
   $('.palette-label').textContent=design.palettes[palette].name;syncView(mode);
 }
 async function switchStyle(next){
@@ -41,7 +47,7 @@ async function switchStyle(next){
     try {localStorage.setItem('maison-style',style);} catch {}
     toast(`已切换 · ${getDesignStyle(style).name}`);
   } catch(error){console.error('风格载入失败',error);toast('另一套方案暂未载入，请稍后重试。');}
-  finally {switching=false;syncStyleUI();$('.style-switch').setAttribute('aria-busy','false');$('.style-bar-note').textContent='保留视角，对比两种生活提案';}
+  finally {switching=false;syncStyleUI();$('.style-switch').setAttribute('aria-busy','false');$('.style-bar-note').textContent='保留视角，对比四种生活提案';}
 }
 function syncView(next){
   mode=next;$('.touch-move').hidden=next!=='interior';all('[data-view]').forEach(el=>{const active=el.dataset.view===next;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
@@ -95,7 +101,7 @@ document.addEventListener('click',async event=>{
   }
   switch(button.dataset.action){
     case 'panorama':{
-      if(visualOpen)return;
+      if(visualOpen||!getDesignStyle(style).panorama)return;
       visualOpen=true;house?.stopMovement();button.disabled=true;const focus=document.activeElement,generation=++visualGeneration;
       const loading=document.createElement('dialog');loading.className='visual-start';loading.setAttribute('aria-label','正在准备高清全景');
       loading.innerHTML='<p>正在准备高清全景…</p><button>取消</button>';document.body.append(loading);loading.showModal();
@@ -128,7 +134,7 @@ document.addEventListener('click',async event=>{
 });
 $('.modal-backdrop').addEventListener('click',event=>{if(event.target===$('.modal-backdrop'))closeModal();});
 document.addEventListener('keydown',event=>{
-  if(event.target.matches('[data-style]')&&['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();const next=event.target.dataset.style==='french'?'italian':'french',button=$(`[data-style="${next}"]`);if(!button.disabled){button.focus();button.click();}}
+  if(event.target.matches('[data-style]')&&['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();const index=STYLE_IDS.indexOf(event.target.dataset.style),next=STYLE_IDS[(index+(event.key==='ArrowRight'?1:-1)+STYLE_IDS.length)%STYLE_IDS.length],button=$(`[data-style="${next}"]`);if(!button.disabled){button.focus();button.click();}}
   if(event.key==='Escape'){if(currentModal)closeModal();else house?.clearSelection();}
   if(currentModal&&event.key==='Tab'){
     const focusable=[...$('.modal').querySelectorAll('button,a,input,[tabindex="0"]')],first=focusable[0],last=focusable.at(-1);

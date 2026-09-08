@@ -39,6 +39,8 @@ const common = {
 // colorMix blends only the material tint towards white; it never recolors source files.
 // Upholstery uses measured relief/roughness with the selected house palette unchanged.
 export const PBR_BINDINGS = {
+  song: {fabric:cloth,cream:cloth,sage:cloth,rug:{...cloth,normalScale:.28}},
+  modern: {fabric:cloth,cream:cloth,sage:cloth,rug:{...cloth,normalScale:.28}},
   french: {...common, fabric: cloth},
   italian: {
     ...common,

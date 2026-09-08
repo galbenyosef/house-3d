@@ -2,6 +2,8 @@
 node_modules/
 dist/
 coverage/
+.playwright-cli/
+output/playwright/
 
 # Local settings, credentials and temporary output
 .env

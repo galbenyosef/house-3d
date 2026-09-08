@@ -4,14 +4,14 @@ import { setSurfaceUV } from './surface-uv.js';
 
 /** 米制参数化建筑；按材质合批，剖切几何独立于完整墙体，避免门楣浮空。 */
 export function buildArchitecture(THREE, mats, style='french') {
-  const italian=style==='italian';
+  const italian=style==='italian', modern=style==='modern', song=style==='song', contemporary=italian||modern||song;
   const group = new THREE.Group();
-  group.name = italian?'Atelier · 意式建筑':'Maison · 建筑';
+  group.name = song?'Maison · 宋韵建筑':modern?'Maison · 现代简约建筑':contemporary?'Atelier · 意式建筑':'Maison · 建筑';
   const full = new THREE.Group(); full.name = '完整建筑';
   const cut = new THREE.Group(); cut.name = '0.78 m 剖切墙'; cut.visible = false;
-  const windows = new THREE.Group(); windows.name = italian?'细金属框玻璃窗':'木框玻璃窗';
+  const windows = new THREE.Group(); windows.name = song?'茶褐细框玻璃窗':contemporary?'细金属框玻璃窗':'木框玻璃窗';
   const ceilings = new THREE.Group(); ceilings.name = '天花'; ceilings.visible = false;
-  const walls = new THREE.Group(); walls.name = italian?'平整墙面与整板饰面':'墙体与古典木作';
+  const walls = new THREE.Group(); walls.name = contemporary?'平整墙面与整板饰面':'墙体与古典木作';
   group.add(walls, ceilings); walls.add(full, cut); full.add(windows);
   const batches = new Map();
   const height = HOUSE.height, thick = HOUSE.wallThickness, cutHeight = .78;
@@ -54,7 +54,7 @@ export function buildArchitecture(THREE, mats, style='french') {
     const mesh = new THREE.Mesh(floor,floorMat);
     mesh.name = `${room.name} · 地坪`; mesh.receiveShadow = true;
     mesh.userData = {roomId:room.id,architectural:true}; group.add(mesh);
-    const ceiling = new THREE.Mesh(shapeGeometry(room.polygon),mat(italian?'white':'cream'));
+    const ceiling = new THREE.Mesh(shapeGeometry(room.polygon),mat(contemporary?'white':'cream'));
     // 反转三角形绕序，天花底面向下且平面轮廓与地坪重合。
     const ci = ceiling.geometry.index;
     for (let i=0;i<ci.count;i+=3) { const b=ci.getX(i+1); ci.setX(i+1,ci.getX(i+2)); ci.setX(i+2,b); }
@@ -70,7 +70,7 @@ export function buildArchitecture(THREE, mats, style='french') {
     const openingList=[...(wall.openings||[])].sort((a,b)=>a.offset-b.offset);
     const localBox=(parent,material,w,h,d,u,y,n=0)=>box(parent,material,w,h,d,ax+dx*u+normal[0]*n,y,az+dz*u+normal[1]*n,rotation);
     function skirting(parent,start,end,sign) {
-      if(italian) {
+      if(contemporary) {
         // 60 mm 平踢脚与上口 6 mm 阴影缝，完成面以上高度按米建模。
         localBox(parent,mat('trim'),end-start,.06,.009,(start+end)/2,.042,sign*(thick/2+.0045));
         localBox(parent,mat('dark'),end-start,.006,.004,(start+end)/2,.075,sign*(thick/2+.002));
@@ -87,7 +87,7 @@ export function buildArchitecture(THREE, mats, style='french') {
       for (const sign of [-1,1]) {
         for (const parent of [full,cut]) skirting(parent,start,end,sign);
         // 护墙板双道框线；竖向留白比例以古典法式墙面分格为基准。
-        if(!italian && end-start>.55 && !wetWallIds.has(wall.id)) {
+        if(!contemporary && end-start>.55 && !wetWallIds.has(wall.id)) {
           const count=Math.max(1,Math.floor((end-start)/1.18));
           const available=(end-start)/count;
           for(let i=0;i<count;i++) {
@@ -137,7 +137,7 @@ export function buildArchitecture(THREE, mats, style='french') {
     segment(end,length);
     // 整面墙的三层顶角线；完整组隐藏时所有顶线同步退出剖切场景。
     for(const sign of [-1,1]) {
-      if(italian) {
+      if(contemporary) {
         localBox(full,mat('dark'),length,.014,.006,length/2,height-.021,sign*(thick/2+.003));
         continue;
       }
@@ -154,24 +154,24 @@ export function buildArchitecture(THREE, mats, style='french') {
   function makeWindow(opening,local,wall) {
     if(opening.type==='slider')return makeGlazedSlider(opening,local,wall);
     const sill=opening.sill||0, w=opening.width,h=opening.height,c=opening.offset+w/2;
-    const frameMat=mat(italian?'metal':'cream');
-    const t=italian?.028:.045,profile=italian?.032:.065,depth=italian?.075:.13;
-    local(windows,frameMat,w,profile,depth,c,sill+(italian?.016:.032));
-    local(windows,frameMat,w,profile,depth,c,sill+h-(italian?.016:.032));
-    local(windows,frameMat,profile,h,depth,opening.offset+(italian?.016:.032),sill+h/2);
-    local(windows,frameMat,profile,h,depth,opening.offset+w-(italian?.016:.032),sill+h/2);
-    const panes=Math.max(1,Math.round(w/(italian?1.15:.75)));
+    const frameMat=mat(contemporary?'metal':'cream');
+    const t=contemporary?.028:.045,profile=contemporary?.032:.065,depth=contemporary?.075:.13;
+    local(windows,frameMat,w,profile,depth,c,sill+(contemporary?.016:.032));
+    local(windows,frameMat,w,profile,depth,c,sill+h-(contemporary?.016:.032));
+    local(windows,frameMat,profile,h,depth,opening.offset+(contemporary?.016:.032),sill+h/2);
+    local(windows,frameMat,profile,h,depth,opening.offset+w-(contemporary?.016:.032),sill+h/2);
+    const panes=Math.max(1,Math.round(w/(contemporary?1.15:.75)));
     for(let i=0;i<panes;i++) {
-      const pw=(w-(italian?.06:.12))/panes, pc=opening.offset+(italian?.03:.06)+(i+.5)*pw;
-      local(windows,opening.frosted?frostedGlass:mat('glass'),pw-(italian?.016:.035),h-(italian?.06:.14),.009,pc,sill+h/2);
-      if(i>0) local(windows,frameMat,t,h-.08,italian?.065:.082,opening.offset+(italian?.03:.06)+i*pw,sill+h/2);
+      const pw=(w-(contemporary?.06:.12))/panes, pc=opening.offset+(contemporary?.03:.06)+(i+.5)*pw;
+      local(windows,opening.frosted?frostedGlass:mat('glass'),pw-(contemporary?.016:.035),h-(contemporary?.06:.14),.009,pc,sill+h/2);
+      if(i>0) local(windows,frameMat,t,h-.08,contemporary?.065:.082,opening.offset+(contemporary?.03:.06)+i*pw,sill+h/2);
       // 法式竖窗用上下三分格，阳台滑门保留通透的两分格。
-      const bars=italian?[]:[.37,.73];
+      const bars=contemporary?[]:[.37,.73];
       for(const fraction of bars) local(windows,frameMat,pw-.02,.026,.05,pc,sill+h*fraction);
       local(windows,mat('brass'),.018,.105,.032,pc+pw/2-.072,sill+Math.min(h*.48,1.0),(opening.handleSide??(opening.type==='slider'?-1:1))*.066);
     }
     for(const sign of [-1,1]) {
-      if(italian) {
+      if(contemporary) {
         local(windows,mat('brass'),w+.04,.015,.012,c,sill+h+.008,sign*.096);
         for(const u of [opening.offset-.008,opening.offset+w+.008])local(windows,mat('brass'),.015,h+.024,.012,u,sill+h/2,sign*.096);
         if(sill>.3)local(windows,mat('stone'),w+.05,.022,.20,c,sill-.004,sign*.01);
@@ -188,9 +188,9 @@ export function buildArchitecture(THREE, mats, style='french') {
   function makeGlazedSlider(opening,local,wall) {
     const root=new THREE.Group(); root.name=`阳台滑门 ${opening.offset.toFixed(2)}`;
     root.userData.glazedDoor=true; root.userData.openingOffset=opening.offset; windows.add(root);
-    const w=opening.width,h=opening.height,c=opening.offset+w/2,frameMat=mat(italian?'metal':'walnut');
-    local(root,frameMat,w,italian?.035:.065,.13,c,h-(italian?.0175:.032));
-    for(const u of [opening.offset+.03,opening.offset+w-.03])local(root,frameMat,italian?.035:.06,h,.13,u,h/2);
+    const w=opening.width,h=opening.height,c=opening.offset+w/2,frameMat=mat(contemporary?'metal':'walnut');
+    local(root,frameMat,w,contemporary?.035:.065,.13,c,h-(contemporary?.0175:.032));
+    for(const u of [opening.offset+.03,opening.offset+w-.03])local(root,frameMat,contemporary?.035:.06,h,.13,u,h/2);
     const track=new THREE.Group();track.name='阳台低轨';root.add(track);
     local(track,mat('metal'),w,.016,.13,c,.022);
     const panelWidth=(w-.12)/2+.025, parked=opening.offset+w-.06-panelWidth/2;
@@ -201,10 +201,10 @@ export function buildArchitecture(THREE, mats, style='french') {
       const n=-.055+i*.08;
       panel.position.set(wall.a[0]+dx*parked-dz*n,0,wall.a[1]+dz*parked+dx*n);panel.rotation.y=rotation;
       panel.userData.walkObstacle=true;root.add(panel);
-      box(panel,mat('glass'),panelWidth-(italian?.05:.07),h-.15,.009,0,h/2+.006,0);
-      for(const x of [-panelWidth/2+.02,panelWidth/2-.02])box(panel,frameMat,italian?.028:.04,h-.075,.055,x,h/2+.01,0);
-      for(const y of [.06,h-.035])box(panel,frameMat,panelWidth,italian?.028:.04,.055,0,y,0);
-      if(!italian)box(panel,frameMat,panelWidth-.04,.026,.04,0,h*.67,0);
+      box(panel,mat('glass'),panelWidth-(contemporary?.05:.07),h-.15,.009,0,h/2+.006,0);
+      for(const x of [-panelWidth/2+.02,panelWidth/2-.02])box(panel,frameMat,contemporary?.028:.04,h-.075,.055,x,h/2+.01,0);
+      for(const y of [.06,h-.035])box(panel,frameMat,panelWidth,contemporary?.028:.04,.055,0,y,0);
+      if(!contemporary)box(panel,frameMat,panelWidth-.04,.026,.04,0,h*.67,0);
       box(panel,mat('brass'),.022,.13,.016,-panelWidth/2+.07,1.04,.033);
     }
     // 展示状态真实打开西侧半幅：两扇分轨叠放，导航仍阻挡东侧玻璃实体。
@@ -214,7 +214,7 @@ export function buildArchitecture(THREE, mats, style='french') {
   function makeDoor(opening,wall,local,rotation,dx,dz,normal) {
     const w=opening.width,h=opening.height,c=opening.offset+w/2;
     for(const sign of [-1,1]) {
-      if(italian) {
+      if(contemporary) {
         for(const u of [opening.offset-.012,opening.offset+w+.012])local(full,mat('metal'),.024,h+.028,.018,u,h/2,sign*.099);
         local(full,mat('metal'),w+.048,.024,.018,c,h+.012,sign*.099);
         continue;
@@ -236,8 +236,8 @@ export function buildArchitecture(THREE, mats, style='french') {
       const trackPadding=opening.trackPadding??.04, trackOverhang=opening.trackOverhang??.04;
       const trackMin=Math.min(opening.offset-.02,parked)-trackPadding, trackMax=Math.max(opening.offset+w+.02,parked+width)+trackPadding;
       const trackNormal=side*(count===2?.245:.18), trackDepth=count===2?.30:.16;
-      local(full,mat('trim'),trackMax-trackMin,italian?.08:.115,trackDepth,(trackMin+trackMax)/2,h+.145,trackNormal);
-      if(!italian)local(full,mat('walnut'),trackMax-trackMin+trackOverhang,.024,trackDepth+.02,(trackMin+trackMax)/2,h+.21,trackNormal);
+      local(full,mat('trim'),trackMax-trackMin,contemporary?.08:.115,trackDepth,(trackMin+trackMax)/2,h+.145,trackNormal);
+      if(!contemporary)local(full,mat('walnut'),trackMax-trackMin+trackOverhang,.024,trackDepth+.02,(trackMin+trackMax)/2,h+.21,trackNormal);
       local(full,mat('brass'),trackMax-trackMin,.018,.032,(trackMin+trackMax)/2,h+.073,side*.18);
       for(let i=0;i<count;i++) {
         const leaf=new THREE.Group(); leaf.name=`${wall.id} · 移门扇 ${i+1}`;
@@ -248,7 +248,7 @@ export function buildArchitecture(THREE, mats, style='french') {
         doorPanel(leaf,width,h,opening,true);
         // 扇缘压条、下部落地密封条和框侧搭接，避免明装门仅以裸缝拼合。
         box(leaf,mat('dark'),width,.014,.025,width/2,.028,0);
-        for(const x of [.018,width-.018])box(leaf,mat(italian?'metal':'walnut'),.026,h-.08,.058,x,h/2,0);
+        for(const x of [.018,width-.018])box(leaf,mat(contemporary?'metal':'walnut'),.026,h-.08,.058,x,h/2,0);
         for(const x of [.07,width-.07])box(leaf,mat('brass'),.025,.075,.024,x,h+.025,0);
       }
       return;
@@ -269,7 +269,7 @@ export function buildArchitecture(THREE, mats, style='french') {
   }
 
   function doorPanel(leaf,width,h,opening,sliding=false) {
-    if(italian) {
+    if(contemporary) {
       // 平板木门保留同一门芯与运动外包；薄金属收口代替凸起古典门板框线。
       leaf.userData.finish='flush-panel';
       if(opening.glazed) {
@@ -311,7 +311,7 @@ export function buildArchitecture(THREE, mats, style='french') {
   }
 
   // 南侧阳台保留开放栏杆；净高从可站立的基座顶计算，只设连续竖杆和顶扶手。
-  const railing = new THREE.Group(); railing.name='法式铁艺阳台栏杆'; group.add(railing);
+  const railing = new THREE.Group(); railing.name=song?'细金属阳台栏杆':'法式铁艺阳台栏杆'; group.add(railing);
   const left=.18,right=7.12,z=16.22,railMat=mat('metal');
   const base=new THREE.Group(),handrail=new THREE.Group(),uprights=new THREE.Group();
   base.name='栏杆石材基座';handrail.name='栏杆顶部扶手';uprights.name='栏杆连续竖杆';

@@ -15,6 +15,8 @@ import { canWalkTo, pointInPolygon } from './navigation.js';
 import { collectWalkBlockers } from './collision.js';
 import { assetUrl } from './assets.js';
 import { getDesignStyle, STYLE_IDS } from './design-styles.js';
+import { createModernPendant } from './modern-pendant.js';
+import { createSongPendant } from './song-pendant.js';
 
 export async function createHouseScene(container, callbacks = {}, initialStyle = 'french') {
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#dbdfd4');
@@ -55,7 +57,7 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
         }
       }
       const {file,...spec}=getDesignStyle(id).pendant;
-      const gltf=await new GLTFLoader().loadAsync(assetUrl(file)),chandelier=gltf.scene;
+      const chandelier=id==='song'?createSongPendant(THREE,mats):id==='modern'?createModernPendant(THREE,mats):(await new GLTFLoader().loadAsync(assetUrl(file))).scene;
       chandelier.position.set(2.25,HOUSE.height,8.65);
       chandelier.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});
       chandelier.userData.itemId=spec.id;root.add(chandelier);
@@ -167,7 +169,11 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
     furniture.group.traverse(o=>{if(o.isMesh&&o.material.userData.paletteRole)o.material.color.set(colors[o.material.userData.paletteRole]);});
     for(const item of furniture.items){
       item.originalMaterial??=item.material;
-      item.material=styleId==='italian'
+      item.material=styleId==='song'
+        ?item.originalMaterial.replace(/米绢织物/g,colors.surface).replace(/青瓷色/g,colors.accent)
+        :styleId==='modern'
+        ?item.originalMaterial.replace(/燕麦织物/g,colors.surface).replace(/鼠尾草/g,colors.accent)
+        :styleId==='italian'
         ?item.originalMaterial.replace(/炭灰皮革|苔灰皮革|暖灰皮革/g,colors.surface).replace(/深橄榄/g,colors.accent)
         :item.originalMaterial.replace(/酒红|苔绿|灰绿/g,color=>color==='酒红'?(name==='olive'?'苔绿':name==='ivory'?'暖米亚麻':'酒红'):(name==='olive'?'陶土色':name==='ivory'?'暖灰':color));
     }

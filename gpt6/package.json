@@ -17,7 +17,7 @@
     "@napi-rs/canvas": "1.0.8",
     "vite": "^7.1.5"
   },
-  "description": "GPT6 生成的双风格 Three.js 家装方案，供 house-3d 模型效果对比。",
+  "description": "GPT6 生成的四风格 Three.js 家装方案，供 house-3d 模型效果对比。",
   "license": "Apache-2.0",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

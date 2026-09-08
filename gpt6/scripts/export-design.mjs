@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { createCanvas } from '@napi-rs/canvas';
+globalThis.document={createElement:()=>createCanvas(1,1)};
 import { writeFile, mkdir } from 'node:fs/promises';
 import { buildFurniture } from '../src/furniture.js';
 import { makeGuideMarkdown } from '../src/ui.js';
@@ -19,4 +21,4 @@ await writeFile(style==='french'?'docs/家具与尺寸.csv':`docs/${design.name}
 styles[style]={name:design.name,concept:design.concept,items};
 }
 await writeFile('public/design-specification.json',JSON.stringify({units:'metres',style:'复古法式',source:'用户提供平面图；模型尺寸为推导值，详见 docs/architecture-assumptions.md',house:HOUSE,rooms:ROOMS,walls:WALLS,footprint:FOOTPRINT,items:styles.french.items,styles},null,2));
-console.log(`已导出 ${ROOMS.length} 个空间、两套各64件物件的设计手册、CSV 与米制参数。`);
+console.log(`已导出 ${ROOMS.length} 个空间、${STYLE_IDS.length}套各64件物件的设计手册、CSV 与米制参数。`);

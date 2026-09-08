@@ -8,7 +8,10 @@ import { createMaterials } from '../src/materials.js';
 import { buildArchitecture } from '../src/architecture.js';
 import { buildFurniture } from '../src/furniture.js';
 import { HOUSE, ROOMS } from '../src/layout.js';
-import { getDesignStyle } from '../src/design-styles.js';
+import { getDesignStyle, STYLE_IDS } from '../src/design-styles.js';
+
+import { createModernPendant } from '../src/modern-pendant.js';
+import { createSongPendant } from '../src/song-pendant.js';
 
 // The browser and offline renderer share the same metre-based meshes. Canvas
 // textures are painted by the application itself, not approximated in Python.
@@ -18,7 +21,7 @@ globalThis.document = { createElement: name => {
 }};
 globalThis.ProgressEvent = class ProgressEvent { constructor(type, values={}) { Object.assign(this, values, {type}); } };
 const style = process.argv[2] || 'italian';
-if (!['french', 'italian'].includes(style)) throw new Error('Use french or italian');
+if (!STYLE_IDS.includes(style)) throw new Error(`Use ${STYLE_IDS.join(', ')}`);
 const output = resolve('artifacts/cycles', style);
 await mkdir(`${output}/textures`, {recursive:true});
 const {mats} = createMaterials(style);
@@ -52,8 +55,13 @@ if (style === 'french') {
     art.material = new THREE.MeshStandardMaterial({name:'Corot public-domain artwork',map,roughness:.94});
   }
 }
-const model = await readFile(resolve('public',getDesignStyle(style).pendant.file));
-const pendant = (await new GLTFLoader().parseAsync(model.buffer.slice(model.byteOffset,model.byteOffset+model.byteLength), '')).scene;
+let pendant;
+if(style==='song')pendant=createSongPendant(THREE,mats);
+else if(style==='modern')pendant=createModernPendant(THREE,mats);
+else {
+  const model=await readFile(resolve('public',getDesignStyle(style).pendant.file));
+  pendant=(await new GLTFLoader().parseAsync(model.buffer.slice(model.byteOffset,model.byteOffset+model.byteLength), '')).scene;
+}
 pendant.position.set(2.25,HOUSE.height,8.65); root.add(pendant); root.updateMatrixWorld(true);
 const materials=[],textures=[],meshes=[],materialIds=new Map(),textureIds=new Map();
 async function exportTexture(texture) {
@@ -93,11 +101,11 @@ for(const mesh of visible) {
 }
 const room=ROOMS.find(r=>r.id==='living');
 const sourceHashes={};
-for(const file of ['src/architecture.js','src/furniture.js','src/italian-furniture.js','src/materials.js','src/pbr-materials.js','src/surface-uv.js','src/layout.js',`public/${getDesignStyle(style).pendant.file}`]) {
+for(const file of ['src/architecture.js','src/furniture.js','src/italian-furniture.js','src/modern-furniture.js','src/modern-pendant.js','src/song-furniture.js','src/song-art.js','src/song-pendant.js','src/design-styles.js','src/materials.js','src/pbr-materials.js','src/surface-uv.js','src/layout.js',...(getDesignStyle(style).pendant.file?[`public/${getDesignStyle(style).pendant.file}`]:[])]) {
   sourceHashes[file]=createHash('sha256').update(await readFile(file)).digest('hex');
 }
 const record={format:'housegpt-offline-1',style,palette:'burgundy',units:'metres',createdAt:new Date().toISOString(),
-  source:'src/architecture.js + src/furniture.js + src/materials.js + Blender pendant GLB',
+  source:`src/architecture.js + src/furniture.js + src/materials.js + ${['modern','song'].includes(style)?`src/${style}-pendant.js`:'Blender pendant GLB'}`,
   sourceHashes,
   rooms:ROOMS.map(({id,name,view})=>({id,name,camera:{threePosition:view.position,threeTarget:view.target,sourceVerticalFov:64,photographLensMillimeters:22,photographSensorWidthMillimeters:36}})),
   coordinates:{three:'x right, y up, z south',blender:'x right, y north, z up',conversion:'(x, y, z) -> (x, -z, y)'},

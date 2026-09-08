@@ -218,6 +218,43 @@ body[data-design-style="italian"] .mini-room.active{fill:#aa8c72}
 .photo-viewer{width:100%;max-width:none;height:100dvh;max-height:none;margin:0;border:0}.photo-viewer::backdrop{background:#181917}
 .visual-start{padding:26px;border:1px solid #746752;border-radius:6px;background:#272820;color:#ede5d6;min-width:240px;text-align:center}.visual-start::backdrop{background:#12140ed9}.visual-start button{min-width:100px;min-height:44px;padding:10px 18px;border:1px solid #b1a58d;border-radius:3px}
 .photo-viewer button{min-width:44px}
+/* Schemes retain equal, reachable controls on narrow screens. */
+body[data-design-style="modern"]{--cream:#f6f5f1;--ink:#363d38;--green:#667365;--line:#dedfd6}
+body[data-design-style="modern"] .project-intro h1{font-family:'PingFang SC','Microsoft YaHei',sans-serif;font-weight:400;letter-spacing:1px}
+body[data-design-style="modern"] .room-button.active{background:#e7ece3;color:#3d4d3d}
+body[data-design-style="modern"] .mini-room.active{fill:#94a18a}
+.panorama-entry:disabled{background:#e8ebe3;color:#52624f;border-color:#d0d6c9;cursor:default;box-shadow:none;opacity:1}
+.panorama-entry:disabled .panorama-entry-mark,.panorama-entry:disabled .panorama-entry-copy small,.panorama-entry:disabled>.icon{color:#71806b}
+.sample.modern-wood{background:repeating-linear-gradient(91deg,#d9c7a8 0,#e3d4bc 3px,#cdbb99 4px,#e6d8c0 9px)}
+.sample.modern-wall{background:#f0ede5}
+.sample.modern-fabric{background:#c5bca9;background-image:repeating-linear-gradient(0deg,#fff3 0,transparent 1px,transparent 3px),repeating-linear-gradient(90deg,#786e5b22 0,transparent 1px,transparent 3px)}
+.sample.modern-stone{background:#ded8cb;background-image:radial-gradient(#aaa39144 .5px,transparent .5px);background-size:4px 4px}
+.sample.modern-metal{background:#525653}
+.sample.modern-sage{background:#929b83;background-image:repeating-linear-gradient(90deg,#fff2 0,transparent 1px,transparent 4px)}
+@media(min-width:761px){.style-switch{gap:12px}.style-switch button{white-space:nowrap}}
+@media(max-width:760px){
+  .app-shell{grid-template-rows:calc(62px + var(--safe-top)) 96px minmax(0,1fr)}
+  .style-bar{grid-template-columns:minmax(0,1fr);grid-template-rows:48px 44px;gap:0;padding-bottom:4px}
+  .style-switch{width:100%;gap:4px}.style-switch button{font-size:12px}
+  .panorama-entry{justify-self:stretch;width:100%;min-height:40px;gap:8px;padding:4px 10px}
+  .panorama-entry-copy{display:flex;align-items:center;gap:10px}.panorama-entry-copy strong{font-size:11px}
+}
+@media(max-width:1024px) and (max-height:500px){
+  .app-shell{grid-template-rows:calc(50px + var(--safe-top)) 44px minmax(0,1fr)}
+  .style-bar{grid-template-columns:minmax(0,1fr) 152px;grid-template-rows:44px;padding-bottom:0;gap:8px}
+  .panorama-entry{width:152px}.panorama-entry-copy{display:grid;gap:2px}
+}
 @media(max-width:900px){.photo-rooms{padding:6px 12px}.photo-rooms button{padding:9px 12px;font-size:11px}.photo-toolbar{column-gap:4px}.photo-toolbar button{padding-inline:9px}}
 @media(max-width:359px){.photo-toolbar{padding-inline:8px}}
 @media(max-height:600px) and (orientation:landscape){.photo-rooms{padding:3px 16px}.photo-viewer footer{display:none}}
+body[data-design-style="song"]{--cream:#f3f0e7;--ink:#3b443a;--green:#637a6b;--line:#d9d6c8}
+body[data-design-style="song"] .room-button.active{background:#e0e7dc;color:#3b5746}
+body[data-design-style="song"] .mini-room.active{fill:#8aab98}
+.sample.song-wood{background:repeating-linear-gradient(91deg,#6b5037 0,#8a6b48 3px,#795b3b 4px,#957653 9px)}
+.sample.song-wall{background:#e8e1d2}
+.sample.song-fabric{background:#cbbfa6;background-image:repeating-linear-gradient(0deg,#fff3 0,transparent 1px,transparent 3px),repeating-linear-gradient(90deg,#79684a22 0,transparent 1px,transparent 3px)}
+.sample.song-celadon{background:linear-gradient(125deg,#8faa9b,#a8c0b2 72%,#363d35 72%)}
+.sample.song-stone{background:#a4aba0;background-image:radial-gradient(#68736233 .5px,transparent .5px);background-size:4px 4px}
+.sample.song-ink{background:linear-gradient(156deg,#e4dccb 49%,#9ba596 50%,#b4b6a8 64%,#586553 65%,#e4dccb 94%)}
+@media(min-width:761px) and (max-width:1250px){.style-bar-intro{display:none}.style-bar{grid-template-columns:minmax(0,1fr) auto}.style-switch{justify-content:center}}
+@media(max-width:760px){.style-switch button{font-size:11px;padding-inline:2px}.style-switch{gap:2px}}
