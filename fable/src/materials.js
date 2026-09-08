@@ -548,6 +548,113 @@ export function skyCanvas({ w = 2048, h = 1024, sunAz = 0.62, sunEl = 0.55 } = {
   return c;
 }
 
+// ------------------------------------------------------------ brick (青砖)
+// Running-bond bricks, `cols` bricks across (2:1 bricks, so 2*cols courses).
+export function brickCanvas({ size = 1024, cols = 4, base = 0x8e9494, joint = '#c2c6c2', seed = 12 } = {}) {
+  const c = canvas(size);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = joint;
+  ctx.fillRect(0, 0, size, size);
+  const bw = size / cols, bh = bw / 2;
+  const b = hexRgb(base);
+  const rows = cols * 2;
+  for (let j = 0; j < rows; j++) {
+    const off = j % 2 ? bw / 2 : 0;
+    for (let i = -1; i < cols + 1; i++) {
+      const k = hash2(((i + cols) % cols), j, seed);
+      const t = (k - 0.5) * 26;
+      ctx.fillStyle = `rgb(${(b[0] + t) | 0},${(b[1] + t) | 0},${(b[2] + t * 0.8) | 0})`;
+      ctx.fillRect(i * bw + off + 3, j * bh + 3, bw - 6, bh - 6);
+      // faint speckle
+      for (let q = 0; q < 6; q++) {
+        const d = 0.85 + 0.2 * hash2(i * 11 + q, j * 7 + q, seed + 5);
+        ctx.fillStyle = `rgba(${(b[0] * d) | 0},${(b[1] * d) | 0},${(b[2] * d) | 0},0.35)`;
+        const x = i * bw + off + 6 + hash2(i + q, j, seed + 9) * (bw - 16), y = j * bh + 6 + hash2(i, j + q, seed + 13) * (bh - 16);
+        ctx.fillRect(x, y, 6 + q * 2, 3);
+      }
+    }
+  }
+  return c;
+}
+
+// --------------------------------------------------- plain wool rug (现代)
+export function rugWoolCanvas({ size = 1024, field = '#d8d0c2', border = '#bfb5a4', seed = 4 } = {}) {
+  const f = hexRgb(parseInt(field.slice(1), 16));
+  const c = pixelCanvas(size, (u, w) => {
+    const n = fbm(u * 24, w * 24, seed, 4, 24) - 0.5;
+    const pile = (Math.sin(u * size * 0.7) * Math.sin(w * size * 0.7)) * 5;
+    return [f[0] + n * 22 + pile, f[1] + n * 22 + pile, f[2] + n * 22 + pile];
+  });
+  const ctx = c.getContext('2d');
+  ctx.strokeStyle = border;
+  ctx.lineWidth = size * 0.014;
+  ctx.strokeRect(size * 0.02, size * 0.02, size * 0.96, size * 0.96);
+  return c;
+}
+
+// --------------------------------------------------- woven rush mat (宋式 草席)
+export function rugWovenCanvas({ size = 1024, light = 0xd9c9a6, dark = 0xbfaa80, binding = '#4a5468', cells = 96 } = {}) {
+  const c = canvas(size);
+  const ctx = c.getContext('2d');
+  const l = hexRgb(light), d = hexRgb(dark);
+  const cell = size / cells;
+  for (let j = 0; j < cells; j++) for (let i = 0; i < cells; i++) {
+    const over = (i + j) % 2 === 0;
+    const k = hash2(i, j, 3) * 18 - 9;
+    const col = over ? [l[0] + k, l[1] + k, l[2] + k] : [d[0] + k, d[1] + k, d[2] + k];
+    ctx.fillStyle = `rgb(${col[0] | 0},${col[1] | 0},${col[2] | 0})`;
+    ctx.fillRect(i * cell, j * cell, cell, cell);
+    // strand shading: darker seam along one edge
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    if (over) ctx.fillRect(i * cell, j * cell, cell, 1.5); else ctx.fillRect(i * cell, j * cell, 1.5, cell);
+  }
+  ctx.strokeStyle = binding;
+  ctx.lineWidth = size * 0.022;
+  ctx.strokeRect(size * 0.011, size * 0.011, size * 0.978, size * 0.978);
+  return c;
+}
+
+// -------------------------------------------------- ink-wash landscape (水墨)
+// Layered mountain ridges on rice paper, mist between the layers, a red seal.
+export function inkCanvas(seed = 1, size = 512) {
+  const paper = [238, 232, 218];
+  const layers = 3 + (seed % 2);
+  const ridges = [];
+  for (let k = 0; k < layers; k++) {
+    const far = 1 - k / layers; // 1 = farthest
+    ridges.push({ base: 0.30 + k * (0.42 / layers) + 0.04 * hash2(seed, k, 1), amp: 0.10 + 0.06 * hash2(seed, k, 2), freq: 1.2 + k * 0.8, k, far });
+  }
+  const c = pixelCanvas(size, (u, w) => {
+    const grain = (fbm(u * 40, w * 40, seed + 40, 3, 40) - 0.5) * 10;
+    let col = [paper[0] + grain, paper[1] + grain, paper[2] + grain];
+    for (const r of ridges) {
+      const ridge = r.base + (fbm(u * r.freq + seed * 3.1 + r.k * 7, 0.3, seed + r.k, 4) - 0.5) * r.amp * 2 + Math.sin(u * 3.7 + r.k + seed) * r.amp * 0.5;
+      if (w > ridge) {
+        const depth = w - ridge; // distance below the ridge line
+        const mist = Math.min(1, depth * (4 + r.k * 2)); // 0 at the base of each layer (mist), 1 up near the ridge... inverted below
+        const texture = fbm(u * 18 + r.k, w * 18, seed + 9 + r.k, 4) * 0.5 + 0.5;
+        const ink = (0.22 + 0.70 * (1 - r.far)) * (0.55 + 0.45 * texture) * (1 - mist * 0.85);
+        const edge = Math.min(1, depth * 60);
+        const a = ink * edge;
+        col = [col[0] * (1 - a) + 40 * a, col[1] * (1 - a) + 42 * a, col[2] * (1 - a) + 48 * a];
+      }
+    }
+    // water: a few pale horizontal strokes near the bottom
+    if (w > 0.86) {
+      const stroke = Math.max(0, Math.sin(w * 140 + seed) - 0.7) * 3 * (fbm(u * 6, w * 40, seed + 21, 2) > 0.45 ? 1 : 0);
+      col = [col[0] - stroke * 30, col[1] - stroke * 30, col[2] - stroke * 26];
+    }
+    return col;
+  });
+  const ctx = c.getContext('2d');
+  const s = size * 0.045;
+  ctx.fillStyle = '#a8322a';
+  ctx.fillRect(size * 0.86, size * 0.90, s, s);
+  ctx.fillStyle = '#e6d9c8';
+  ctx.fillRect(size * 0.86 + s * 0.28, size * 0.90 + s * 0.28, s * 0.44, s * 0.44);
+  return c;
+}
+
 // --------------------------------------------------------- material factory
 export function makeMaterials() {
   const herring = herringboneTexture();
@@ -659,6 +766,46 @@ export function makeMaterials() {
     return new THREE.MeshStandardMaterial({ map: t, roughness: 1, bumpMap: linenBump, bumpScale: 0.3 });
   };
   M.abstractDark = (seed) => new THREE.MeshStandardMaterial({ map: toTexture(abstractDarkCanvas(seed)), roughness: 0.7 });
+  // ---- Modern (mo_) palette: pale oak, warm porcelain, wool rugs
+  const oakPale = plankTexture({ tone: [0xd8bf98, 0xc4a77c], seed: 21 });
+  M.oakPale = new THREE.MeshStandardMaterial({ map: toTexture(oakPale), bumpMap: toTexture(oakPale, { color: false }), bumpScale: 0.25, roughness: 0.55 });
+  M.oakPale.userData.metresPerTile = 3.8;
+  const oakVeneer = plankTexture({ planks: 1, joints: false, tone: [0xd9c09a, 0xc7aa80], seed: 23 });
+  M.oakVeneer = new THREE.MeshStandardMaterial({ map: toTexture(oakVeneer), roughness: 0.5 });
+  M.oakVeneer.userData.metresPerTile = 1.2;
+  M.porcelainWarm = new THREE.MeshPhysicalMaterial({ map: toTexture(stoneTileCanvas({ base: 0xd9d3c9, vein: 0xc3bbaf, vein2: 0xcfc7bb, seed: 61, joint: '#c9c2b7' })), roughness: 0.45, clearcoat: 0.25, clearcoatRoughness: 0.4 });
+  M.porcelainWarm.userData.metresPerTile = 1.6;
+  M.porcelainGrey = new THREE.MeshStandardMaterial({ map: toTexture(stoneTileCanvas({ base: 0xa8a5a0, vein: 0x8d8a84, vein2: 0x9c9993, seed: 62, joint: '#8f8c86' })), roughness: 0.6 });
+  M.porcelainGrey.userData.metresPerTile = 1.2;
+  M.rugWool = (variant = 0) => {
+    const pals = [{ field: '#d8d0c2', border: '#bfb5a4' }, { field: '#cfc6b8', border: '#b1a695' }, { field: '#d9d4cb', border: '#b9b3a8' }, { field: '#c9cbc2', border: '#a7ab9f' }][variant % 4];
+    const t = toTexture(rugWoolCanvas({ ...pals, seed: variant + 4 }));
+    t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    return new THREE.MeshStandardMaterial({ map: t, roughness: 1, bumpMap: linenBump, bumpScale: 0.35 });
+  };
+  // ---- Song (sg_) palette: ash wood, grey brick and stone, limewash walls, rush mats, ink art
+  const ashPlank = plankTexture({ tone: [0xdccfb6, 0xc9b99a], seed: 31 });
+  M.ashPlank = new THREE.MeshStandardMaterial({ map: toTexture(ashPlank), bumpMap: toTexture(ashPlank, { color: false }), bumpScale: 0.25, roughness: 0.6 });
+  M.ashPlank.userData.metresPerTile = 3.8;
+  const ashVeneer = plankTexture({ planks: 1, joints: false, tone: [0xdad0b8, 0xcbbc9c], seed: 33 });
+  M.ashVeneer = new THREE.MeshStandardMaterial({ map: toTexture(ashVeneer), roughness: 0.55 });
+  M.ashVeneer.userData.metresPerTile = 1.2;
+  M.ashDark = M.ashVeneer.clone();
+  M.ashDark.color.set(0xb09a76);
+  M.qingBrick = new THREE.MeshStandardMaterial({ map: toTexture(brickCanvas()), roughness: 0.85 });
+  M.qingBrick.userData.metresPerTile = 1.2;
+  M.qingStone = new THREE.MeshStandardMaterial({ map: toTexture(stoneTileCanvas({ base: 0x737876, vein: 0x8f9492, vein2: 0x626866, seed: 71, joint: '#585d5b' })), roughness: 0.65 });
+  M.qingStone.userData.metresPerTile = 2.4;
+  const lime = plasterCanvas({ base: 0xf2f0ec, contrast: 46, seed: 29 });
+  M.limewash = (hex) => { const m = new THREE.MeshStandardMaterial({ color: hex, map: toTexture(lime), bumpMap: toTexture(lime, { color: false }), bumpScale: 0.3, roughness: 0.95 }); m.userData.metresPerTile = 2.2; return m; };
+  M.rugWoven = (variant = 0) => {
+    const pals = [{ light: 0xd9c9a6, dark: 0xbfaa80, binding: '#4a5468' }, { light: 0xd3c6a8, dark: 0xb8a884, binding: '#5b6b63' }, { light: 0xdccfb0, dark: 0xc4b28c, binding: '#6b4b3a' }, { light: 0xd6c7a5, dark: 0xbaa77f, binding: '#3c4658' }][variant % 4];
+    const t = toTexture(rugWovenCanvas(pals));
+    t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    t.anisotropy = 8;
+    return new THREE.MeshStandardMaterial({ map: t, roughness: 1, bumpMap: linenBump, bumpScale: 0.25 });
+  };
+  M.inkPainting = (seed) => new THREE.MeshStandardMaterial({ map: toTexture(inkCanvas(seed)), roughness: 0.9 });
   for (const [k, v] of Object.entries(M)) if (v && v.isMaterial && !v.name) v.name = k;
   M.linenBump = linenBump;
   M.plasterBump = plasterBump;

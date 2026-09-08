@@ -17,9 +17,9 @@
 ## 项目生成的资产
 
 - `gpt6/public/models/french-chandelier.glb` 和 `italian-pendant.glb` 分别由 `gpt6/scripts/build_chandelier.py`、`build_italian_pendant.py` 生成；相关元数据与预览保存在 `gpt6/artifacts/`。
-- `fable/public/models/` 中的 121 个 GLB 由 `fable/blender/` 下的程序化建模脚本生成，`manifest.json` 记录模型尺寸；这些 GLB 不引用外部图片或外部文件。
+- `fable/public/models/` 中的 223 个 GLB（法式 60、意式 61、现代简约 46、宋式 56） 由 `fable/blender/` 下的程序化建模脚本生成，`manifest.json` 记录模型尺寸；这些 GLB 不引用外部图片或外部文件。
 - 两个版本的建筑、其他程序化几何及 Canvas 材质纹理见各自 `src/`。上述项目自有脚本和生成资产随本仓库按 Apache-2.0 发布。
-- `gpt6/public/panoramas/` 的 54 张 JPG 和 `fable/public/pano/` 的 28 张 JPG 是各自场景的 Blender Cycles 渲染结果。生成脚本随仓库提供；图中第三方素材保留以下独立权利状态。
+- `gpt6/public/panoramas/` 的 54 张 JPG 和 `fable/public/pano/` 的 56 张 JPG 是各自场景的 Blender Cycles 渲染结果。生成脚本随仓库提供；图中第三方素材保留以下独立权利状态。
 - 模型中的家具样式或名称用于描述外观，不代表品牌原版模型、官方合作、商标许可或产品认证。
 
 ## 对比视频与预览图片

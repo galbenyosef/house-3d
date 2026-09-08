@@ -4,8 +4,14 @@ Usage: Blender -b --python blender/build_assets.py -- <out_dir> [asset ...]
 import sys, os, json, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bpy
-import lib, assets, assets_it
-assets.ASSETS.update(assets_it.ASSETS_IT)
+import glob, importlib
+import lib, assets
+# every blender/assets_<style>.py contributes its ASSETS_* dict(s) — no registration needed
+for _path in sorted(glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets_*.py'))):
+    _mod = importlib.import_module(os.path.basename(_path)[:-3])
+    for _key, _val in vars(_mod).items():
+        if _key.startswith('ASSETS') and isinstance(_val, dict):
+            assets.ASSETS.update(_val)
 
 args = sys.argv[sys.argv.index('--') + 1:]
 out = args[0]

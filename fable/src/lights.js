@@ -32,10 +32,11 @@ export function buildLights(scene, style = { fixtureById: {} }) {
 
   const interior = [];
   for (const f of FIXTURES) {
-    const drop = f.kind === 'chandelier-large' ? 650 : f.kind === 'chandelier-small' ? 480 : f.kind === 'lantern' ? 420 : 80;
+    const ov = style.fixtureById?.[f.id] || {};
+    // light source hangs `drop` mm below the ceiling: per kind, or overridden per fixture (e.g. a track instead of a pendant)
+    const drop = ov.drop ?? (f.kind === 'chandelier-large' ? 650 : f.kind === 'chandelier-small' ? 480 : f.kind === 'lantern' ? 420 : 80);
     const cd = f.lumens / (4 * Math.PI); // candela
     const light = new THREE.PointLight(0xffdcb0, cd, 0, 2);
-    const ov = style.fixtureById?.[f.id] || {};
     light.position.set((ov.x ?? f.x) * S, (CEIL_H - drop - 60) * S, (ov.y ?? f.y) * S);
     light.name = `light-${f.id}`;
     light.userData.base = cd;

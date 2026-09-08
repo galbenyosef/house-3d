@@ -272,7 +272,7 @@ const app = {
     ceilings.visible = wasVisible;
     const meta = {
       style: style.id,
-      fixtures: FIXTURES.map((f) => { const ov = style.fixtureById[f.id] || {}; return { id: f.id, room: f.room, x: ov.x ?? f.x, y: ov.y ?? f.y, lumens: f.lumens, kind: f.kind }; }),
+      fixtures: FIXTURES.map((f) => { const ov = style.fixtureById[f.id] || {}; return { id: f.id, room: f.room, x: ov.x ?? f.x, y: ov.y ?? f.y, lumens: f.lumens, kind: f.kind, ...(ov.drop !== undefined ? { drop: ov.drop } : {}) }; }),
       ceil: 2720, interiorBoost: style.interiorBoost || 1,
     };
     const ep = `${import.meta.env.BASE_URL}__export`;

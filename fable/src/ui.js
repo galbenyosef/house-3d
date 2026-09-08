@@ -1,6 +1,7 @@
 import { ROOMS, roomArea, rectArea, planBounds, OPENINGS, roomAt } from './plan.js';
 import { SPECS_BY_STYLE } from './specs.js';
 import { PANO_OF_ROOM, panoName } from './pano.js';
+import { STYLES, DEFAULT_STYLE } from './styles.js';
 
 const BASE_URL = (import.meta.env && import.meta.env.BASE_URL) || '/';
 const ROOM_SHORT = { tatami: '榻榻米', bed1: '次卧1', kitchen: '厨房', bath1: '公卫', living: '客餐厅', bed2: '次卧2', vestibule: '', bath2: '主卫', bed3: '主卧', balcony: '阳台' };
@@ -15,17 +16,19 @@ export function initUI(app) {
   let labelsOn = true;
   let walkUI = null;
   let selectedRoom = null;
-  let SPECS = SPECS_BY_STYLE.french;
-  let styleId = 'french';
+  let SPECS = SPECS_BY_STYLE[DEFAULT_STYLE];
+  let styleId = DEFAULT_STYLE;
   let entryRoom = 'living';
   const entry = $('#pano-entry');
   entry.addEventListener('click', () => app.openPanorama({ room: entryRoom }));
   const updateEntry = () => {
     entry.querySelector('img').src = `${BASE_URL}pano/${styleId}-${entryRoom}-preview.jpg`;
-    entry.querySelector('small').textContent = `Cycles 实景渲染 · ${panoName(entryRoom) || ''} · ${styleId === 'french' ? '法式' : '意式轻奢'}`;
+    entry.querySelector('small').textContent = `Cycles 实景渲染 · ${panoName(entryRoom) || ''} · ${STYLES[styleId]?.name || ''}`;
   };
   updateEntry();
   const switchEl = $('#style-switch');
+  // one tab per registered style (src/styles.js) — nothing to edit here for a new style
+  switchEl.innerHTML = Object.values(STYLES).map((s) => `<button data-style="${s.id}"${s.id === DEFAULT_STYLE ? ' class="on"' : ''}>${s.name}</button>`).join('');
   switchEl.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-style]');
     if (btn && !btn.classList.contains('on')) app.setStyle(btn.dataset.style);
@@ -170,11 +173,11 @@ export function initUI(app) {
     labelsOn: () => labelsOn,
     isTouch,
     setStyle(style, busy = false) {
-      SPECS = SPECS_BY_STYLE[style.id] || SPECS_BY_STYLE.french;
+      SPECS = SPECS_BY_STYLE[style.id] || SPECS_BY_STYLE[DEFAULT_STYLE];
       styleId = style.id;
       updateEntry();
       switchEl.querySelectorAll('button').forEach((b) => { b.classList.toggle('on', b.dataset.style === style.id); b.disabled = busy; });
-      $('#title').textContent = `Maison · ${style.name}四居室`;
+      $('#title').innerHTML = `<span class="brand">Maison · </span>${style.name}四居室`;
       $('#subtitle').textContent = `${style.subtitle} · 8853 × 16375 mm · 约 121 m²`;
       document.title = `Maison · ${style.name}四居室`;
       if (selectedRoom && !panel.hidden) this.showRoom(ROOMS.find((r) => r.id === selectedRoom));

@@ -80,6 +80,13 @@ for mat in bpy.data.materials:
         p.inputs['Roughness'].default_value = 0.02
     if 'sheer' in name:
         p.inputs['Alpha'].default_value = 0.35
+    if name.startswith('paper'):
+        # rice paper (lantern shades, screens): diffuse translucency so the bulb / point
+        # light inside a lantern glows through instead of being blocked by an opaque shell
+        p.inputs['Transmission Weight'].default_value = 1.0
+        p.inputs['Roughness'].default_value = 0.95
+        p.inputs['IOR'].default_value = 1.05
+        p.inputs['Base Color'].default_value = (0.96, 0.93, 0.86, 1)
     # crank emissive strength for lamps so they read as lit
     es = p.inputs['Emission Strength'].default_value
     if es > 0.5:
@@ -113,6 +120,8 @@ bg.inputs['Strength'].default_value = opts['world']   # sky model is in physical
 ceil = meta.get('ceil', 2720) / 1000.0
 for f in meta.get('fixtures', []):
     drop = {'chandelier-large': 0.7, 'chandelier-small': 0.5, 'lantern': 0.45, 'flush': 0.1}.get(f['kind'], 0.5)
+    if 'drop' in f:  # per-fixture override from the descriptor (mm)
+        drop = f['drop'] / 1000.0 + 0.05
     ld = bpy.data.lights.new('L_' + f['id'], 'POINT')
     ld.energy = f['lumens'] * opts['lamp'] * meta.get('interiorBoost', 1)
     ld.color = (1.0, 0.86, 0.66)
@@ -138,8 +147,10 @@ cam = bpy.data.objects.new('pano', cam_data)
 scene.collection.objects.link(cam)
 cx, cy, cz = opts['cam']
 cam.location = (cx, -cz, cy)
-# look horizontally; yaw 0 = south (Blender -Y), 90 = east (+X)
-cam.rotation_euler = (math.radians(90), 0, math.radians(180 - opts['yaw']))
+# look horizontally; yaw 0 = south (Blender -Y), 90 = east (+X), -90 = west (-X).
+# (A camera pitched up 90° looks along +Y; rotating it by 180 + yaw about Z turns
+# +Y into -Y for yaw 0 and into +X for yaw 90.)
+cam.rotation_euler = (math.radians(90), 0, math.radians(180 + opts['yaw']))
 scene.camera = cam
 
 # ------------------------------------------------------------------ render settings

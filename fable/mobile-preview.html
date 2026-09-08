@@ -1,5 +1,15 @@
 <!doctype html><meta charset="utf-8"><title>mobile preview</title>
-<body style="margin:0;background:#444;display:flex;gap:16px;padding:12px">
-<iframe src="/maison/?style=italian&touch=1" style="width:400px;height:800px;border:0;display:block;background:#000"></iframe>
-<iframe src="/maison/?style=french&touch=1&panel=1" style="width:400px;height:800px;border:0;display:block;background:#000"></iframe>
+<body style="margin:0;background:#444;display:flex;gap:16px;padding:12px;flex-wrap:wrap">
+<script type="module">
+// Dev helper: one phone-sized (400 px) frame per style. ?styles=a,b picks styles, ?panel=1 opens a room panel.
+import { STYLES } from './src/styles.js';
+const q = new URLSearchParams(location.search);
+const ids = (q.get('styles') || Object.keys(STYLES).join(',')).split(',');
+for (const id of ids) {
+  const f = document.createElement('iframe');
+  f.src = `./?style=${id}&touch=1${q.has('panel') ? '&panel=1' : ''}`;
+  f.style.cssText = 'width:400px;height:800px;border:0;display:block;background:#000';
+  document.body.append(f);
+}
+</script>
 </body>

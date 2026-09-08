@@ -7,6 +7,8 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { FIXTURES } from './fixtures.js';
 import { CEIL_H } from './plan.js';
 import { PLACEMENTS_ITALIAN, RUGS_ITALIAN } from './placements_italian.js';
+import { PLACEMENTS_MODERN, RUGS_MODERN } from './placements_modern.js';
+import { PLACEMENTS_SONG, RUGS_SONG } from './placements_song.js';
 
 const S = 0.001;
 const BASE = (import.meta.env && import.meta.env.BASE_URL) || '/';
@@ -131,7 +133,9 @@ export const RUGS_FRENCH = [
 // Wall-hung pieces: their origin is placed on the wall finish; the model is
 // pushed out by the depth it extends behind its origin so the back sits flush.
 export const WALL_MOUNTED = new Set(['mirror_ornate', 'mirror_round', 'art_portrait', 'art_landscape', 'art_small', 'sconce', 'tv',
-  'it_mirror_round', 'it_mirror_led', 'it_art_large', 'it_art_tall', 'it_art_small', 'it_wall_light', 'it_nightstand', 'it_nightstand_s', 'it_dresser', 'it_vanity', 'it_vanity_wide', 'it_toilet', 'it_hook_rail', 'it_media_wall']);
+  'it_mirror_round', 'it_mirror_led', 'it_art_large', 'it_art_tall', 'it_art_small', 'it_wall_light', 'it_nightstand', 'it_nightstand_s', 'it_dresser', 'it_vanity', 'it_vanity_wide', 'it_toilet', 'it_hook_rail', 'it_media_wall',
+  'mo_media_wall', 'mo_nightstand', 'mo_dresser', 'mo_vanity', 'mo_vanity_wide', 'mo_mirror_round', 'mo_art_large', 'mo_art_tall', 'mo_art_small', 'mo_hook_rail',
+  'sg_media_wall', 'sg_lattice_panel', 'sg_vanity', 'sg_vanity_wide', 'sg_mirror_round', 'sg_art_scroll', 'sg_art_large', 'sg_art_small', 'sg_hook_rail', 'sg_wall_light']);
 export function resolvePlacement(p, backDepthMm = 0) {
   if (!WALL_MOUNTED.has(p.a)) return { x: p.x, y: p.y };
   const rad = deg(p.r || 0);
@@ -141,6 +145,8 @@ export function resolvePlacement(p, backDepthMm = 0) {
 export const TABLES = {
   french: { placements: PLACEMENTS_FRENCH, rugs: RUGS_FRENCH },
   italian: { placements: PLACEMENTS_ITALIAN, rugs: RUGS_ITALIAN },
+  modern: { placements: PLACEMENTS_MODERN, rugs: RUGS_MODERN },
+  song: { placements: PLACEMENTS_SONG, rugs: RUGS_SONG },
 };
 // kept for older imports
 export const PLACEMENTS = PLACEMENTS_FRENCH;
@@ -148,7 +154,7 @@ export const RUGS = RUGS_FRENCH;
 
 // ------------------------------------------------------------ materials
 const FABRIC = /^(linen|boucle|velvet|fabric|leather|paper|cane|rattan|canvas|books|soil)/;
-const UV_TILE = { books: 0.42, marble_white: 1.2, marble_black: 1.0, marble_grey: 2.4, calacatta: 2.0, travertine: 1.2, walnut: 1.2, teak: 1.2, oak_smoked: 1.2, canvas: 1, default: 0.35 };
+const UV_TILE = { books: 0.42, marble_white: 1.2, marble_black: 1.0, marble_grey: 2.4, calacatta: 2.0, slab_white: 1.5, travertine: 1.2, walnut: 1.2, teak: 1.2, oak_smoked: 1.2, oak_pale: 1.2, oak_veneer: 1.2, ash: 1.2, ash_dark: 1.2, stone_qing: 2.4, canvas: 1, default: 0.35 };
 
 function boxUV(geom, tile) {
   const g = geom.index ? geom.toNonIndexed() : geom.clone();
@@ -202,10 +208,18 @@ function buildMaterial(name, orig, M) {
     case 'marble_black': return M.marbleBlack;
     case 'marble_grey': return M.marbleGreySlab;
     case 'calacatta': return M.calacattaViola;
+    case 'slab_white': return M.marbleWhite;
     case 'travertine': return M.travertine;
     case 'walnut': return M.walnutVeneer;
     case 'teak': { const m = M.walnutVeneer.clone(); m.color.set(0xd9a878); return m; }
     case 'oak_smoked': { const m = M.walnutVeneer.clone(); m.color.set(0xb9a58f); return m; }
+    case 'oak_pale': case 'oak_veneer': return M.oakVeneer;
+    case 'ash': return M.ashVeneer;
+    case 'ash_dark': return M.ashDark;
+    case 'stone_qing': return M.qingStone;
+    // glazed ceramics (汝窑天青 / 米白釉): clearcoat over the Blender colour
+    case 'celadon': case 'celadon_pale': case 'ceramic_ivory': case 'ceramic_cream': case 'ceramic_sand':
+      return new THREE.MeshPhysicalMaterial({ color, roughness: 0.3, metalness: 0, clearcoat: 0.7, clearcoatRoughness: 0.18 });
     case 'smoked_glass': return M.smokedGlass;
     case 'champagne': return M.champagne;
     case 'led': return new THREE.MeshStandardMaterial({ color: 0xfff3e0, emissive: 0xffd9a8, emissiveIntensity: 2.2, roughness: 0.6 });
@@ -237,6 +251,8 @@ export async function buildFurnishings(M, style, onProgress = () => {}) {
   const protos = new Map();
   const matCache = new Map();
   const geomCache = new Map();
+  const artCache = new Map();
+  const rugCache = new Map();
   let done = 0;
   await Promise.all([...names].map(async (name) => {
     try {
@@ -276,7 +292,9 @@ export async function buildFurnishings(M, style, onProgress = () => {}) {
     const inst = proto.root.clone();
     if (extra.seed !== undefined) {
       const art = M[style.art] || M.painting;
-      inst.traverse((o) => { if (o.isMesh && o.userData.canvas) o.material = art(extra.seed); });
+      // canvases are generated pixel by pixel: share one material per seed instead of redrawing it per picture
+      if (!artCache.has(extra.seed)) artCache.set(extra.seed, art(extra.seed));
+      inst.traverse((o) => { if (o.isMesh && o.userData.canvas) o.material = artCache.get(extra.seed); });
     }
     if (extra.head) {
       inst.traverse((o) => { if (o.isMesh && (o.name === 'headboard' || o.name.startsWith('euro'))) o.material = matCache.get(extra.head) || o.material; });
@@ -314,7 +332,8 @@ export async function buildFurnishings(M, style, onProgress = () => {}) {
   }
   // rugs
   for (const rg of RUGS) {
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(rg.w * S, rg.d * S), (M[style.rug] || M.rug)(rg.v));
+    if (!rugCache.has(rg.v)) rugCache.set(rg.v, (M[style.rug] || M.rug)(rg.v));
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(rg.w * S, rg.d * S), rugCache.get(rg.v));
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.set(rg.x * S, 0.006, rg.y * S);
     mesh.receiveShadow = true;

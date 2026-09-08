@@ -86,5 +86,102 @@ export const ITALIAN = {
   background: { day: ['#c4c8cd', '#dcd7cf'], night: ['#07080c', '#15171d'] },
 };
 
-export const STYLES = { french: FRENCH, italian: ITALIAN };
+// >>> style modern — scaffolded from ITALIAN by scripts/new-style.mjs. Override fields as the
+// design diverges (see README.md#新增装修风格).
+// 现代简约 (warm minimalism): warm off-white paint, pale oak, handleless warm-white storage,
+// slim black frames, no main light (tracks, linear pendant, disc pendants, cove LED).
+export const MODERN = {
+  ...ITALIAN,
+  id: 'modern',
+  name: '现代简约',
+  subtitle: '暖白艺术漆 · 浅橡木饰面 · 磁吸轨道与灯带',
+  floors: { wood: 'oakPale', stone: 'porcelainWarm', wet: 'porcelainGrey', outdoor: 'porcelainGrey' },
+  floorOverrides: {},
+  thresholdMat: 'porcelainGrey',
+  wallMaterial: 'paint',
+  mouldings: false,
+  shadowGap: true,
+  cove: true,
+  trimMat: 'metalBlack',
+  schemes: {
+    living: { paint: 0xefebe4, cove: true },
+    vestibule: { paint: 0xefebe4, cove: true },
+    tatami: { paint: 0xe7e2d8, cove: true },
+    bed1: { paint: 0xebe5dc, cove: true },
+    bed2: { paint: 0xece7df, cove: true },
+    bed3: { paint: 0xe3ded5, cove: true },
+    kitchen: { paint: 0xefebe4 },
+    bath1: { tile: 'porcelainGrey', tileTo: CEIL_H },
+    bath2: { tile: 'porcelainGrey', tileTo: CEIL_H },
+    balcony: { paint: 0xe6e1d9 },
+  },
+  doors: { leaf: 'flush', leafMat: 'oakVeneer', entryMat: 'trimDark', frameMat: 'metalBlack', glassFrameMat: 'metalBlack', casing: false, grid: false, handle: 'lever' },
+  windows: { frameMat: 'metalBlack', glazingFrameMat: 'metalBlack', grid: false, casing: false, sillMat: 'porcelainGrey', rod: false, curtainColours: { living: 0xd9d2c6, tatami: 0xcfc9bd, bed1: 0xdcd5c9, bed2: 0xdcd5c9, bed3: 0xd3cdc2, vestibule: 0xd9d2c6 }, curtainDefault: 0xd9d2c6 },
+  arch: 'portal',
+  bay: { cladMat: 'oakVeneer', topMat: 'porcelainWarm' },
+  exteriorMat: 'exterior',
+  rug: 'rugWool',
+  art: 'abstract',
+  fixtureModels: { 'chandelier-large': 'mo_pendant_linear', 'chandelier-small': 'mo_pendant_disc', lantern: 'mo_spot_track', flush: 'mo_flush_slim' },
+  fixtureNames: { 'chandelier-large': '黑色线性吊灯 1200', 'chandelier-small': '哑白圆盘吊灯 Ø450', lantern: '磁吸轨道射灯（3 头）', flush: '超薄吸顶灯 Ø300' },
+  fixtureById: { dining: { x: 1900, y: 8550, rot: 90 }, lounge: { model: 'mo_spot_track', name: '磁吸轨道射灯（3 头）', x: 2450, y: 12000, drop: 100 }, bed3: { model: 'mo_pendant_disc', name: '哑白圆盘吊灯 Ø450' } },
+  ceilingRose: {},
+  fixtureDrop: 0,
+  exposure: 0.60,
+  interiorBoost: 0.75,
+  bloom: true,
+  background: { day: ['#d5d9dd', '#ede9e2'], night: ['#090b10', '#191c24'] },
+};
+// <<< style modern
+
+// >>> style song — scaffolded from ITALIAN by scripts/new-style.mjs. Override fields as the
+// design diverges (see README.md#新增装修风格).
+// 宋式 (Song aesthetic): rice-paper limewash walls, pale ash frames and lattice, grey brick and
+// stone, rush mats, celadon, paper lanterns; no mouldings, flat ash skirting.
+export const SONG = {
+  ...ITALIAN,
+  id: 'song',
+  name: '宋式',
+  subtitle: '宣纸白肌理漆 · 白蜡木格栅 · 汝窑天青',
+  floors: { wood: 'ashPlank', stone: 'qingBrick', wet: 'qingStone', outdoor: 'qingBrick' },
+  floorOverrides: {},
+  thresholdMat: 'qingStone',
+  wallMaterial: 'limewash',
+  mouldings: false,
+  shadowGap: false,
+  skirting: true,
+  cove: false,
+  trimMat: 'ashVeneer',
+  schemes: {
+    living: { paint: 0xefeae0 },
+    vestibule: { paint: 0xefeae0 },
+    tatami: { paint: 0xcfdad3 },
+    bed1: { paint: 0xebe6da },
+    bed2: { paint: 0xece7dc },
+    bed3: { paint: 0xdde2dc },
+    kitchen: { paint: 0xefeae0 },
+    bath1: { tile: 'qingStone', tileTo: CEIL_H },
+    bath2: { tile: 'qingStone', tileTo: CEIL_H },
+    balcony: { paint: 0xe8e3d8 },
+  },
+  doors: { leaf: 'flush', leafMat: 'ashVeneer', entryMat: 'walnutDark', frameMat: 'ashVeneer', glassFrameMat: 'ashVeneer', casing: false, grid: true, handle: 'lever' },
+  windows: { frameMat: 'ashVeneer', glazingFrameMat: 'ashVeneer', grid: true, casing: false, sillMat: 'ashVeneer', rod: false, curtainColours: { living: 0xd8d0c0, tatami: 0xc4cfc8, bed1: 0xd9d2c4, bed2: 0xd9d2c4, bed3: 0xc9d0cb, vestibule: 0xd8d0c0 }, curtainDefault: 0xd8d0c0 },
+  arch: 'portal',
+  bay: { cladMat: 'ashVeneer', topMat: 'ashVeneer' },
+  exteriorMat: 'exterior',
+  rug: 'rugWoven',
+  art: 'inkPainting',
+  fixtureModels: { 'chandelier-large': 'sg_lantern_large', 'chandelier-small': 'sg_lantern_small', lantern: 'sg_lantern_square', flush: 'sg_flush_paper' },
+  fixtureNames: { 'chandelier-large': '宣纸圆灯笼吊灯 Ø600', 'chandelier-small': '宣纸圆灯笼吊灯 Ø400', lantern: '白蜡木方灯笼吊灯', flush: '木框宣纸吸顶灯 420' },
+  fixtureById: { dining: { x: 1900, y: 8550 }, lounge: { x: 2450, y: 12000 } },
+  ceilingRose: {},
+  fixtureDrop: 20,
+  exposure: 0.62,
+  interiorBoost: 2.2,
+  bloom: false,
+  background: { day: ['#d8dcd8', '#efece4'], night: ['#0a0d12', '#1a1e26'] },
+};
+// <<< style song
+
+export const STYLES = { french: FRENCH, italian: ITALIAN, modern: MODERN, song: SONG };
 export const DEFAULT_STYLE = 'french';

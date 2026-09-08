@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { ROOMS } from '../src/plan.js';
 import { PANO_ROOMS, PANO_OF_ROOM, panoName } from '../src/pano.js';
+import { STYLES } from '../src/styles.js';
 
-const STYLES = ['french', 'italian'];
+const STYLE_IDS = Object.keys(STYLES);
 const BEDROOMS = ROOMS.filter((r) => r.bedroom).map((r) => r.id).sort();
 const file = (rel) => new URL(`../${rel}`, import.meta.url);
 
@@ -29,7 +30,7 @@ test('every plan room maps to a rendered panorama room with a name', () => {
 });
 
 test('panorama images exist for both styles (full + preview)', () => {
-  for (const s of STYLES) {
+  for (const s of STYLE_IDS) {
     for (const p of PANO_ROOMS) {
       for (const suffix of ['', '-preview']) {
         const rel = `public/pano/${s}-${p.id}${suffix}.jpg`;

@@ -2,6 +2,7 @@
 // viewed in a lightweight sphere viewer (drag to look, wheel/pinch to zoom,
 // room tabs, style toggle, save view).
 import * as THREE from 'three';
+import { STYLES, DEFAULT_STYLE } from './styles.js';
 
 const BASE = (import.meta.env && import.meta.env.BASE_URL) || '/';
 
@@ -37,7 +38,7 @@ export function openPanorama(app, { style, room = 'living' } = {}) {
     <nav class="pano-rooms"></nav>
     <div class="pano-canvas" tabindex="0"></div>
     <div class="pano-toolbar">
-      <div class="pano-styles"><button data-pano-style="french">法式</button><button data-pano-style="italian">意式轻奢</button></div>
+      <div class="pano-styles">${Object.values(STYLES).map((s) => `<button data-pano-style="${s.id}">${s.name}</button>`).join('')}</div>
       <span class="pano-status">正在载入高清全景…</span>
       <div><button data-pano="out">−</button><button data-pano="in">＋</button><button data-pano="save">保存视角</button></div>
     </div>`;
@@ -57,7 +58,7 @@ export function openPanorama(app, { style, room = 'living' } = {}) {
   const sphere = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0x111111 }));
   scene.add(sphere);
   let yaw = 0, pitch = THREE.MathUtils.degToRad(-6), texture = null, closed = false, raf = 0;
-  let current = { style: style || 'french', room };
+  let current = { style: style || DEFAULT_STYLE, room };
   const loader = new THREE.TextureLoader();
   const cache = new Map();
 

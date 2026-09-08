@@ -224,7 +224,9 @@ function buildFinishes(M, style) {
   const wallMat = (scheme) => {
     if (scheme.stripes) return M.wallpaperStripe(...scheme.stripes);
     if (scheme.paint === undefined) return null;
-    return style.wallMaterial === 'microCement' ? M.microCement(scheme.paint) : M.paint(scheme.paint);
+    // wall finish factory by name (M.paint / M.microCement / M.limewash …); unknown names fall back to paint
+    const finish = typeof M[style.wallMaterial] === 'function' ? M[style.wallMaterial] : M.paint;
+    return finish(scheme.paint);
   };
 
   for (const room of ROOMS) {
@@ -295,7 +297,8 @@ function buildFinishes(M, style) {
             if (lowTop - lowBottom > 200) panelRow(seg, F, trim, lowBottom, lowTop, len, add);
             if (scheme.upperPanels && seg.kind === 'clear') panelRow(seg, F, trim, scheme.chairRail + 110, CEIL_H - 130 - 120, len, add, 1);
           }
-        } else if (isClearFloor && tileMat) {
+        } else if (isClearFloor && (tileMat || style.skirting)) {
+          // flat skirting: always on tiled walls; on painted walls only when the descriptor asks (`skirting: true`)
           add(trim, mould(PROFILES.flatSkirting, floorZ, seg.s0, extStart, extEnd));
         }
         // cove light: warm strip just under the ceiling

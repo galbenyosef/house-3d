@@ -135,4 +135,6 @@ export const SPECS_ITALIAN = {
   },
 };
 
-export const SPECS_BY_STYLE = { french: SPECS, italian: SPECS_ITALIAN };
+import { SPECS_MODERN } from './specs_modern.js';
+import { SPECS_SONG } from './specs_song.js';
+export const SPECS_BY_STYLE = { french: SPECS, italian: SPECS_ITALIAN, modern: SPECS_MODERN, song: SPECS_SONG };
