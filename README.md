@@ -38,15 +38,15 @@ GPT6 第四套「宋韵雅居」以博物馆资料为研究依据，将花、香
 
 上述视频与法式、意式预览图来自「了解视频制作能力」任务，展示不同迭代阶段的录制结果。实景版按同房间、同风格和相近视向配对，两个项目的固定全景机位并不完全相同。录制早于 Fable 0.3.3 同步，画面中的「三居室」「书房」等旧文案保留；视频不代表当前提交的页面验收。文件清单、章节、配乐来源与校验值见 [媒体说明](media/README.md)。
 
-**现代简约客餐厅 · GPT6**
+**现代简约客餐厅**
 
-[![GPT6 现代简约客餐厅：暖白墙面、浅橡木家具与燕麦色沙发](gpt6/public/panoramas/modern-living-preview.jpg)](https://www.lyx666.cn/housegpt/?style=modern)
+![Fable 与 GPT6 的现代简约客餐厅实景对比](media/images/modern-living-comparison.png)
 
-**宋式「宋韵雅居」客餐厅 · GPT6**
+**宋式客餐厅**
 
-[![GPT6 宋韵雅居客餐厅：茶褐木框坐榻、米绢、水墨挂轴与青瓷茶席](gpt6/public/panoramas/song-living-preview.jpg)](https://www.lyx666.cn/housegpt/?style=song)
+![Fable 宋式与 GPT6 宋韵雅居的客餐厅实景对比](media/images/song-living-comparison.png)
 
-两张新增图片为 2026-09-08 生成的 GPT6 客餐厅 Cycles 透视预览，尺寸均为 1280 × 720。点击图片进入对应风格，使用「进入高清全景」查看九空间的桌面 8K / 手机 4K 全景。
+两张新增对比图于 2026-09-08 从本仓库的实际全景查看器截取，尺寸均为 1600 × 900，左侧为 Fable 5.1，右侧为 GPT 6 Astra。宋式左侧使用客厅机位，右侧为「宋韵雅居」客餐厅机位；两边采用各自固定机位与适合展示家具的视野。原始场景、灯光和材质保持不变，来源与校验值见[媒体说明](media/README.md)。
 
 ## 本地运行
 

@@ -1,6 +1,6 @@
 # 对比视频与图片
 
-收录日期：2026-09-06。素材来自「了解视频制作能力」任务的已生成成片和预览，按原文件复制，未重新压缩或改写画面。左侧为 Fable 5.1，右侧为 GPT 6 Astra，对应仓库的 `fable/` 和 `gpt6/`。
+首次收录日期：2026-09-06。最初六个素材来自「了解视频制作能力」任务的已生成成片和预览，按原文件复制，未重新压缩或改写画面。2026-09-08 新增现代简约与宋式两张实际全景页面对比图。全部对比图左侧为 Fable 5.1，右侧为 GPT 6 Astra，对应仓库的 `fable/` 和 `gpt6/`。
 
 ## 视频
 
@@ -19,8 +19,21 @@
 | [floor-plan-comparison.jpg](images/floor-plan-comparison.jpg) | 最新实景版的平面图开场 |
 | [french-living-comparison.png](images/french-living-comparison.png) | 法式客餐厅实景配对预览 |
 | [italian-living-comparison.png](images/italian-living-comparison.png) | 意式轻奢客餐厅实景配对预览 |
+| [modern-living-comparison.png](images/modern-living-comparison.png) | 2026-09-08 现代简约客餐厅，Fable 与 GPT6 并排对比 |
+| [song-living-comparison.png](images/song-living-comparison.png) | 2026-09-08 Fable 宋式与 GPT6 宋韵雅居，客厅区域并排对比 |
 
-图片为制作时生成的预览，不是新拍摄的当前版本页面截图。
+前四张为原视频制作时生成的预览。后两张为本次实际全景查看器的页面截图，规格与来源如下。
+
+### 2026-09-08 现代简约与宋式对比图
+
+以提交 `63595f8` 中的两套全景查看器和原始 Cycles 图片为来源，在本地直接加载各自的查看器模块和样式，用浏览器原有房间、风格、方向键、拖动和缩放控件选取视角。深色标题、左右等宽页面和下方材质说明通过 HTML/CSS 排版，由 Playwright 截取 1600 × 900 PNG；没有重新生成或修饰室内图像，原有场景和全景文件未变。
+
+| 对比图 | Fable 左侧 | GPT6 右侧 |
+| --- | --- | --- |
+| 现代简约 | `fable/public/pano/modern-living.jpg`，3072 × 1536，客餐厅机位 | `gpt6/public/panoramas/modern-living-8k.jpg`，8192 × 4096，客餐厅机位 |
+| 宋式 | `fable/public/pano/song-lounge.jpg`，3072 × 1536，客厅机位 | `gpt6/public/panoramas/song-living-8k.jpg`，8192 × 4096，客餐厅机位 |
+
+两边机位与取景角度不同；宋式使用 Fable 客厅机位以展示木榻、水墨和阳台。保留各自原始灯光、材质和源图分辨率，统一排版尺寸不代表两套图片具有相同细节水平。两张图已逐张检查左右标签、对应风格、清晰度和页面完整性。
 
 ## 录制来源与比较范围
 
@@ -41,7 +54,7 @@
 
 ## 文件校验
 
-[manifest.json](manifest.json) 记录全部六个媒体文件的 SHA-256、字节数、制作任务内的相对产物名，以及视频规格与章节。发布时检查复制前后哈希一致，并对两段成片重新执行 FFmpeg 全片音视频解码。
+[manifest.json](manifest.json) 记录全部八个媒体文件的 SHA-256、字节数及来源，以及视频规格与章节。首次收录时检查复制前后哈希一致，并对两段成片重新执行 FFmpeg 全片音视频解码；本次新增图片另记录源全景哈希、截图尺寸和取景参数。
 
 在仓库根目录可以运行：
 

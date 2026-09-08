@@ -257,6 +257,105 @@
       "sourceArtifact": "work/realistic-v2/design/003-preview.png",
       "sizeBytes": 246608,
       "sha256": "3df232a399ec66980bc6103d4f41aac78748a149c563a4c147b7ce2171f4e978"
+    },
+    {
+      "path": "images/modern-living-comparison.png",
+      "description": "现代简约客餐厅双版本实景对比",
+      "addedDate": "2026-09-08",
+      "sourceCommit": "63595f88546900902f5063b708d07218fbf74490",
+      "sourceType": "Browser screenshot of existing panorama viewer modules in an HTML/CSS comparison layout",
+      "sizeBytes": 732877,
+      "sha256": "2d219119bb6633f1326a30c621783eedbe3c91e08e2722cc138ee9a8175dcb06",
+      "image": {
+        "width": 1600,
+        "height": 900
+      },
+      "sources": [
+        {
+          "side": "left",
+          "path": "fable/public/pano/modern-living.jpg",
+          "width": 3072,
+          "height": 1536,
+          "sha256": "163849f9c6827b5b9bf33073ac9a6a3114fcb149b18de195de79dd241d60435d"
+        },
+        {
+          "side": "right",
+          "path": "gpt6/public/panoramas/modern-living-8k.jpg",
+          "width": 8192,
+          "height": 4096,
+          "sha256": "d47bbbaa01a1f03e56a48277850b15433990a6426f2ff6056b675549bd8c2875"
+        }
+      ],
+      "capture": {
+        "leftViewer": "fable/src/pano.js",
+        "leftRoom": "living",
+        "leftFovDegrees": 71,
+        "leftDirectionControls": {
+          "ArrowRight": 20
+        },
+        "rightViewer": "gpt6/src/panorama-viewer.js",
+        "rightRoom": "living",
+        "rightFovDegrees": 54,
+        "rightInitialPitchDegrees": -8.53,
+        "iframeViewport": {
+          "width": 1524,
+          "height": 1272
+        },
+        "iframeScale": 0.5,
+        "imageRetouching": false,
+        "visuallyInspected": true
+      }
+    },
+    {
+      "path": "images/song-living-comparison.png",
+      "description": "宋式 / 宋韵雅居客餐厅双版本实景对比",
+      "addedDate": "2026-09-08",
+      "sourceCommit": "63595f88546900902f5063b708d07218fbf74490",
+      "sourceType": "Browser screenshot of existing panorama viewer modules in an HTML/CSS comparison layout",
+      "sizeBytes": 727049,
+      "sha256": "b868b0e87318968e6117c29086766417e35e7a6b0154c7519fa56f01d3eae6a3",
+      "image": {
+        "width": 1600,
+        "height": 900
+      },
+      "sources": [
+        {
+          "side": "left",
+          "path": "fable/public/pano/song-lounge.jpg",
+          "width": 3072,
+          "height": 1536,
+          "sha256": "a4f8aee5fc136a17c80aba16f6557b5ff64f93a0bb3ffd7a50490d02e756086c"
+        },
+        {
+          "side": "right",
+          "path": "gpt6/public/panoramas/song-living-8k.jpg",
+          "width": 8192,
+          "height": 4096,
+          "sha256": "0b14e67e18c79f689d686b6660c0a6203ce55c00120538f21d7383f51fa20c2c"
+        }
+      ],
+      "capture": {
+        "leftViewer": "fable/src/pano.js",
+        "leftRoom": "lounge",
+        "leftFovDegrees": 94,
+        "leftDirectionControls": {
+          "ArrowLeft": 26,
+          "ArrowRight": 5,
+          "dragUpScreenPixels": 20,
+          "dragFovDegrees": 86
+        },
+        "rightViewer": "gpt6/src/panorama-viewer.js",
+        "rightRoom": "living",
+        "rightFovDegrees": 54,
+        "rightInitialPitchDegrees": -8.53,
+        "iframeViewport": {
+          "width": 1524,
+          "height": 1272
+        },
+        "iframeScale": 0.5,
+        "imageRetouching": false,
+        "visuallyInspected": true
+      }
     }
   ],
   "verification": {
@@ -265,5 +364,6 @@
     "videoMetadataChecked": true,
     "fullVideoAndAudioDecode": "passed for both MP4 files with ffmpeg -xerror",
     "previewImagesVisuallyInspected": true
-  }
+  },
+  "lastUpdated": "2026-09-08"
 }
