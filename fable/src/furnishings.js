@@ -306,15 +306,17 @@ export async function buildFurnishings(M, style, onProgress = () => {}) {
     if (extra.scale) inst.scale.setScalar(extra.scale);
     const sz = extra.scale ? proto.size.clone().multiplyScalar(extra.scale) : proto.size;
     inst.userData.item = { name: item.n, dims: dims(sz), note: item.note, room: item.room, asset };
+    if (extra.id) inst.userData.layoutId = extra.id; // editable through src/layout.js
     inst.name = `item-${asset}`;
     group.add(inst);
     return inst;
   };
 
-  for (const p of PLACEMENTS) {
-    if (p.skip) continue;
-    place(p.a, p.x, p.y, p.r, p.z, p, { seed: p.seed, head: p.head, scale: p.s });
-  }
+  // ids match baseItems() in src/layout.js: the index in the style's table
+  PLACEMENTS.forEach((p, i) => {
+    if (p.skip) return;
+    place(p.a, p.x, p.y, p.r, p.z, p, { seed: p.seed, head: p.head, scale: p.s, id: `p${i}` });
+  });
   // ceiling fixtures at the positions the lighting rig uses
   for (const f of FIXTURES) {
     const override = style.fixtureById[f.id] || {};
@@ -331,30 +333,43 @@ export async function buildFurnishings(M, style, onProgress = () => {}) {
     }
   }
   // rugs
-  for (const rg of RUGS) {
+  RUGS.forEach((rg, i) => {
     if (!rugCache.has(rg.v)) rugCache.set(rg.v, (M[style.rug] || M.rug)(rg.v));
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(rg.w * S, rg.d * S), rugCache.get(rg.v));
-    mesh.rotation.x = -Math.PI / 2;
+    // laid flat in the geometry so the mesh itself can turn about y and scale in x/z
+    const geom = new THREE.PlaneGeometry(rg.w * S, rg.d * S).rotateX(-Math.PI / 2);
+    const mesh = new THREE.Mesh(geom, rugCache.get(rg.v));
     mesh.position.set(rg.x * S, 0.006, rg.y * S);
     mesh.receiveShadow = true;
     mesh.userData.item = { name: rg.n, dims: `${rg.w} × ${rg.d} mm`, room: rg.room, asset: 'rug' };
+    mesh.userData.layoutId = `rug${i}`;
     mesh.name = 'rug';
     group.add(mesh);
-  }
-  // per-room inventory for the UI (aggregated by name)
-  const roomItems = new Map();
-  const addItem = (room, name, dimsStr, note, asset) => {
-    if (!roomItems.has(room)) roomItems.set(room, []);
-    const list = roomItems.get(room);
-    const hit = list.find((i) => i.name === name && i.dims === dimsStr);
-    if (hit) hit.count++;
-    else list.push({ name, dims: dimsStr, note, asset, count: 1 });
+  });
+  // per-room inventory for the UI (aggregated by name); rebuilt after layout edits
+  const rebuildInventory = () => {
+    const roomItems = new Map();
+    const addItem = (room, name, dimsStr, note, asset) => {
+      if (!roomItems.has(room)) roomItems.set(room, []);
+      const list = roomItems.get(room);
+      const hit = list.find((i) => i.name === name && i.dims === dimsStr);
+      if (hit) hit.count++;
+      else list.push({ name, dims: dimsStr, note, asset, count: 1 });
+    };
+    for (const inst of group.children) {
+      const it = inst.userData.item;
+      if (it) addItem(it.room, it.name, it.dims, it.note, it.asset);
+    }
+    group.userData.roomItems = roomItems;
   };
-  for (const inst of group.children) {
-    const it = inst.userData.item;
-    if (it) addItem(it.room, it.name, it.dims, it.note, it.asset);
-  }
-  group.userData.roomItems = roomItems;
+  rebuildInventory();
+  group.userData.rebuildInventory = rebuildInventory;
+  // unscaled local bounds (mm) of a placed asset, for src/layout.js
+  group.userData.boundsOf = (base) => {
+    const proto = protos.get(base.a);
+    if (!proto) return null;
+    const { min, size } = proto;
+    return { x1: min.x * 1000, x2: (min.x + size.x) * 1000, z1: min.z * 1000, z2: (min.z + size.z) * 1000, y1: min.y * 1000, y2: (min.y + size.y) * 1000, h: size.y * 1000 };
+  };
   group.userData.setNight = (night) => {
     for (const [name, m] of matCache) {
       if (name === 'bulb') m.emissiveIntensity = night ? 4.0 : 2.0;

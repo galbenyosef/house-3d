@@ -12,7 +12,7 @@ export async function openPanorama({style='italian', room='living', onClose}={})
     <nav class="photo-rooms" aria-label="高清全景房间"></nav>
     <div class="photo-canvas" tabindex="0" aria-label="拖动环顾高清全景，双指或滚轮缩放"></div>
     <div class="photo-toolbar"><div role="group" aria-label="高清全景风格">${STYLE_IDS.filter(id=>getDesignStyle(id).panorama).map(id=>`<button data-photo-style="${id}" disabled>${getDesignStyle(id).name}</button>`).join('')}</div><span class="photo-status" role="status">正在载入高清全景…</span><div><button data-photo="out" aria-label="缩小全景">−</button><button data-photo="in" aria-label="放大全景">＋</button><button data-photo="save" disabled>保存视角</button></div></div>
-    <footer><strong>同源户型渲染</strong><span>固定机位 · 日间 / 默认配色 · 拖动环顾，双指缩放</span><p>选择房间进入对应全景，同一房间可切换四种风格。自由行走、配色与日夜切换请返回实时漫游。实际窗外环境与光照待现场确认。</p></footer>`;
+    <footer><strong>原始方案高清全景</strong><span>固定机位 · 日间 / 默认配色 · 不含家具编辑结果</span><p>家具的位置、旋转及尺寸调整仅在实时场景中显示。此处保留原始方案的九个空间与四种风格，可切换房间、环顾和缩放。实际窗外环境与光照待现场确认。</p></footer>`;
   document.body.append(overlay);overlay.showModal();
   const container=overlay.querySelector('.photo-canvas'),status=overlay.querySelector('.photo-status');
   let renderer,texture,closed=false,loading=false,raf=0,yaw=-Math.PI/2,pitch=THREE.MathUtils.degToRad(-8.53),viewportLandscape=innerWidth>innerHeight;

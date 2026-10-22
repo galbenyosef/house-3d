@@ -150,3 +150,88 @@ body.walking .pano-entry, body.pano-open .pano-entry, body.pano-open #hint { dis
   .pano-entry .pe-arrow { width: 30px; height: 30px; }
   #panel { bottom: 132px; max-height: 40vh; }
 }
+
+/* ---- 布置 (layout editing) ---- */
+:root { --terracotta: #b5653a; --gold-soft: rgba(184,146,63,0.14); }
+
+/* drawing layer over the canvas: only the handles take pointer events */
+#ui > #edit-overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+#edit-overlay .eo-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#edit-overlay polygon, #edit-overlay line { vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.eo-hover { fill: rgba(255,255,255,0.10); stroke: rgba(255,255,255,0.95); stroke-width: 1.5; stroke-dasharray: 5 4; filter: drop-shadow(0 0 2px rgba(43,38,32,0.45)); }
+.eo-sel-halo { fill: none; stroke: rgba(255,255,255,0.9); stroke-width: 5; }
+.eo-sel { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 2; filter: drop-shadow(0 0 7px rgba(184,146,63,0.55)); transition: stroke 0.15s, fill 0.15s; }
+.eo-sel.blocked { fill: rgba(181,101,58,0.14); stroke: var(--terracotta); filter: drop-shadow(0 0 7px rgba(181,101,58,0.6)); }
+.eo-obstacle { fill: rgba(181,101,58,0.18); stroke: var(--terracotta); stroke-width: 1.5; stroke-dasharray: 4 3; animation: eo-pulse 0.9s ease-in-out infinite alternate; }
+@keyframes eo-pulse { from { fill-opacity: 0.55; } to { fill-opacity: 1; } }
+.eo-stem { stroke: var(--gold); stroke-width: 1.5; }
+.eo-handle-wrap, .eo-handle-wrap circle { pointer-events: auto; cursor: grab; touch-action: none; }
+#edit-overlay[data-gesture="rotate"] .eo-rot, #edit-overlay[data-gesture="resize"] .eo-corner { cursor: grabbing; }
+.eo-hit { fill: transparent; }
+.eo-handle { stroke-width: 2; transform-box: fill-box; transform-origin: center; transition: transform 0.12s ease-out; filter: drop-shadow(0 1px 2px rgba(43,38,32,0.35)); }
+.eo-handle.eo-corner { fill: #fff; stroke: var(--gold); }
+.eo-handle.eo-rot { fill: var(--gold); stroke: #fff; }
+.eo-handle-wrap:hover .eo-handle, .eo-handle.active { transform: scale(1.3); }
+.eo-dim-halo { stroke: rgba(255,255,255,0.85); stroke-width: 3; }
+.eo-dim { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; }
+.eo-labels span, .eo-pill { position: absolute; left: 0; top: 0; white-space: nowrap; pointer-events: none; font-variant-numeric: tabular-nums; }
+.eo-labels span { font-family: var(--serif); font-size: 11px; color: var(--ink); background: rgba(250,247,241,0.94); border: 1px solid var(--line); padding: 1px 6px; border-radius: 999px; box-shadow: 0 1px 4px rgba(43,38,32,0.12); }
+.eo-pill { font-size: 12px; font-weight: 600; color: #fff; background: var(--ink); padding: 3px 9px; border-radius: 999px; box-shadow: 0 4px 12px rgba(43,38,32,0.3); }
+.eo-pill.blocked { background: var(--terracotta); }
+
+/* floating toolbar of the selected piece */
+.edit-pop { position: absolute; left: 0; top: 0; z-index: 4; display: flex; flex-direction: column; gap: 6px; padding: 8px 8px 8px 12px; min-width: 196px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 10px 30px rgba(43,38,32,0.18), 0 1px 2px rgba(43,38,32,0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.edit-pop::after { content: ''; position: absolute; left: var(--caret, 50%); bottom: -6px; width: 10px; height: 10px; margin-left: -5px; background: inherit; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transform: rotate(45deg); }
+.edit-pop.below::after { bottom: auto; top: -6px; transform: rotate(225deg); }
+.edit-pop .ep-head { display: flex; align-items: baseline; gap: 8px; padding-right: 4px; }
+.edit-pop .ep-head strong { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.02em; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.edit-pop .ep-head small { font-size: 11px; opacity: 0.55; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.edit-pop .ep-actions { display: flex; gap: 2px; margin-left: -4px; }
+.edit-pop button { width: 34px; height: 34px; padding: 0; display: grid; place-items: center; border: 0; border-radius: 9px; background: transparent; color: var(--ink); }
+.edit-pop button:hover { background: var(--gold-soft); }
+.edit-pop button.on { background: var(--ink); color: #fff; }
+.edit-pop button:disabled { opacity: 0.3; background: transparent; cursor: default; }
+.edit-pop svg, #editbar svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#editbar .eb-icon svg circle { fill: currentColor; stroke: none; }
+.edit-pop .ep-size { display: flex; align-items: center; gap: 6px; padding: 6px 0 2px; border-top: 1px solid var(--line); font-size: 12px; }
+.edit-pop .ep-size label { display: flex; align-items: center; gap: 4px; opacity: 0.85; }
+.edit-pop .ep-size input { width: 58px; font: inherit; font-size: 13px; font-variant-numeric: tabular-nums; padding: 3px 2px; border: 0; border-bottom: 1.5px solid var(--line); border-radius: 0; background: transparent; color: var(--ink); text-align: center; -moz-appearance: textfield; appearance: textfield; }
+.edit-pop .ep-size input::-webkit-outer-spin-button, .edit-pop .ep-size input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.edit-pop .ep-size input:focus { outline: none; border-bottom-color: var(--gold); }
+.edit-pop .ep-size em, .edit-pop .ep-x { font-style: normal; opacity: 0.5; }
+
+/* edit bar */
+#editbar { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 6px 6px 6px 8px; background: var(--paper); border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 12px 34px rgba(43,38,32,0.2); white-space: nowrap; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+#editbar .eb-group { display: flex; align-items: center; gap: 4px; }
+#editbar .eb-icon { width: 36px; height: 36px; padding: 0; display: grid; place-items: center; border: 0; border-radius: 10px; background: transparent; }
+#editbar .eb-icon:hover:not(:disabled) { background: var(--gold-soft); }
+#editbar .eb-icon:disabled { opacity: 0.28; cursor: default; }
+#editbar .eb-title { display: flex; flex-direction: column; align-items: center; line-height: 1.15; min-width: 120px; }
+#editbar .eb-title strong { font-family: var(--serif); font-weight: 500; font-size: 15px; letter-spacing: 0.12em; }
+#editbar .edit-status { display: flex; align-items: center; gap: 5px; font-size: 11px; opacity: 0.7; }
+#editbar .edit-status i { width: 6px; height: 6px; border-radius: 50%; background: #b9b0a3; }
+#editbar .edit-status[data-state="saved"] i { background: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); }
+#editbar .edit-status[data-state="error"] { color: var(--terracotta); opacity: 1; }
+#editbar .edit-status[data-state="error"] i { background: var(--terracotta); }
+#editbar .eb-chip { height: 30px; padding: 0 12px; border-radius: 999px; font-size: 12px; border: 1px solid var(--line); background: transparent; }
+#editbar .eb-chip.on { background: var(--gold-soft); border-color: rgba(184,146,63,0.55); color: #6f5523; }
+#editbar .eb-chip.on::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--gold); vertical-align: 1px; }
+#editbar .eb-done { height: 36px; padding: 0 18px; border-radius: 10px; background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 600; letter-spacing: 0.08em; }
+#editbar .eb-done:hover { background: #40382f; }
+#editbar .eb-menu { position: relative; }
+#editbar .eb-pop { position: absolute; right: 0; bottom: calc(100% + 10px); display: flex; flex-direction: column; min-width: 180px; padding: 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 30px rgba(43,38,32,0.2); }
+#editbar .eb-pop button { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border: 0; background: transparent; text-align: left; padding: 8px 10px; border-radius: 8px; }
+#editbar .eb-pop button:hover { background: var(--gold-soft); }
+#editbar .eb-pop button small { opacity: 0.5; font-size: 11px; }
+#editbar .eb-pop button.danger { color: var(--terracotta); }
+#toast { position: absolute; left: 50%; bottom: 84px; transform: translateX(-50%); background: rgba(43,38,32,0.92); color: #fff; padding: 8px 14px; border-radius: 10px; font-size: 13px; z-index: 5; box-shadow: 0 8px 24px rgba(43,38,32,0.25); }
+body.editing .pano-entry, body.editing #rooms, body.walking #editbar, body.pano-open #editbar, body.pano-open #edit-overlay, body.pano-open .edit-pop { display: none; }
+body.editing #hint { bottom: 76px; }
+@media (max-width: 760px) {
+  #editbar { left: 8px; right: 8px; transform: none; bottom: calc(62px + env(safe-area-inset-bottom)); justify-content: space-between; gap: 6px; }
+  #editbar .eb-title { min-width: 0; }
+  #editbar .edit-status span { display: none; } /* the dot alone; its title explains */
+  #editbar .eb-chip { padding: 0 9px; }
+  #toast { bottom: calc(122px + env(safe-area-inset-bottom)); max-width: calc(100% - 32px); white-space: normal; text-align: center; }
+  .edit-pop { min-width: 0; }
+}

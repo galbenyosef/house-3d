@@ -5,6 +5,7 @@ import { createModernFurniture, MODERN_SPECS } from './modern-furniture.js';
 import { createSongFurniture, SONG_SPECS } from './song-furniture.js';
 import { getDesignStyle } from './design-styles.js';
 import { setSurfaceUV } from './surface-uv.js';
+import { captureCollisionBoxes } from './furniture-collision.js';
 
 // All dimensions are in metres. Geometry is deterministic and can be rebuilt without a DCC application.
 export function buildFurniture(THREE, mats, style = 'french') {
@@ -75,6 +76,7 @@ export function buildFurniture(THREE, mats, style = 'french') {
   }
   function mergeItem(root) {
     root.updateMatrixWorld(true);
+    root.userData.editorCollisionBoxes=captureCollisionBoxes(root);
     const buckets = new Map(), removed=[];
     root.traverse(o=>{ if(o.isMesh) { if(Array.isArray(o.material)||o.userData.movablePart) return; const geo=o.geometry.clone();
       geo.applyMatrix4(o.matrixWorld); geo.applyMatrix4(new THREE.Matrix4().copy(root.matrixWorld).invert());

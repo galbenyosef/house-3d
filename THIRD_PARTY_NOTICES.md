@@ -14,6 +14,10 @@
 
 准确的依赖版本由两个子项目各自的 `package-lock.json` 锁定。传递依赖的许可证以安装后相应软件包的 LICENSE / NOTICE 为准。网页使用系统字体回退，仓库未分发字体文件。
 
+## 家具编辑交互参考
+
+Fable 的 README 与 `src/layout.js` 标明家具布置交互参考 [wy51ai/floorplan-3d](https://github.com/wy51ai/floorplan-3d)。上游作者为 wuyi，项目采用 [MIT 许可证](https://github.com/wy51ai/floorplan-3d/blob/master/LICENSE)。这里记录交互参考来源；该项目未加入本仓库的 npm 依赖，第三方作品的权利不因本仓库采用 Apache-2.0 而改变。
+
 ## 项目生成的资产
 
 - `gpt6/public/models/french-chandelier.glb` 和 `italian-pendant.glb` 分别由 `gpt6/scripts/build_chandelier.py`、`build_italian_pendant.py` 生成；相关元数据与预览保存在 `gpt6/artifacts/`。

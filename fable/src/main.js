@@ -19,6 +19,7 @@ import { ROOMS, planBounds, isWalkable, roomArea, rectArea } from './plan.js';
 import { initUI, isTouch } from './ui.js';
 import { STYLES, DEFAULT_STYLE } from './styles.js';
 import { openPanorama, PANO_OF_ROOM } from './pano.js';
+import { createEditor } from './editor.js';
 
 const S = 0.001;
 const container = document.getElementById('app');
@@ -165,9 +166,8 @@ renderer.domElement.addEventListener('pointercancel', endLook);
 // ------------------------------------------------------------------ state
 let ceilingVisible = false;
 let nightOn = false;
-let highlight = null;
+let highlight = null, highlighted = null;
 let furnishings = new THREE.Group();
-let roomItems = new Map();
 let switching = false;
 let paused = false;
 function roomAtTarget() {
@@ -184,6 +184,8 @@ async function applyStyle(id) {
   const loadingEl = document.getElementById('loading');
   loadingEl.hidden = false;
   loadingEl.textContent = `正在切换到${style.name}…`;
+  editor.detach();
+  app.clearHighlight();
   if (house) { disposeGroup(house); house = null; }
   if (furnishings.parent) { disposeGroup(furnishings); furnishings = new THREE.Group(); }
   if (lights) { lights.group.traverse((o) => o.shadow?.map?.dispose?.()); scene.remove(lights.group); }
@@ -193,7 +195,7 @@ async function applyStyle(id) {
   const built = buildHouse(M, style);
   house = built.house;
   ceilings = built.ceilings;
-  ceilings.visible = ceilingVisible || walkState.active;
+  ceilings.visible = (ceilingVisible || walkState.active) && !editor.isEditing();
   scene.add(house);
   lights = buildLights(scene, style);
   lights.setNight(nightOn);
@@ -201,9 +203,9 @@ async function applyStyle(id) {
   renderer.toneMappingExposure = nightOn ? style.exposure + 0.3 : style.exposure;
   const g = await buildFurnishings(M, style, (k) => { loadingEl.textContent = `正在加载${style.name}家具… ${Math.round(k * 100)}%`; });
   furnishings = g;
-  roomItems = g.userData.roomItems || new Map();
   g.userData.setNight?.(nightOn);
   scene.add(g);
+  editor.attach(g, style.id); // re-applies this style's saved layout
   loadingEl.hidden = true;
   const url = new URL(location.href);
   url.searchParams.set('style', style.id);
@@ -216,6 +218,10 @@ const app = {
   scene, camera, renderer, orbit, lights, M, house,
   setView(kind) {
     if (walkState.active) this.exitWalk();
+    if (editor.isEditing()) {
+      if (kind === 'top') { const f = topDownFrame([b.x1, b.y1, b.x2, b.y2]); tweenCamera(f.pos, f.target); return; }
+      this.toggleEdit(false);
+    }
     const to = kind === 'top' ? new THREE.Vector3(center.x, 30, center.z + 0.01) : ISO();
     tweenCamera(to, center.clone());
   },
@@ -223,6 +229,8 @@ const app = {
     const room = ROOMS.find((r) => r.id === id);
     if (!room) return;
     if (walkState.active) this.exitWalk();
+    // 布置 mode stays top-down: frame the room from above, no info panel
+    if (editor.isEditing()) { const f = topDownFrame(roomBox(room.id)); tweenCamera(f.pos, f.target); return; }
     const r = room.rects[0];
     const cx = ((r[0] + r[2]) / 2) * S, cz = ((r[1] + r[3]) / 2) * S;
     const w = (r[2] - r[0]) * S, d = (r[3] - r[1]) * S;
@@ -232,13 +240,13 @@ const app = {
     this.clearHighlight();
     ui.showRoom(room);
   },
-  roomItems: (id) => roomItems.get(id) || [],
+  roomItems: (id) => furnishings.userData.roomItems?.get(id) || [],
   toggleCeiling(force) {
     ceilingVisible = force ?? !ceilingVisible;
-    ceilings.visible = ceilingVisible || walkState.active;
+    ceilings.visible = (ceilingVisible || walkState.active) && !editor.isEditing();
     return ceilingVisible;
   },
-  toggleAutoRotate(force) { orbit.autoRotate = force ?? !orbit.autoRotate; return orbit.autoRotate; },
+  toggleAutoRotate(force) { orbit.autoRotate = !editor.isEditing() && (force ?? !orbit.autoRotate); return orbit.autoRotate; }, // the plan view stays put
   setNight(on) {
     nightOn = on;
     lights?.setNight(on);
@@ -251,6 +259,7 @@ const app = {
   openPanorama(opts = {}) {
     if (walkState.active) this.exitWalk();
     if (this._pano) return;
+    editor.setEnabled(false);
     // default to the panorama of the room under the orbit target
     const here = roomAtTarget();
     const room = opts.room || PANO_OF_ROOM[here] || 'living';
@@ -258,7 +267,7 @@ const app = {
     this._pano = openPanorama(this, { style: style.id, room });
     paused = true;
   },
-  onPanoramaClosed() { this._pano = null; paused = false; document.body.classList.remove('pano-open'); },
+  onPanoramaClosed() { this._pano = null; paused = false; document.body.classList.remove('pano-open'); editor.setEnabled(true); },
   // Export the current style's geometry for the offline Cycles panorama render.
   async exportScene() {
     const exporter = new GLTFExporter();
@@ -266,10 +275,12 @@ const app = {
     // ceilings must be present in the export (they are hidden in the dollhouse view)
     const wasVisible = ceilings.visible;
     ceilings.visible = true;
+    if (editor.isEditing()) editor.showFixtures(true); // hidden in the plan view, needed in the render
     root.add(house, furnishings);
     const glb = await exporter.parseAsync(root, { binary: true, onlyVisible: true, includeCustomExtensions: false });
     scene.add(house, furnishings);
     ceilings.visible = wasVisible;
+    if (editor.isEditing()) editor.showFixtures(false);
     const meta = {
       style: style.id,
       fixtures: FIXTURES.map((f) => { const ov = style.fixtureById[f.id] || {}; return { id: f.id, room: f.room, x: ov.x ?? f.x, y: ov.y ?? f.y, lumens: f.lumens, kind: f.kind, ...(ov.drop !== undefined ? { drop: ov.drop } : {}) }; }),
@@ -284,7 +295,11 @@ const app = {
   toggleLabels(force) { labels.visible = force ?? !labels.visible; return labels.visible; },
   toggleAO(force) { aoEnabled = force ?? !aoEnabled; gtao.enabled = aoEnabled; return aoEnabled; },
   screenshot() {
+    // keep the selection box out of the picture (the 布置 overlay is DOM, never in the canvas)
+    const box = highlight?.visible ? highlight : null;
+    if (box) box.visible = false;
     render();
+    if (box) box.visible = true;
     const url = renderer.domElement.toDataURL('image/png');
     const a = document.createElement('a');
     a.href = url;
@@ -292,6 +307,9 @@ const app = {
     a.click();
   },
   startWalk() {
+    if (editor.isEditing()) this.toggleEdit(false, { instant: true });
+    tween = null;
+    editor.setEnabled(false);
     walkState.active = true;
     camera.near = 0.05; camera.updateProjectionMatrix();
     orbit.enabled = false;
@@ -315,14 +333,39 @@ const app = {
     labels.visible = ui.labelsOn();
     orbit.target.copy(camera.position).add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(4));
     ui.setWalk(false);
+    editor.setEnabled(true);
   },
+  // 布置 mode (src/editor.js): drag / rotate / resize furniture, undo / redo, saved per style
+  isEditing: () => editor.isEditing(),
+  toggleEdit(force, { instant = false } = {}) {
+    const on = force ?? !editor.isEditing();
+    if (on === editor.isEditing()) return on;
+    if (on) {
+      if (walkState.active) this.exitWalk();
+      this.toggleAutoRotate(false);
+      document.querySelector('[data-action="orbit"]')?.classList.remove('on');
+      const picked = highlighted; // the piece whose panel is open becomes the selection
+      this.clearHighlight();
+      enterEditView(picked);
+      editor.setEditing(true);
+      if (picked) editor.select(picked);
+    } else {
+      editor.setEditing(false);
+      exitEditView({ instant });
+    }
+    ui.setEditing(on);
+    return on;
+  },
+  deselect() { editor.select(null); this.clearHighlight(); },
   setJoystick(x, y) { walkState.joy.x = x; walkState.joy.y = y; },
   isWalking: () => walkState.active,
   clearHighlight() {
     if (highlight) { scene.remove(highlight); highlight.geometry.dispose(); highlight = null; }
+    highlighted = null;
   },
   highlightObject(obj) {
     this.clearHighlight();
+    highlighted = obj;
     highlight = new THREE.BoxHelper(obj, 0xb8923f);
     highlight.material.depthTest = false;
     highlight.material.transparent = true;
@@ -331,12 +374,68 @@ const app = {
   },
 };
 
-// camera tween
+const editor = createEditor({
+  camera, renderer, orbit, isTouch, host: document.getElementById('ui'),
+  hooks: {
+    onChange: (state) => ui.setEditState(state),
+    onRefused: () => ui.toast('放不下：会碰到墙体或其他家具 · 可在底栏关闭「防碰撞」'),
+    // a furniture drag must not also count as a click on what lies under the pointer
+    suppressTap: () => { tapSuppressedUntil = performance.now() + 80; },
+  },
+});
+app.editor = editor;
+let tapSuppressedUntil = 0;
+
+// camera tween (optionally to a new field of view)
 let tween = null;
-function tweenCamera(pos, target) {
+function tweenCamera(pos, target, fov = tween ? tween.f1 : camera.fov) {
   orbit.autoRotate = false;
   document.querySelector('[data-action="orbit"]')?.classList.remove('on');
-  tween = { p0: camera.position.clone(), t0: orbit.target.clone(), p1: pos, t1: target, start: performance.now(), dur: 900 };
+  tween = { p0: camera.position.clone(), t0: orbit.target.clone(), f0: camera.fov, p1: pos, t1: target, f1: fov, start: performance.now(), dur: 900 };
+}
+
+// ------------------------------------------------------------------ 布置 camera
+// Editing happens in a near-orthographic plan view: straight down, narrow
+// field of view (little perspective lean), pan + zoom only, no ceilings or labels.
+const EDIT_FOV = 30;
+let editView = null; // what to restore on leaving 布置
+function roomBox(id) {
+  const rects = ROOMS.filter((r) => r.id === id || r.partOf === id).flatMap((r) => [...r.rects, ...(r.bay ? [r.bay.rect] : [])]);
+  if (!rects.length) return [b.x1, b.y1, b.x2, b.y2];
+  return [Math.min(...rects.map((r) => r[0])), Math.min(...rects.map((r) => r[1])), Math.max(...rects.map((r) => r[2])), Math.max(...rects.map((r) => r[3]))];
+}
+function topDownFrame([x1, y1, x2, y2], margin = 1.3) {
+  const half = Math.tan(THREE.MathUtils.degToRad(EDIT_FOV / 2));
+  const w = (x2 - x1) * S * margin, d = (y2 - y1) * S * margin;
+  const h = Math.min(40, Math.max(d, w / camera.aspect) / (2 * half) + 2.8); // + wall height: the wall tops are nearer
+  const cx = ((x1 + x2) / 2) * S, cz = ((y1 + y2) / 2) * S;
+  return { pos: new THREE.Vector3(cx, h, cz + 0.001), target: new THREE.Vector3(cx, 0, cz) };
+}
+function enterEditView(picked) {
+  editView = {
+    // a camera move still in flight counts as done: restore where it was heading
+    pos: (tween?.p1 ?? camera.position).clone(), target: (tween?.t1 ?? orbit.target).clone(), fov: tween ? tween.f1 : camera.fov,
+    orbit: { enableRotate: orbit.enableRotate, zoomToCursor: orbit.zoomToCursor, mouseButtons: { ...orbit.mouseButtons }, touches: { ...orbit.touches } },
+  };
+  orbit.enableRotate = false;
+  orbit.zoomToCursor = true;
+  orbit.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+  orbit.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN };
+  ceilings.visible = false;
+  labels.visible = false;
+  const roomId = picked?.userData.item?.room || roomAtTarget();
+  const room = ROOMS.find((r) => r.id === roomId);
+  const f = topDownFrame(room ? roomBox(room.partOf || room.id) : [b.x1, b.y1, b.x2, b.y2]);
+  tweenCamera(f.pos, f.target, EDIT_FOV);
+}
+function exitEditView({ instant = false } = {}) {
+  if (!editView) return;
+  Object.assign(orbit, editView.orbit);
+  ceilings.visible = ceilingVisible || walkState.active;
+  labels.visible = !walkState.active && ui.labelsOn();
+  if (instant) { tween = null; camera.fov = editView.fov; camera.updateProjectionMatrix(); }
+  else tweenCamera(editView.pos, editView.target, editView.fov);
+  editView = null;
 }
 
 // ------------------------------------------------------------------ picking
@@ -357,7 +456,7 @@ function pick(clientX, clientY, roots) {
 }
 renderer.domElement.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY, performance.now()]; });
 renderer.domElement.addEventListener('pointerup', (e) => {
-  if (!downAt || walkState.active) return;
+  if (!downAt || walkState.active || editor.isEditing() || performance.now() < tapSuppressedUntil) return;
   if (Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 6 || performance.now() - downAt[2] > 400) return;
   if (!house) return;
   const o = pick(e.clientX, e.clientY, [furnishings, house]);
@@ -369,7 +468,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
   }
 });
 renderer.domElement.addEventListener('dblclick', (e) => {
-  if (walkState.active || !house) return;
+  if (walkState.active || !house || editor.isEditing()) return; // 布置 keeps the camera where the user put it
   const o = pick(e.clientX, e.clientY, [furnishings, house]);
   const roomId = o?.userData.roomId || o?.userData.item?.room;
   if (roomId) {
@@ -379,6 +478,7 @@ renderer.domElement.addEventListener('dblclick', (e) => {
 });
 renderer.domElement.addEventListener('pointermove', (e) => {
   if (walkState.active || isTouch) return;
+  if (editor.isEditing()) { ui.hoverItem(null); return; } // the editor draws its own hover outline
   const o = pick(e.clientX, e.clientY, [furnishings]);
   ui.hoverItem(o?.userData.item || null, e.clientX, e.clientY);
 });
@@ -401,6 +501,7 @@ function animate() {
     const e = k < 0.5 ? 2 * k * k : -1 + (4 - 2 * k) * k;
     camera.position.lerpVectors(tween.p0, tween.p1, e);
     orbit.target.lerpVectors(tween.t0, tween.t1, e);
+    if (tween.f1 !== tween.f0) { camera.fov = tween.f0 + (tween.f1 - tween.f0) * e; camera.updateProjectionMatrix(); }
     if (k >= 1) tween = null;
   }
   if (walkState.active && (walk.isLocked || isTouch)) {
@@ -431,6 +532,7 @@ function animate() {
     const near = THREE.MathUtils.clamp(camera.position.distanceTo(orbit.target) * 0.02, 0.05, 1.2);
     if (Math.abs(near - camera.near) > camera.near * 0.15) { camera.near = near; camera.updateProjectionMatrix(); }
   }
+  editor.frame(); // 布置 overlay follows the camera
   ui.updateMinimap(camera, walkState.active, orbit.target);
   render();
 }

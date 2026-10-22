@@ -1,0 +1,4 @@
+interface:
+  display_name: "HouseGPT 家装风格生成"
+  short_description: "从参考图到同户型交互方案、全屋高清全景、手机适配与落地审查"
+  default_prompt: "使用 $house-style-generation，基于我的风格描述或参考图，在当前户型新增可切换的家装方案并生成全屋高清全景。"

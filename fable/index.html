@@ -25,6 +25,7 @@
         <button data-action="walk" title="第一人称漫游 (F)">漫游</button>
         <button data-action="pano" title="Cycles 路径追踪高清全景">高清全景</button>
         <button data-action="orbit" class="toggle" title="自动环绕 (R)">自转</button>
+        <button data-action="edit" class="toggle" title="布置家具：拖动移动 · 旋转 · 调整尺寸 (E)">布置</button>
         <span class="sep"></span>
         <button data-action="ceiling" class="toggle" title="显示/隐藏顶棚 (C)">顶棚</button>
         <button data-action="night" class="toggle" title="日/夜 (N)">夜景</button>
@@ -42,6 +43,27 @@
       <span class="pe-text"><strong>查看高清全景</strong><small>Cycles 实景渲染 · 客餐厅</small></span>
       <span class="pe-arrow">↗</span>
     </button>
+    <div id="editbar" hidden>
+      <div class="eb-group">
+        <button data-edit="undo" class="eb-icon" title="撤销 (⌘/Ctrl+Z)" aria-label="撤销" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 5.5L4 9l3.5 3.5"/><path d="M4.5 9H12a4 4 0 0 1 0 8h-2"/></svg></button>
+        <button data-edit="redo" class="eb-icon" title="重做 (⌘/Ctrl+Shift+Z)" aria-label="重做" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 5.5L16 9l-3.5 3.5"/><path d="M15.5 9H8a4 4 0 0 0 0 8h2"/></svg></button>
+      </div>
+      <div class="eb-title"><strong>布置</strong><span class="edit-status" data-state="default"><i></i><span>默认布置</span></span></div>
+      <div class="eb-group">
+        <button data-edit="collide" class="eb-chip on" title="拖动、旋转、调整尺寸时不让家具穿墙或相互重叠" aria-pressed="true">防碰撞</button>
+        <div class="eb-menu">
+          <button data-edit="menu" class="eb-icon" title="更多" aria-label="更多" aria-haspopup="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="1.3"/><circle cx="10" cy="10" r="1.3"/><circle cx="15" cy="10" r="1.3"/></svg></button>
+          <div class="eb-pop" role="menu" hidden>
+            <button data-edit="export" role="menuitem">导出布置 <small>JSON</small></button>
+            <button data-edit="import" role="menuitem">导入布置…</button>
+            <button data-edit="reset" role="menuitem" class="danger">恢复默认布置 <small>可撤销</small></button>
+          </div>
+        </div>
+        <button data-edit="done" class="eb-done">完成</button>
+      </div>
+      <input type="file" accept="application/json,.json" hidden />
+    </div>
+    <div id="toast" role="status" hidden></div>
     <div id="minimap"></div>
     <div id="loading">正在生成材质与模型…</div>
   </div>

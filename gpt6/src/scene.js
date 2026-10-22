@@ -17,6 +17,9 @@ import { assetUrl } from './assets.js';
 import { getDesignStyle, STYLE_IDS } from './design-styles.js';
 import { createModernPendant } from './modern-pendant.js';
 import { createSongPendant } from './song-pendant.js';
+import { createFurniturePlan } from './furniture-plan.js';
+import { furnitureBounds, readTransform, applyTransform, dimensionsOf, editTransform } from './furniture-transform.js';
+import { createFurnitureCollision, collisionMessage } from './furniture-collision.js';
 
 export async function createHouseScene(container, callbacks = {}, initialStyle = 'french') {
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#dbdfd4');
@@ -37,6 +40,7 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
   const environment = pmrem.fromScene(roomEnv, .04); scene.environment=environment.texture; scene.environmentIntensity=.5;
   roomEnv.dispose(); pmrem.dispose();
   const styleSets=new Map();
+  const plan=createFurniturePlan({onStorageError:error=>callbacks.onWarning?.(error.message)});
   async function loadStyle(id) {
     if(styleSets.has(id))return styleSets.get(id);
     const materialSet=createMaterials(id),mats=materialSet.mats;
@@ -62,7 +66,19 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
       chandelier.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});
       chandelier.userData.itemId=spec.id;root.add(chandelier);
       furniture.items.push({...spec,object:chandelier});
-      const result={...materialSet,root,architecture,furniture,chandelier,palette:'burgundy',blockers:collectWalkBlockers(furniture.items,architecture)};
+      const defaults={};
+      for(const item of furniture.items){
+        item.editorBounds=furnitureBounds(item.object);
+        item.originalDimensions=item.dimensions;item.originalRoom=item.room;item.originalNote=item.note;
+        item.defaultTransform=readTransform(item.object);defaults[item.id]=item.defaultTransform;
+      }
+      plan.registerStyle(id,defaults);
+      const placement=createFurnitureCollision({items:furniture.items,architecture});
+      for(const item of furniture.items)applyItemPlan(item,id);
+      placement.sync();
+      const savedConflict=placement.validateLayout(Object.fromEntries(furniture.items.map(item=>[item.id,readTransform(item.object)])));
+      if(savedConflict)callbacks.onWarning?.(`已保留${getDesignStyle(id).name}旧方案中「${savedConflict.itemName}」的位置冲突；请将它移到空处，新的调整不能加深重叠。`);
+      const result={...materialSet,root,architecture,furniture,chandelier,placement,palette:'burgundy',blockers:collectWalkBlockers(furniture.items,architecture)};
       styleSets.set(id,result);scene.add(root);return result;
     } catch(error) {
       disposeModel(root);
@@ -116,6 +132,7 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
   let mode='interior',roomId='living',lightingRoom='living',lightMode='day',transition=null,yaw=0,pitch=0,lastTime=0,dirtyFrames=3,selectedItem=null,renderMs=0;
   const keys=new Set(),raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
   let drag=null,pinchDistance=0;
+  let editing=false,editorBusy=false,furnitureDrag=null,collisionFeedback='';
   const pointers=new Map(),touchMoves=new Set();
   const tmpV=new THREE.Vector3();
   function syncAngles(){camera.getWorldDirection(tmpV);yaw=Math.atan2(tmpV.x,tmpV.z);pitch=Math.asin(tmpV.y);}
@@ -127,16 +144,37 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
     const startTarget=camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(camera.position.distanceTo(endTarget)));
     transition={start:performance.now(),from:camera.position.clone(),to:endPos,fromTarget:startTarget,toTarget:endTarget,fromFov:camera.fov,toFov:fov};invalidate();
   }
-  function clearSelection(){selectedItem=null;selection.visible=false;callbacks.onSelect?.(null);invalidate();}
+  function clearSelection(){cancelFurnitureDrag();showCollision(null);selectedItem=null;selection.visible=false;callbacks.onSelect?.(null);notifyEdit();invalidate();}
+  function safeRoomPosition(room){
+    const [x,y,z]=room.view.position;
+    if(canWalkTo(x,z,.18,blockers))return [x,y,z];
+    let best=null,distance=Infinity;
+    const xs=room.polygon.map(p=>p[0]),zs=room.polygon.map(p=>p[1]);
+    for(let px=Math.min(...xs)+.2;px<Math.max(...xs);px+=.2){
+      for(let pz=Math.min(...zs)+.2;pz<Math.max(...zs);pz+=.2){
+        const d=(px-x)**2+(pz-z)**2;
+        if(d<distance&&pointInPolygon(px,pz,room.polygon)&&canWalkTo(px,pz,.18,blockers)){best=[px,y,pz];distance=d;}
+      }
+    }
+    return best;
+  }
   function setView(next,instant=false){
+    cancelFurnitureDrag();
+    if(next==='interior')editing=false;
+    renderer.domElement.style.cursor=editing?'grab':'';
     mode=next;keys.clear();touchMoves.clear();pointers.clear();drag=null;clearSelection();controls.enabled=next!=='interior';controls.enableRotate=next==='overview';controls.enablePan=next!=='interior';
     const inside=next==='interior';applyViewVisibility();
     updateLocalLight();
-    if(inside) {const r=ROOMS.find(r=>r.id===roomId);transitionTo(r.view.position,r.view.target,64,instant);}
+    if(inside) {
+      const r=ROOMS.find(r=>r.id===roomId),position=safeRoomPosition(r);
+      if(!position){callbacks.onWarning?.('家具调整后，此房间暂时没有可用的漫游起点，请在平面视图调整布置。');setView('plan',true);return;}
+      transitionTo(position,r.view.target,64,instant);
+    }
     else if(next==='overview'){controls.minDistance=8;controls.maxDistance=34;controls.maxPolarAngle=Math.PI/2-.06;transitionTo([15.5,15,20],[4.3,.1,8.15],43,instant);}
     else {controls.minDistance=12;controls.maxDistance=38;transitionTo([4.4,26,8.3],[4.4,0,8.18],42,instant);}
     callbacks.onView?.(mode,roomId);invalidate();
     renderer.shadowMap.needsUpdate=true;
+    notifyEdit();
   }
   function applyViewVisibility(){
     const inside=mode==='interior';architecture.setCutaway(!inside);architecture.setCeiling(inside);exterior.visible=inside;
@@ -150,6 +188,9 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
   async function setStyle(next){
     if(!STYLE_IDS.includes(next))throw new Error('未知家装风格');
     if(next===styleId)return;
+    if(editorBusy)throw new Error('请等待当前方案载入完成');
+    editorBusy=true;notifyEdit();
+    try {
     if(transition)transitionTo(transition.to.toArray(),transition.toTarget.toArray(),transition.toFov,true);
     stopMovement();pointers.clear();drag=null;syncAngles();clearSelection();
     const nextStyle=await loadStyle(next);
@@ -158,9 +199,10 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
     ({mats,architecture,furniture,chandelier,blockers}=activeStyle);
     activeStyle.root.visible=true;applyViewVisibility();applyPalette(activeStyle.palette);setLight(lightMode);
     if(mode==='interior'&&!canWalkTo(camera.position.x,camera.position.z,.18,blockers)){
-      const r=ROOMS.find(r=>r.id===roomId);transitionTo(r.view.position,r.view.target,camera.fov,true);
+      setView('interior',true);
     }
     renderer.shadowMap.needsUpdate=true;invalidate();
+    } finally {editorBusy=false;notifyEdit();}
   }
   function applyPalette(name){
     const design=getDesignStyle(styleId),colors=design.palettes[name];
@@ -199,7 +241,87 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
     mats.light.emissiveIntensity=night?2:.6;invalidate();
     renderer.shadowMap.needsUpdate=true;
   }
-  function selectAt(event){
+  function applyItemPlan(item,id){
+    const transform=plan.getTransform(id,item.id);
+    applyTransform(item.object,transform);
+    const original=item.defaultTransform;
+    const changed=transform.position.some((n,i)=>Math.abs(n-original.position[i])>1e-8)
+      ||transform.scale.some((n,i)=>Math.abs(n-original.scale[i])>1e-8)
+      ||Math.abs(Math.sin((transform.rotation-original.rotation)/2))>1e-8;
+    const [w,h,d]=dimensionsOf(item.editorBounds,transform);
+    item.dimensions=changed?`${Math.round(w*1000)} × ${Math.round(d*1000)} × H ${Math.round(h*1000)} mm（调整后模型外包）`:item.originalDimensions;
+    const center=item.editorBounds.getCenter(new THREE.Vector3()).applyMatrix4(item.object.matrixWorld);
+    item.room=changed?(ROOMS.find(r=>pointInPolygon(center.x,center.z,r.polygon))?.id||item.originalRoom):item.originalRoom;
+    item.note=changed?`${item.originalNote} 当前家具已调整，尺寸及通行须按新方案复核。`:item.originalNote;
+  }
+  function getEditorState(){
+    return {enabled:editing,busy:editorBusy,style:styleId,collision:collisionFeedback,...plan.status(styleId),
+      selected:selectedItem?{id:selectedItem.id,name:selectedItem.name,
+        ...readTransform(selectedItem.object),dimensions:dimensionsOf(selectedItem.editorBounds,readTransform(selectedItem.object))}:null};
+  }
+  function notifyEdit(){callbacks.onEditChange?.(getEditorState());}
+  function showCollision(hit){
+    const message=hit?collisionMessage(hit):'';
+    if(collisionFeedback===message)return;
+    collisionFeedback=message;selection.material.color.set(hit?'#b24c35':'#b99562');
+    notifyEdit();invalidate();
+  }
+  function refreshFurniture(){
+    for(const item of furniture.items)applyItemPlan(item,styleId);
+    blockers=collectWalkBlockers(furniture.items,architecture);activeStyle.blockers=blockers;
+    activeStyle.placement.sync();
+    if(selectedItem){selection.box.setFromObject(selectedItem.object);callbacks.onSelect?.(selectedItem);}
+    renderer.shadowMap.needsUpdate=true;invalidate();notifyEdit();
+  }
+  function setEditing(value){
+    if(editorBusy)throw new Error('请等待当前方案载入完成');
+    cancelFurnitureDrag();showCollision(null);stopMovement();editing=!!value;
+    if(editing&&mode==='interior')setView('plan',true);
+    renderer.domElement.style.cursor=editing?'grab':'';
+    notifyEdit();invalidate();
+  }
+  function updateSelectedFurniture(change){
+    if(!editing||editorBusy||!selectedItem)throw new Error('请先开启家具编辑并选中一件家具');
+    cancelFurnitureDrag();
+    const before=readTransform(selectedItem.object),next=editTransform(selectedItem.editorBounds,before,change);
+    const collision=activeStyle.placement.validateChange(selectedItem.id,before,next);
+    showCollision(collision);
+    if(collision)return {ok:false,message:collisionMessage(collision)};
+    plan.setTransform(styleId,selectedItem.id,next);refreshFurniture();
+  }
+  function undoFurniture(){
+    if(editorBusy)return false;cancelFurnitureDrag();showCollision(null);
+    const changed=plan.undo(styleId);if(changed)refreshFurniture();return changed;
+  }
+  function redoFurniture(){
+    if(editorBusy)return false;cancelFurnitureDrag();showCollision(null);
+    const changed=plan.redo(styleId);if(changed)refreshFurniture();return changed;
+  }
+  async function importPlan(text){
+    if(editorBusy)throw new Error('请等待当前方案载入完成');
+    cancelFurnitureDrag();editorBusy=true;notifyEdit();
+    try {
+      // Register every style catalogue before validation so unknown IDs cannot be
+      // accepted merely because that style hasn't been viewed in this session.
+      for(const id of STYLE_IDS)await loadStyle(id);
+      plan.importPlan(text,{validate:styles=>{
+        for(const [id,transforms] of Object.entries(styles)){
+          const hit=styleSets.get(id).placement.validateLayout(transforms);
+          if(hit)throw new Error(`${getDesignStyle(id).name}的「${hit.itemName}」无法导入：${collisionMessage(hit)}`);
+        }
+      }});
+      for(const [id,edition] of styleSets){
+        for(const item of edition.furniture.items)applyItemPlan(item,id);
+        edition.blockers=collectWalkBlockers(edition.furniture.items,edition.architecture);
+        edition.placement.sync();
+      }
+      showCollision(null);
+      refreshFurniture();
+      if(mode==='interior'&&!canWalkTo(camera.position.x,camera.position.z,.18,blockers))setView('interior',true);
+      return true;
+    } finally {editorBusy=false;notifyEdit();}
+  }
+  function pickAt(event){
     const bounds=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-bounds.left)/bounds.width*2-1,-(event.clientY-bounds.top)/bounds.height*2+1);raycaster.setFromCamera(pointer,camera);
     // Check architecture too, so an item behind a wall is never selected through it.
     const intersections=raycaster.intersectObjects([architecture.group,furniture.group,...(chandelier&&chandelier.visible?[chandelier]:[])],true);
@@ -211,12 +333,72 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
       if(hit.object.material?.transparent)continue;
       if(hit.object.isMesh)break;
     }
-    if(item){selectedItem=item;selection.box.setFromObject(item.object);selection.visible=true;callbacks.onSelect?.(item);invalidate();}else clearSelection();
+    return item;
   }
+  function selectItem(item,showInspector=true){
+    showCollision(null);
+    if(item){selectedItem=item;selection.box.setFromObject(item.object);selection.visible=true;if(showInspector)callbacks.onSelect?.(item);notifyEdit();invalidate();}else clearSelection();
+  }
+  function selectAt(event){selectItem(pickAt(event));}
+  function dragPoint(event,plane){
+    const bounds=renderer.domElement.getBoundingClientRect();
+    pointer.set((event.clientX-bounds.left)/bounds.width*2-1,-(event.clientY-bounds.top)/bounds.height*2+1);
+    raycaster.setFromCamera(pointer,camera);
+    return raycaster.ray.intersectPlane(plane,new THREE.Vector3());
+  }
+  function cancelFurnitureDrag(){
+    if(!furnitureDrag)return;
+    const pending=furnitureDrag;furnitureDrag=null;
+    applyTransform(pending.item.object,pending.before);
+    controls.enabled=mode!=='interior';renderer.domElement.style.cursor=editing?'grab':'';
+    if(renderer.domElement.hasPointerCapture(pending.id))renderer.domElement.releasePointerCapture(pending.id);
+    selection.box.setFromObject(pending.item.object);renderer.shadowMap.needsUpdate=true;invalidate();
+    showCollision(null);
+  }
+  // Capture before OrbitControls sees the pointer: a furniture drag must not
+  // orbit/pan the camera, and cancelling the gesture must not create history.
+  renderer.domElement.addEventListener('pointerdown',event=>{
+    if(!editing||editorBusy||event.button!==0)return;
+    if(furnitureDrag){event.preventDefault();event.stopImmediatePropagation();return;}
+    if(transition)transitionTo(transition.to.toArray(),transition.toTarget.toArray(),transition.toFov,true);
+    const item=pickAt(event);if(!item)return;
+    const before=readTransform(item.object),plane=new THREE.Plane(new THREE.Vector3(0,1,0),-before.position[1]),point=dragPoint(event,plane);
+    if(!point)return;
+    stopMovement();callbacks.onSelect?.(null);selectItem(item,false);container.focus({preventScroll:true});
+    furnitureDrag={id:event.pointerId,item,before,point,plane,startX:event.clientX,startY:event.clientY,moved:false};
+    controls.enabled=false;transition=null;renderer.domElement.style.cursor='grabbing';
+    renderer.domElement.setPointerCapture(event.pointerId);
+    event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  renderer.domElement.addEventListener('pointermove',event=>{
+    const pending=furnitureDrag;if(!pending||pending.id!==event.pointerId)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(!pending.moved&&Math.hypot(event.clientX-pending.startX,event.clientY-pending.startY)<5)return;
+    const point=dragPoint(event,pending.plane);if(!point)return;
+    pending.moved=true;
+    const next={...pending.before,position:[...pending.before.position]};
+    next.position[0]=Math.round(THREE.MathUtils.clamp(pending.before.position[0]+point.x-pending.point.x,-1,HOUSE.width+1)*100)/100;
+    next.position[2]=Math.round(THREE.MathUtils.clamp(pending.before.position[2]+point.z-pending.point.z,-1,HOUSE.depth+1)*100)/100;
+    const constrained=activeStyle.placement.constrainDrag(pending.item.id,readTransform(pending.item.object),next);
+    pending.collision=constrained.collision;
+    applyTransform(pending.item.object,constrained.transform);selection.box.setFromObject(pending.item.object);
+    showCollision(constrained.collision);renderer.domElement.style.cursor=constrained.collision?'not-allowed':'grabbing';
+    renderer.shadowMap.needsUpdate=true;invalidate();
+  },true);
+  const endFurniturePointer=event=>{
+    const pending=furnitureDrag;if(!pending||pending.id!==event.pointerId)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(event.type!=='pointerup'){cancelFurnitureDrag();notifyEdit();return;}
+    const next=readTransform(pending.item.object);cancelFurnitureDrag();
+    if(pending.moved)plan.setTransform(styleId,pending.item.id,next);
+    showCollision(pending.collision);
+    refreshFurniture();
+  };
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])renderer.domElement.addEventListener(type,endFurniturePointer,true);
   renderer.domElement.addEventListener('pointerdown',event=>{
     container.focus({preventScroll:true});pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
     if(pointers.size===1)drag={lastX:event.clientX,lastY:event.clientY,moved:0};
-    else {drag.moved=Infinity;const [a,b]=pointers.values();pinchDistance=Math.hypot(a.x-b.x,a.y-b.y);}
+    else {if(drag)drag.moved=Infinity;const [a,b]=pointers.values();pinchDistance=Math.hypot(a.x-b.x,a.y-b.y);}
     if(mode==='interior')renderer.domElement.setPointerCapture(event.pointerId);transition=null;invalidate();
   });
   renderer.domElement.addEventListener('pointermove',event=>{
@@ -249,7 +431,7 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
     if(event.target.closest?.('input,textarea,[role="dialog"]')||!document.querySelector('.modal-backdrop').hidden)return;
     if(['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)&&document.activeElement===container){keys.add(event.key);event.preventDefault();invalidate();}
   });
-  function stopMovement(){keys.clear();touchMoves.clear();}
+  function stopMovement(){keys.clear();touchMoves.clear();cancelFurnitureDrag();}
   window.addEventListener('keyup',event=>keys.delete(event.key));window.addEventListener('blur',stopMovement);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMovement();});
   function zoom(direction){if(mode==='interior'){camera.fov=THREE.MathUtils.clamp(camera.fov-direction*6,38,85);camera.updateProjectionMatrix();}else{const offset=camera.position.clone().sub(controls.target);offset.multiplyScalar(direction>0?.86:1.16);if(offset.length()>controls.minDistance&&offset.length()<controls.maxDistance)camera.position.copy(controls.target).add(offset);}invalidate();}
@@ -281,11 +463,14 @@ export async function createHouseScene(container, callbacks = {}, initialStyle =
   renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();callbacks.onWarning?.('图形上下文已中断，请刷新页面恢复。');});
   return {
     get items(){return furniture.items;},get mats(){return mats;},scene,camera,renderer,setView,setRoom,setLight,setStyle,clearSelection,zoom,stopMovement,
+    setEditing,getEditorState,updateSelectedFurniture,undoFurniture,redoFurniture,importPlan,
+    savePlan(){const ok=plan.save();notifyEdit();return ok;},
+    exportPlan(){return plan.serialize();},
     setMovement(direction,active){if(active&&mode==='interior'){transition=null;touchMoves.add(direction);invalidate();}else touchMoves.delete(direction);},
     setPalette:applyPalette,
     reset(){setView(mode);},
     async capture(){composer.render();return new Promise(resolve=>renderer.domElement.toBlob(resolve,'image/png'));},
-    getState(){return {style:styleId,palette:activeStyle.palette,loadedStyles:[...styleSets.keys()],geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,mode,roomId,lightingRoom,lightMode,exposure:renderer.toneMappingExposure,position:camera.position.toArray(),orientation:camera.quaternion.toArray(),selectedId:selectedItem?.id||null,fov:camera.fov,items:furniture.items.length,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,renderCpuMs:Math.round(renderMs*100)/100};},
+    getState(){return {style:styleId,palette:activeStyle.palette,loadedStyles:[...styleSets.keys()],geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,mode,roomId,lightingRoom,lightMode,exposure:renderer.toneMappingExposure,position:camera.position.toArray(),orientation:camera.quaternion.toArray(),selectedId:selectedItem?.id||null,fov:camera.fov,items:furniture.items.length,editor:getEditorState(),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,renderCpuMs:Math.round(renderMs*100)/100};},
     dispose(){alive=false;cancelAnimationFrame(raf);resizeObserver.disconnect();for(const edition of styleSets.values())disposeModel(edition.root);controls.dispose();composer.dispose();renderer.dispose();environment.dispose();},
   };
 }

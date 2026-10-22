@@ -32,6 +32,18 @@ npm run preview -- --port 4173 --strictPort
 - 「进入高清全景」提供同源场景的 Blender Cycles 渲染：9 房 × 4 风格，桌面 8192 × 4096、手机 4096 × 2048，并含预览图；支持房间/风格切换、环顾、缩放和保存视角。全景采用固定机位、默认配色和日间光照，行走与材质编辑继续使用实时模式。四种风格均覆盖全部九个空间，现代简约使用燕麦与鼠尾草默认配色，宋韵雅居使用米绢与青瓷默认配色。
 - 最新主页面已移除 World Labs 入口，生产构建不打包 Spark。`src/worldlabs-viewer.js` 作为研究源码保留，若自行接入会使用官方 CDN，需要联网；官方图书馆不是本户型，第三方二进制未纳入仓库。
 
+## 家具编辑与方案保存
+
+点击“布置家具”进入俯视编辑。可以拖动家具，选中后输入宽度、进深、高度（mm）和旋转角度，再点击“应用尺寸与角度”；±15° 按钮和 R 键可快速旋转。在空白处右键拖动或双指操作可以平移视图，也可切到全屋总览编辑。
+
+桌面端左侧切换风格，右侧集中放置家具编辑、方案菜单和高清全景入口。手机端使用小型浮动工具条，不额外占用画布高度。撤销、重做只在编辑时显示；保存、导出和导入位于「方案」菜单中。
+
+每次拖动松手、应用尺寸或旋转各记为一步。工具栏支持撤销与重做，快捷键为 Ctrl/⌘ Z、Ctrl/⌘ Shift Z 或 Ctrl/⌘ Y。四种风格分别保存修改和最多 100 步会话历史。每次修改自动保存到当前浏览器，刷新后恢复布局；撤销历史不跨刷新保存。“保存方案”可手动重试，JSON 导出和导入用于备份或迁移四套风格。
+
+拖动会在墙体、门扇、栏杆或其他家具前停止，快速拖动也不能越过障碍。尺寸和旋转发生冲突时保留原值，不增加历史。碰撞按家具各构件的方向与高度计算，保留桌下空腔和普通地毯铺底。原始安装接缝及旧存档已有交叠不被自动修改，但编辑不能加深交叠。导入产生新冲突时整份拒绝，保留当前方案。
+
+高清全景继续提供原始四风格、九个空间的固定机位照片，不包含家具编辑结果。尺寸调整按现有模型整体缩放，不会重新设计构件。碰撞约束用于布置推敲，不等于门扇全行程、人体通行净距或施工验收。实时漫游碰撞和导出的家具尺寸会随调整更新。详细行为与验证见 [家具编辑说明](docs/furniture-editor.md)。
+
 ## 代码与设计资料
 
 `src/layout.js` 定义户型和视角；`architecture.js` 构建建筑；`furniture.js`、`italian-furniture.js` 与 `modern-furniture.js` 构建家具；`modern-pendant.js` 构建现代圆盘吊灯；`song-furniture.js`、`song-art.js` 和 `song-pendant.js` 构建宋韵家具、原创水墨与木骨绢光灯；`materials.js` 创建纹理；`scene.js` 负责渲染与交互；`ui.js`、`main.js` 和 `style.css` 构成界面。
@@ -60,6 +72,10 @@ blender --background --python scripts/build_italian_pendant.py
 模型生成脚本使用 Blender 的 Python 环境，无需另装 `bpy`。既有资产记录使用 Blender 5.2.1；本次开源整理直接保留现有 GLB，未重新执行 Blender。macOS 若未配置 PATH，可将 `blender` 替换为 `/Applications/Blender.app/Contents/MacOS/Blender`。脚本输出到 `public/models/` 与 `artifacts/`，会覆盖同名生成文件。
 
 全景重建先运行 `node scripts/export-render-scene.mjs french`（或 `italian`、`modern`、`song`），再按 [Cycles 文档](docs/cycles-rendering.md) 执行 `scripts/render-interior.py`。导出器使用新增的 `@napi-rs/canvas`；渲染脚本当前使用 macOS Metal GPU，其他设备需调整 Cycles 设备配置。现代简约与宋韵雅居全景于 2026-09-08 渲染；法式与意式沿用已有图片。PBR 文件已随仓库提供；可选下载脚本 `scripts/download-pbr-assets.py` 需 Python 3 和网络，并会覆盖同名贴图及 manifest。
+
+## 新增风格工作流
+
+项目内的 [house-style-generation skill](skills/house-style-generation/SKILL.md) 说明如何接入新风格、生成同源全景、验证与交付。它以本目录为源码根；仅同步代码或修复页面不需要全屋重渲染。
 
 ## 许可证
 

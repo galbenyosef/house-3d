@@ -52,6 +52,7 @@ export function initUI(app) {
     if (a === 'walk') app.startWalk();
     if (a === 'pano') app.openPanorama();
     if (a === 'orbit') btn.classList.toggle('on', app.toggleAutoRotate());
+    if (a === 'edit') app.toggleEdit();
     if (a === 'ceiling') btn.classList.toggle('on', app.toggleCeiling());
     if (a === 'night') btn.classList.toggle('on', app.setNight(!btn.classList.contains('on')));
     if (a === 'labels') { labelsOn = app.toggleLabels(); btn.classList.toggle('on', labelsOn); }
@@ -60,12 +61,14 @@ export function initUI(app) {
   });
   window.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return; // ⌘Z / ⌘R etc. are not toolbar shortcuts
+    if (e.code === 'KeyE' && !app.isWalking() && !document.body.classList.contains('pano-open')) $('[data-action="edit"]').click();
     if (e.code === 'KeyF' && !app.isWalking()) app.startWalk();
     if (e.code === 'KeyC') $('[data-action="ceiling"]').click();
     if (e.code === 'KeyN') $('[data-action="night"]').click();
     if (e.code === 'KeyL') $('[data-action="labels"]').click();
-    if (e.code === 'KeyR') $('[data-action="orbit"]').click();
-    if (e.code === 'Escape') { panel.hidden = true; app.clearHighlight(); }
+    if (e.code === 'KeyR' && !app.isEditing()) $('[data-action="orbit"]').click(); // in 布置 mode R turns the selection
+    if (e.code === 'Escape') { panel.hidden = true; shownItem = null; app.deselect(); }
   });
 
   // ---------------------------------------------------------------- minimap
@@ -130,9 +133,10 @@ export function initUI(app) {
       <h3>模型</h3><ul><li>Blender 参数化生成：<code>${item.asset}</code></li></ul>
     `;
   };
+  let shownItem = null;
   const wirePanel = () => {
     panel.hidden = false;
-    panel.querySelector('[data-close]').addEventListener('click', () => { panel.hidden = true; app.clearHighlight(); });
+    panel.querySelector('[data-close]').addEventListener('click', () => { panel.hidden = true; shownItem = null; app.deselect(); });
     panel.querySelectorAll('[data-room-link]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); app.focusRoom(a.dataset.roomLink); }));
     panel.querySelectorAll('[data-pano-room]').forEach((b) => b.addEventListener('click', () => app.openPanorama({ room: b.dataset.panoRoom })));
   };
@@ -169,10 +173,66 @@ export function initUI(app) {
     return wrap;
   }
 
-  return {
+  // ---------------------------------------------------------------- 布置 bar
+  const editbar = $('#editbar');
+  const toastEl = $('#toast');
+  const fileInput = editbar.querySelector('input[type=file]');
+  let toastTimer = 0;
+  const toast = (msg) => {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.hidden = true; }, 3200);
+  };
+  const menu = editbar.querySelector('.eb-pop');
+  const closeMenu = () => { menu.hidden = true; };
+  document.addEventListener('pointerdown', (e) => { if (!e.target.closest('.eb-menu')) closeMenu(); });
+  editbar.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-edit]');
+    if (!b) return;
+    const a = b.dataset.edit;
+    if (a === 'menu') { menu.hidden = !menu.hidden; return; }
+    closeMenu();
+    if (a === 'undo') app.editor.undo();
+    if (a === 'redo') app.editor.redo();
+    if (a === 'done') app.toggleEdit(false);
+    if (a === 'collide') {
+      const on = app.editor.setCollide(!app.editor.collides());
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on);
+      toast(on ? '防碰撞已开启：家具不会穿墙或重叠' : '防碰撞已关闭：家具可自由摆放');
+    }
+    if (a === 'import') fileInput.click();
+    if (a === 'reset' && app.editor.resetAll()) toast('已恢复默认布置，可点「撤销」找回');
+    if (a === 'export') {
+      const url = URL.createObjectURL(new Blob([app.editor.exportJSON()], { type: 'application/json' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `maison-layout-${app.editor.styleId()}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+  });
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    fileInput.value = '';
+    if (!file) return;
+    try {
+      toast(app.editor.importJSON(await file.text()) ? '方案已导入，可点「撤销」还原' : '方案与当前布置相同');
+    } catch (err) {
+      toast(`导入失败：${err.message}`);
+    }
+  });
+  const HINT_ORBIT = '拖动旋转 · 右键/双指平移 · 滚轮缩放 · 点击房间或家具查看说明';
+  const HINT_EDIT = isTouch ? '拖动家具移动 · 金色圆点旋转 · 角点调整尺寸 · 单指拖空白处平移 · 双指缩放'
+    : '拖动家具移动 · 金色圆点旋转 · 角点调整尺寸 · 拖动空白处平移 · 滚轮缩放 · Alt 关闭吸附';
+
+  const this_ = {
     labelsOn: () => labelsOn,
     isTouch,
     setStyle(style, busy = false) {
+      // the previous style's pieces are about to be disposed
+      if (busy && shownItem) { shownItem = null; panel.hidden = true; }
       SPECS = SPECS_BY_STYLE[style.id] || SPECS_BY_STYLE[DEFAULT_STYLE];
       styleId = style.id;
       updateEntry();
@@ -183,6 +243,7 @@ export function initUI(app) {
       if (selectedRoom && !panel.hidden) this.showRoom(ROOMS.find((r) => r.id === selectedRoom));
     },
     showRoom(room) {
+      shownItem = null;
       selectedRoom = room.id;
       panel.innerHTML = roomPanel(room);
       wirePanel();
@@ -190,9 +251,27 @@ export function initUI(app) {
       roomRects.forEach((r) => r.classList.toggle('selected', r.dataset.room === room.id));
     },
     showItem(item) {
+      shownItem = item;
       panel.innerHTML = itemPanel(item);
       wirePanel();
     },
+    setEditing(on) {
+      editbar.hidden = !on;
+      closeMenu();
+      document.body.classList.toggle('editing', on);
+      $('[data-action="edit"]').classList.toggle('on', on);
+      $('#hint').textContent = on ? HINT_EDIT : HINT_ORBIT;
+      if (on) { panel.hidden = true; shownItem = null; tooltip.hidden = true; } // the floating toolbar takes over
+    },
+    setEditState({ canUndo, canRedo, saved, edited }) {
+      editbar.querySelector('[data-edit="undo"]').disabled = !canUndo;
+      editbar.querySelector('[data-edit="redo"]').disabled = !canRedo;
+      const status = editbar.querySelector('.edit-status');
+      status.dataset.state = !saved ? 'error' : edited ? 'saved' : 'default';
+      status.querySelector('span').textContent = !saved ? '未能保存' : edited ? `已保存 · ${edited} 件调整` : '默认布置';
+      status.title = !saved ? '浏览器禁用了本地存储，刷新后调整会丢失；可用「导出布置」保存' : '布置自动保存在本浏览器';
+    },
+    toast,
     hoverItem(item, x, y) {
       if (!item || isTouch) { tooltip.hidden = true; document.body.style.cursor = ''; return; }
       tooltip.hidden = false;
@@ -204,7 +283,7 @@ export function initUI(app) {
       document.body.style.cursor = 'pointer';
     },
     setWalk(on) {
-      $('#hint').textContent = on ? 'WASD / 方向键移动 · 鼠标转向 · Shift 加速 · Esc 退出' : '拖动旋转 · 右键/双指平移 · 滚轮缩放 · 点击房间或家具查看说明';
+      $('#hint').textContent = on ? 'WASD / 方向键移动 · 鼠标转向 · Shift 加速 · Esc 退出' : app.isEditing() ? HINT_EDIT : HINT_ORBIT;
       document.body.classList.toggle('walking', on);
       if (on && !walkUI) walkUI = buildWalkUI();
       else if (!on && walkUI) { walkUI.remove(); walkUI = null; }
@@ -237,4 +316,5 @@ export function initUI(app) {
       }
     },
   };
+  return this_;
 }

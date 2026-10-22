@@ -323,7 +323,7 @@ export function buildArchitecture(THREE, mats, style='french') {
     const x=left+pitch*i, r=i%8===0?.017:radius;
     cylinder(uprights,railMat,r,railTop-.025-baseTop,x,(railTop-.025+baseTop)/2,z,10);
   }
-  railing.userData={heightFromBase:railTop-baseTop,maxClearGap:pitch-2*radius,verticalBars:bays+1,designAssumption:'新设计保守目标：净高不低于1.20m、竖杆净距不大于110mm、无可攀横杆；既有栏杆现场复核'};
+  railing.userData={editorObstacle:true,heightFromBase:railTop-baseTop,maxClearGap:pitch-2*radius,verticalBars:bays+1,designAssumption:'新设计保守目标：净高不低于1.20m、竖杆净距不大于110mm、无可攀横杆；既有栏杆现场复核'};
   // 地坪黄铜边界缝：连接窗前石材与木地板。
   box(group,mat('brass'),7.00,.012,.018,3.65,.028,14.42);
 

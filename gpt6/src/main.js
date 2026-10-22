@@ -4,11 +4,13 @@ import { ROOMS } from './layout.js';
 import { mountUI, materialDialog, sourceDialog, helpDialog, furnitureDialog, guideDialog, makeGuideMarkdown } from './ui.js';
 import { createHouseScene } from './scene.js';
 import { getDesignStyle, STYLE_IDS } from './design-styles.js';
+import { mountFurnitureEditor } from './editor-ui.js';
 
 mountUI();
 let house,toastTimer,currentModal=null,currentFilter='all',lastFocus=null,room='living',mode='interior',palette='burgundy';
 let style='french',switching=false;
 let visualOpen=false,visualViewer=null,visualGeneration=0;
+let furnitureEditor;
 try {const requested=new URL(location.href).searchParams.get('style')||localStorage.getItem('maison-style');if(STYLE_IDS.includes(requested))style=requested;} catch {}
 const $=selector=>document.querySelector(selector);
 const all=selector=>document.querySelectorAll(selector);
@@ -27,7 +29,7 @@ function syncStyleUI(){
   $('.project-intro .eyebrow').textContent=design.english;$('.project-intro h1').innerHTML=design.heading;$('.intro-en').textContent=design.subtitle;
   $('.space-header span:last-child').textContent=['modern','song'].includes(style)?'THE SPACES':style==='italian'?'GLI SPAZI':'LES ESPACES';
   $('.palette-block .section-mini span').textContent=style==='italian'?'皮革配色':'织物配色';
-  all('[data-style]').forEach(el=>{const active=el.dataset.style===style;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));el.disabled=!house||switching;});
+  all('[data-style]').forEach(el=>{const active=el.dataset.style===style;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));el.disabled=!house||switching||house.getEditorState().busy;});
   all('.swatch').forEach(el=>{const active=el.dataset.palette===palette,colors=design.palettes[el.dataset.palette];el.style.setProperty('--swatch',colors.fabric);el.setAttribute('aria-label',colors.name);el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
   const panorama=$('[data-action="panorama"]');
   panorama.disabled=!design.panorama||switching||!house;
@@ -57,6 +59,7 @@ function syncView(next){
   else if(next==='plan'){$('.scene-caption .kicker').textContent='THE SPATIAL ARRANGEMENT';$('.scene-caption h2').textContent='平面视图 · 生活的尺度';$('.scene-subtitle').textContent='墙线按图推导 / 面积取原图标注 / 尺寸待复测';}
   else syncRoom(room);
   $('.render-badge').textContent=next==='interior'?'THREE.JS · 实时渲染':'剖切展示 · 隐藏上部墙体';
+  if(house?.getEditorState().enabled)$('.interaction-hint span').textContent='拖动家具移动 · 点击后调整尺寸与旋转 · 右键或双指平移';
 }
 function showItem(item){
   $('.touch-move').hidden=mode!=='interior'||!!item;house?.stopMovement();
@@ -148,13 +151,17 @@ const projected=new THREE.Vector3(),labelElements=[...all('.projected-room')];
 function updateLabels(camera,view,item){
   const w=$('#scene').clientWidth,h=$('#scene').clientHeight;
   $('#mini-camera').setAttribute('cx',camera.position.x*10);$('#mini-camera').setAttribute('cy',camera.position.z*10);$('#mini-camera').style.display=view==='interior'?'':'none';
-  $('#room-labels').style.display=view==='interior'?'none':'block';
+  $('#room-labels').style.display=view==='interior'||house?.getEditorState().enabled?'none':'block';
   if(view!=='interior')ROOMS.forEach((r,i)=>{projected.set(r.center[0],.84,r.center[1]).project(camera);labelElements[i].style.left=`${(projected.x*.5+.5)*w}px`;labelElements[i].style.top=`${(-projected.y*.5+.5)*h}px`;labelElements[i].style.display=projected.z<1?'':'none';});
-  if(item){new THREE.Box3().setFromObject(item.object).getCenter(projected);projected.y+=.6;projected.project(camera);$('#selection-label').style.left=`${(projected.x*.5+.5)*w}px`;$('#selection-label').style.top=`${(-projected.y*.5+.5)*h}px`;$('#selection-label').style.display=projected.z<1?'block':'none';}
+  if(item){$('#selection-label').textContent=item.name;new THREE.Box3().setFromObject(item.object).getCenter(projected);projected.y+=.6;projected.project(camera);$('#selection-label').style.left=`${(projected.x*.5+.5)*w}px`;$('#selection-label').style.top=`${(-projected.y*.5+.5)*h}px`;$('#selection-label').style.display=projected.z<1?'block':'none';}
 }
 try {
   syncStyleUI();
-  house=await createHouseScene($('#scene'),{onRoom:syncRoom,onView:syncView,onSelect:showItem,onWarning:toast,onFrame:updateLabels},style);
+  house=await createHouseScene($('#scene'),{onRoom:syncRoom,onView:syncView,onSelect:showItem,onWarning:toast,onFrame:updateLabels,onEditChange:state=>{
+    furnitureEditor?.sync(state);
+    all('[data-style]').forEach(button=>{button.disabled=!house||switching||state.busy;});
+  }},style);
+  furnitureEditor=mountFurnitureEditor({house,toast,onModeChange:()=>syncView(mode)});
   syncStyleUI();
   window.maison={getState:()=>house.getState(),getComparisonState:()=>visualViewer?.getState()||null};
   requestAnimationFrame(()=>{$('.loading').classList.add('hidden');setTimeout(()=>$('.loading')?.remove(),700);});
